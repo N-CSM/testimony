@@ -60,30 +60,6 @@
   }
   .setup-card p { color: var(--text2); font-size: 14px; margin-bottom: 28px; }
 
-  /* ── LOGIN SCREEN ── */
-  #login-screen {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 24px;
-  }
-  .login-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 40px 32px;
-    width: 100%;
-    max-width: 380px;
-  }
-  .login-card h1 {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 20px;
-    color: var(--accent);
-    margin-bottom: 4px;
-  }
-  .login-card p { color: var(--text2); font-size: 13px; margin-bottom: 28px; }
-
   /* ── MAIN APP ── */
   #app { display: none; flex-direction: column; min-height: 100vh; }
 
@@ -619,7 +595,6 @@
 </head>
 <body>
 
-<!-- Setup Screen -->
 <div id="setup-screen">
   <div class="setup-card">
     <h1>超新星・見證資料庫</h1>
@@ -630,9 +605,6 @@
   </div>
 </div>
 
-
-
-<!-- Main App -->
 <div id="app">
   <div class="header">
     <div class="header-left">
@@ -643,7 +615,6 @@
     </div>
     <div class="header-actions">
       <button class="btn-icon" onclick="openSettings()" title="設定">⚙️</button>
-      <button class="btn-icon" onclick="doLogout()" title="登出">🚪</button>
     </div>
   </div>
 
@@ -652,7 +623,6 @@
     <div class="tab" onclick="switchTab('add')">➕ 新增見證</div>
   </div>
 
-  <!-- List Tab -->
   <div id="tab-list" class="content">
     <div class="stats-bar" id="stats-bar" style="display:none">
       <div class="stat-item">
@@ -682,11 +652,9 @@
     </div>
   </div>
 
-  <!-- Add Tab -->
   <div id="tab-add" class="content" style="display:none">
     <div class="add-form">
 
-      <!-- AI Parse Section -->
       <div class="form-section">
         <div class="form-section-header">
           ✨ 快速輸入（貼文字，AI自動拆解）
@@ -705,7 +673,6 @@
         </div>
       </div>
 
-      <!-- Basic Info -->
       <div class="form-section">
         <div class="form-section-header">📝 見證資訊</div>
         <div class="form-section-body">
@@ -762,7 +729,6 @@
         </div>
       </div>
 
-      <!-- Photo Upload -->
       <div class="form-section">
         <div class="form-section-header">📷 照片上傳</div>
         <div class="form-section-body">
@@ -788,7 +754,6 @@
   </div>
 </div>
 
-<!-- Settings Modal -->
 <div class="modal-overlay" id="settings-modal">
   <div class="modal">
     <h2>⚙️ 設定</h2>
@@ -812,13 +777,11 @@
   </div>
 </div>
 
-<!-- Lightbox -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
   <img id="lightbox-img" src="" alt="">
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
@@ -837,15 +800,12 @@ let expandedCard = null;
 window.onload = () => {
   config = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}');
   
-  // 強制寫入一組虛擬 token 騙過前端檢查機制
-  config.token = 'bypass-login-token'; 
-  
   if (!config.scriptUrl) {
     document.getElementById('setup-screen').style.display = 'flex';
   } else {
-    // 略過登入畫面，直接開啟主應用
     showApp();
   }
+  
   // Set today's date
   document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
 };
@@ -857,39 +817,7 @@ function saveSetup() {
   config.scriptUrl = url;
   localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
   document.getElementById('setup-screen').style.display = 'none';
-  showLoginScreen();
-}
-
-// ── LOGIN ──
-function showLoginScreen() {
-  document.getElementById('login-screen').style.display = 'flex';
-}
-
-async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  if (!email || !password) return showToast('請輸入帳號和密碼', 'error');
-  try {
-    const res = await apiCall({ action: 'login', email, password });
-    if (res.success) {
-      config.token = res.token;
-      config.userName = res.name || email;
-      localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
-      document.getElementById('login-screen').style.display = 'none';
-      showApp();
-    } else {
-      showToast(res.message || '登入失敗', 'error');
-    }
-  } catch(e) {
-    showToast('連線失敗，請確認網址正確', 'error');
-  }
-}
-
-function doLogout() {
-  config.token = null;
-  localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
-  document.getElementById('app').style.display = 'none';
-  showLoginScreen();
+  showApp();
 }
 
 // ── APP ──
@@ -922,7 +850,7 @@ function switchTab(tab) {
 // ── LOAD TESTIMONIES ──
 async function loadTestimonies() {
   try {
-    const res = await apiCall({ action: 'getTestimonies', token: config.token });
+    const res = await apiCall({ action: 'getTestimonies' });
     if (res.success) {
       allTestimonies = res.data || [];
       renderList(allTestimonies);
@@ -1032,7 +960,7 @@ async function copyText(e, text) {
 async function deleteTestimony(e, id) {
   e.stopPropagation();
   if (!confirm('確定要刪除這筆見證嗎？')) return;
-  const res = await apiCall({ action: 'deleteTestimony', token: config.token, id });
+  const res = await apiCall({ action: 'deleteTestimony', id });
   if (res.success) {
     showToast('已刪除', 'success');
     loadTestimonies();
@@ -1044,7 +972,6 @@ async function aiParse() {
   const raw = document.getElementById('ai-raw-input').value.trim();
   if (!raw) return showToast('請先貼上見證文字', 'error');
   if (!config.apiKey) {
-    // Manual mode: just fill content field
     document.getElementById('f-content').value = raw;
     switchTab('add');
     showToast('已填入原始內容，請手動補充其他欄位', 'success');
@@ -1188,7 +1115,6 @@ async function uploadPhotos() {
     try {
       const res = await apiCall({
         action: 'uploadPhoto',
-        token: config.token,
         fileName,
         base64,
         mimeType: file.type,
@@ -1202,10 +1128,33 @@ async function uploadPhotos() {
   return photoUrls;
 }
 
+// 導入 Canvas 圖片壓縮處理，防阻 App Script 記憶體崩潰
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 1200;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > MAX_WIDTH) {
+          height = Math.round((height * MAX_WIDTH) / width);
+          width = MAX_WIDTH;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+        resolve(dataUrl.split(',')[1]);
+      };
+      img.src = e.target.result;
+    };
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
@@ -1221,12 +1170,10 @@ async function saveTestimony() {
   btn.disabled = true;
 
   try {
-    // Upload photos first
     const photoUrls = await uploadPhotos();
 
     const data = {
       action: 'addTestimony',
-      token: config.token,
       name: document.getElementById('f-name').value.trim(),
       date: document.getElementById('f-date').value,
       product: document.getElementById('f-product').value.trim(),
@@ -1284,6 +1231,11 @@ function saveSettings() {
   closeSettings();
   updateAiBadge();
   showToast('設定已儲存', 'success');
+  
+  // 設定完成後自動載入資料
+  if(config.scriptUrl) {
+    loadTestimonies();
+  }
 }
 
 // ── LIGHTBOX ──
