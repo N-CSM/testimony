@@ -361,10 +361,22 @@ function fetchData(){
         allData = res.data;
         render();
       } else {
-        showToast(res.message || '讀取失敗', true);
+        showFetchError(res.message || '讀取失敗');
       }
     })
-    .catch(() => showToast('無法連線到資料庫，請確認網址設定', true));
+    .catch(err => {
+      console.error('讀取見證資料失敗：', err);
+      showFetchError('無法連線到資料庫，請確認 SCRIPT_URL 有沒有設定正確，或稍後再試一次');
+    });
+}
+
+function showFetchError(msg){
+  showToast(msg, true);
+  const empty = document.getElementById('emptyState');
+  empty.style.display = 'block';
+  empty.innerHTML = `⚠️ ${escapeHtml(msg)}<br><span style="font-size:12px;">可以試著把這個網址貼到瀏覽器打開看看：<br>${escapeHtml(SCRIPT_URL)}?action=list</span>`;
+  document.getElementById('resultsMeta').textContent = '';
+  document.getElementById('grid').innerHTML = '';
 }
 
 /*************** 篩選 + 渲染卡片 ***************/
@@ -383,7 +395,7 @@ function renderTagFilters(){
       chip.className = 'chip';
       chip.textContent = tag;
       chip.onclick = () => {
-        selectedTag = (selectedTag === tag) ? null : tag; // 再點一次取消，點別的標籤會直接切換
+        selectedTag = (selectedTag === tag) ? null : tag;
         renderTagFilters();
         render();
       };
@@ -421,6 +433,7 @@ function render(){
   const grid = document.getElementById('grid');
   const meta = document.getElementById('resultsMeta');
   const empty = document.getElementById('emptyState');
+  empty.innerHTML = '目前沒有符合的見證，換個關鍵字或標籤試試看';
   meta.textContent = `共 ${data.length} 筆見證`;
   grid.innerHTML = '';
   empty.style.display = data.length ? 'none' : 'block';
@@ -450,7 +463,7 @@ function openDetail(item){
   const modal = document.getElementById('detailModal');
   const tags = (item['標籤'] || '').split(',').map(t => t.trim()).filter(Boolean);
   const shots = (item['截圖連結'] || '').split(',').map(s => s.trim()).filter(Boolean)
-    .map(url => driveViewToImg_(url));
+    .map(url => ({ display: driveViewToImg_(url), original: url }));
 
   modal.innerHTML = `
     <button class="close-btn" onclick="closeModal()">&times;</button>
@@ -458,7 +471,7 @@ function openDetail(item){
     <div class="modal-meta">${escapeHtml(item['見證者名字'] || '匿名')} · ${escapeHtml(item['新增日期'] || '')}</div>
     <div class="tags-row" style="margin-bottom:14px;">${tags.map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('')}</div>
     <div class="content-text">${escapeHtml(item['見證文字'] || '')}</div>
-    ${shots.length ? `<div class="shots">${shots.map(u => `<img src="${u}" onclick="window.open('${u}','_blank')">`).join('')}</div>` : ''}
+    ${shots.length ? `<div class="shots">${shots.map(s => `<img src="${s.display}" onclick="window.open('${s.original}','_blank')">`).join('')}</div>` : ''}
     ${item['原始出處網址'] ? `<a class="source-link" href="${item['原始出處網址']}" target="_blank">查看原始出處 →</a>` : ''}
     ${item['備註'] ? `<div style="margin-top:14px;font-size:13px;color:var(--ink-soft);">備註：${escapeHtml(item['備註'])}</div>` : ''}
     ${authToken ? `<div class="admin-actions"><button class="btn-primary" style="background:var(--danger);" onclick="deleteItem('${item['ID']}')">刪除這筆見證</button></div>` : ''}
@@ -470,7 +483,7 @@ function closeModal(){ document.getElementById('detailOverlay').classList.remove
 // Google Drive 分享連結轉成可直接顯示的圖片網址
 function driveViewToImg_(url){
   const match = url.match(/[-\w]{25,}/);
-  if (match) return `https://drive.google.com/uc?export=view&id=${match[0]}`;
+  if (match) return `https://drive.google.com/thumbnail?id=${match[0]}&sz=w1600`;
   return url;
 }
 
@@ -528,7 +541,8 @@ function handleFiles(fileList){
   Array.from(fileList).forEach(file => {
     if (!file.type.startsWith('image/')) return;
     resizeImage(file, 1600, 0.8).then(({ base64, mimeType }) => {
-      uploadedFiles.push({ file, base64, mimeType, label: file.name.replace(/\.[^.]+$/, '') });
+      const label = `截圖${uploadedFiles.length + 1}`;
+      uploadedFiles.push({ file, base64, mimeType, label });
       renderFileList();
     });
   });
