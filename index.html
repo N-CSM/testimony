@@ -74,11 +74,33 @@
   .search-box svg{ position:absolute; left:16px; top:50%; transform:translateY(-50%); opacity:.5; }
 
   /* ---------- Tag filters ---------- */
-  .tag-section{ max-width:1080px; margin:0 auto; padding:20px 24px 6px; }
-  .tag-group{ margin-bottom:14px; }
-  .tag-group .cat-label{
-    font-size:12px; color:var(--ink-soft); margin-right:12px; min-width:64px; display:inline-block;
+  .tag-section{ max-width:1080px; margin:0 auto; padding:16px 24px 6px; }
+  .tag-toggle{
+    display:flex; align-items:center; justify-content:space-between;
+    cursor:pointer; padding:10px 16px; background:var(--surface);
+    border:1px solid var(--line); border-radius:12px; user-select:none;
   }
+  .tag-toggle .label{ font-size:14px; font-weight:600; color:var(--ink); }
+  .tag-toggle .label .current{ font-weight:400; color:var(--accent); margin-left:6px; }
+  .tag-toggle .chevron{ transition:transform .2s ease; color:var(--ink-soft); font-size:13px; }
+  .tag-toggle.open .chevron{ transform:rotate(180deg); }
+  .tag-groups-wrap{
+    max-height:0; overflow:hidden; transition:max-height .25s ease;
+  }
+  .tag-groups-inner{ padding-top:12px; }
+  .tag-group{
+    border-radius:12px; padding:10px 14px; margin-bottom:10px;
+  }
+  .tag-group .cat-label{
+    display:block; font-size:12px; font-weight:600; color:var(--ink); margin-bottom:6px;
+  }
+  .cat-color-0{ background:#EAF1EC; }
+  .cat-color-1{ background:#F3ECE3; }
+  .cat-color-2{ background:#EDF0F5; }
+  .cat-color-3{ background:#F5ECEE; }
+  .cat-color-4{ background:#EEF0E7; }
+  .cat-color-5{ background:#EDE9F2; }
+  .cat-color-6{ background:#EAF2F0; }
   .chip{
     display:inline-flex; align-items:center;
     border:1px solid var(--line); background:var(--surface);
@@ -142,6 +164,11 @@
   .modal .shots{ display:flex; gap:10px; overflow-x:auto; margin-bottom:16px; }
   .modal .shots img{ height:220px; border-radius:10px; border:1px solid var(--line); }
   .modal a.source-link{ font-size:13px; color:var(--accent); }
+  .modal .quick-actions{ display:flex; gap:14px; margin-top:16px; }
+  .modal .link-btn{
+    border:none; background:none; color:var(--accent); font-size:13px; cursor:pointer; padding:0;
+  }
+  .modal .link-btn:hover{ text-decoration:underline; }
   .modal .admin-actions{ margin-top:18px; border-top:1px solid var(--line); padding-top:14px; }
 
   /* ---------- Admin drawer ---------- */
@@ -167,6 +194,9 @@
   .file-row{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
   .file-row input[type=text]{ flex:1; padding:8px 10px; border:1px solid var(--line); border-radius:8px; font-size:13px; }
   .file-row img{ width:44px; height:44px; object-fit:cover; border-radius:6px; border:1px solid var(--line); }
+  .existing-img-row{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .existing-img-row img{ width:44px; height:44px; object-fit:cover; border-radius:6px; border:1px solid var(--line); }
+  .existing-img-row span.remove-btn{ cursor:pointer; color:var(--danger); font-size:12px; text-decoration:underline; margin-left:auto; }
   #dropZone{
     border:1.5px dashed var(--line); border-radius:10px; padding:18px; text-align:center;
     font-size:13px; color:var(--ink-soft); cursor:pointer; margin-bottom:12px;
@@ -191,6 +221,23 @@
   @media (max-width:600px){
     .grid{ grid-template-columns:1fr; }
     .drawer{ width:100%; }
+    .top{ padding:14px 16px; }
+    .brand .mark{ font-size:22px; }
+    .brand .sub{ display:none; }
+    .hero{ padding:28px 16px 4px; }
+    .hero h1{ font-size:21px; }
+    .search-box{ max-width:100%; }
+    .tag-section{ padding:12px 16px 4px; }
+    .grid{ padding:14px 16px 48px; }
+    .results-meta{ padding:6px 16px 0; }
+    .modal{ padding:22px; border-radius:12px; }
+    .modal .shots img{ height:160px; }
+    .drawer{ padding:22px; }
+  }
+
+  @media (max-width:380px){
+    .chip{ font-size:12px; padding:5px 12px; }
+    .tag-toggle .label{ font-size:13px; }
   }
 </style>
 </head>
@@ -215,7 +262,15 @@
   </div>
 </section>
 
-<section class="tag-section" id="tagSection"></section>
+<section class="tag-section">
+  <div class="tag-toggle" id="tagToggle">
+    <span class="label">🏷️ 標籤篩選<span class="current" id="tagToggleCurrent"></span></span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="tag-groups-wrap" id="tagGroupsWrap">
+    <div class="tag-groups-inner" id="tagSection"></div>
+  </div>
+</section>
 
 <div class="results-meta" id="resultsMeta"></div>
 <div class="grid" id="grid"></div>
@@ -240,7 +295,7 @@
 </div>
 
 <div class="drawer" id="addDrawer">
-  <h2>新增見證</h2>
+  <h2 id="addDrawerTitle">新增見證</h2>
   <div class="field">
     <label>標題</label>
     <input type="text" id="f_title" placeholder="例如：長期偏頭痛終於好轉" />
@@ -265,8 +320,12 @@
       <button type="button" id="addNewTagBtn" style="border:1px solid var(--line);background:none;border-radius:8px;padding:0 12px;cursor:pointer;">加入</button>
     </div>
   </div>
+  <div class="field" id="existingImagesField" style="display:none;">
+    <label>現有截圖（可移除，移除後不會刪除 Drive 裡的檔案）</label>
+    <div id="existingImageList"></div>
+  </div>
   <div class="field">
-    <label>截圖上傳（可多張，上傳後可自訂每張描述文字，檔名會自動變成「編號_描述文字」方便之後對照）</label>
+    <label id="uploadLabel">截圖上傳（可多張，上傳後可自訂每張描述文字，檔名會自動變成「編號_描述文字」方便之後對照）</label>
     <div id="dropZone">點擊或拖曳圖片到這裡上傳</div>
     <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
     <div id="fileList"></div>
@@ -278,23 +337,22 @@
   <button class="btn-primary" id="submitAdd">送出並更新到資料庫</button>
 </div>
 
+
 <div class="toast" id="toast"></div>
 
 <script>
 /*************** 設定：請把下面換成你部署後的 Apps Script 網址 ***************/
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyu2-ceMYAF_GaPbBBRAdahPi6pDfVJ6eEQfvWIn04Ee58fCZvVV-BS1zzh4PHbED1o3Q/exec';
 
-/*************** 標籤分類 ***************/
-const TAG_CATEGORIES = {
-  '健康狀況': ['加護病房','敗血性休克','急救','癌症','中風','紅斑性狼瘡','免疫系統','手腳冰冷'],
-  '體質調理': ['異膚','皮膚','好轉反應','高敏人','自律神經'],
-  '婦科疼痛': ['婦科','疼痛'],
-  '睡眠': ['睡眠'],
-  '家庭照顧': ['長輩照顧','三寶媽','育兒','寵物照顧'],
-  '事業人生': ['事業','翻轉人生','過勞','情緒'],
-  '知識科普': ['電磁波','專業科普']
-};
-const ALL_TAGS = Object.values(TAG_CATEGORIES).flat();
+/*************** 標籤分類：改成從後台「標籤分類」分頁動態讀取，不再寫死在程式碼裡 ***************/
+let TAG_CATEGORIES = {}; // { 分類: [標籤,...] }，fetchData 拿到資料後才會填入
+let ALL_TAGS = [];
+
+function applyTagCategories(list){
+  TAG_CATEGORIES = {};
+  (list || []).forEach(({ category, tags }) => { TAG_CATEGORIES[category] = tags; });
+  ALL_TAGS = Object.values(TAG_CATEGORIES).flat();
+}
 
 /*************** 狀態 ***************/
 let allData = [];
@@ -302,13 +360,13 @@ let selectedTag = null; // 瀏覽篩選：一次只能選一個標籤
 let searchKeyword = '';
 let selectedFormTags = new Set();
 let uploadedFiles = []; // { file, base64, mimeType, label }
+let existingImages = []; // 編輯模式下，現有（尚未被移除）的截圖網址
+let editingId = null; // null = 新增模式；有值 = 正在編輯該筆 ID
 let authToken = sessionStorage.getItem('testimonyToken') || null;
 
 /*************** 初始化 ***************/
 document.addEventListener('DOMContentLoaded', () => {
-  renderTagFilters();
-  renderTagPicker();
-  fetchData();
+  fetchData(); // 資料跟標籤分類都在這裡一起載入，載入完成後會自動渲染畫面
   updateLoginUI();
 
   document.getElementById('searchInput').addEventListener('input', e => {
@@ -322,6 +380,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       openDrawer('loginDrawer');
     }
+  });
+
+  document.getElementById('tagToggle').addEventListener('click', () => {
+    setTagPanelOpen(!tagPanelOpen);
   });
 
   document.getElementById('submitLogin').addEventListener('click', doLogin);
@@ -359,7 +421,11 @@ function fetchData(){
     .then(res => {
       if (res.success) {
         allData = res.data;
+        applyTagCategories(res.tagCategories);
+        renderTagFilters();
+        renderTagPicker();
         render();
+        maybeOpenFromUrl();
       } else {
         showFetchError(res.message || '讀取失敗');
       }
@@ -380,12 +446,14 @@ function showFetchError(msg){
 }
 
 /*************** 篩選 + 渲染卡片 ***************/
+let tagPanelOpen = false;
+
 function renderTagFilters(){
   const el = document.getElementById('tagSection');
   el.innerHTML = '';
-  Object.entries(TAG_CATEGORIES).forEach(([cat, tags]) => {
+  Object.entries(TAG_CATEGORIES).forEach(([cat, tags], index) => {
     const group = document.createElement('div');
-    group.className = 'tag-group';
+    group.className = `tag-group cat-color-${index % 7}`;
     const label = document.createElement('span');
     label.className = 'cat-label';
     label.textContent = cat;
@@ -410,6 +478,25 @@ function renderTagFilters(){
     clear.textContent = '清除標籤篩選';
     clear.onclick = () => { selectedTag = null; renderTagFilters(); render(); };
     el.appendChild(clear);
+  }
+
+  const current = document.getElementById('tagToggleCurrent');
+  current.textContent = selectedTag ? `· 目前：${selectedTag}` : '';
+
+  // 內容變動後，如果面板是展開狀態，重新計算高度避免被裁切
+  if (tagPanelOpen) setTagPanelOpen(true);
+}
+
+function setTagPanelOpen(open){
+  tagPanelOpen = open;
+  const wrap = document.getElementById('tagGroupsWrap');
+  const toggle = document.getElementById('tagToggle');
+  if (open) {
+    wrap.style.maxHeight = wrap.scrollHeight + 'px';
+    toggle.classList.add('open');
+  } else {
+    wrap.style.maxHeight = '0px';
+    toggle.classList.remove('open');
   }
 }
 
@@ -463,27 +550,86 @@ function openDetail(item){
   const modal = document.getElementById('detailModal');
   const tags = (item['標籤'] || '').split(',').map(t => t.trim()).filter(Boolean);
   const shots = (item['截圖連結'] || '').split(',').map(s => s.trim()).filter(Boolean)
-    .map(url => ({ display: driveViewToImg_(url), original: url }));
+    .map(url => driveViewToImg_(url));
 
   modal.innerHTML = `
     <button class="close-btn" onclick="closeModal()">&times;</button>
     <h2>${escapeHtml(item['標題'] || '（未命名見證）')}</h2>
     <div class="modal-meta">${escapeHtml(item['見證者名字'] || '匿名')} · ${escapeHtml(item['新增日期'] || '')}</div>
     <div class="tags-row" style="margin-bottom:14px;">${tags.map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('')}</div>
-    <div class="content-text">${escapeHtml(item['見證文字'] || '')}</div>
-    ${shots.length ? `<div class="shots">${shots.map(s => `<img src="${s.display}" onclick="window.open('${s.original}','_blank')">`).join('')}</div>` : ''}
-    ${item['原始出處網址'] ? `<a class="source-link" href="${item['原始出處網址']}" target="_blank">查看原始出處 →</a>` : ''}
+    <div class="content-text">${linkify(item['見證文字'] || '')}</div>
+    ${shots.length ? `<div class="shots">${shots.map(u => `<img src="${u}" onclick="window.open('${u}','_blank')">`).join('')}</div>` : ''}
+    ${item['原始出處網址'] ? `<a class="source-link" href="${escapeHtml(item['原始出處網址'])}" target="_blank">查看原始出處 →</a>` : ''}
     ${item['備註'] ? `<div style="margin-top:14px;font-size:13px;color:var(--ink-soft);">備註：${escapeHtml(item['備註'])}</div>` : ''}
-    ${authToken ? `<div class="admin-actions"><button class="btn-primary" style="background:var(--danger);" onclick="deleteItem('${item['ID']}')">刪除這筆見證</button></div>` : ''}
+    <div class="quick-actions">
+      <button type="button" class="link-btn" onclick="copyTestimonyText('${item['ID']}')">📋 複製見證文字</button>
+      <button type="button" class="link-btn" onclick="copyTestimonyLink('${item['ID']}')">🔗 複製連結</button>
+    </div>
+    ${authToken ? `
+      <div class="admin-actions">
+        <button class="btn-primary" style="background:var(--accent);" onclick="openEditDrawer('${item['ID']}')">編輯這筆見證</button>
+        <button class="btn-primary" style="background:var(--danger);margin-top:8px;" onclick="deleteItem('${item['ID']}')">刪除這筆見證</button>
+      </div>` : ''}
   `;
   document.getElementById('detailOverlay').classList.add('open');
+  setUrlId(item['ID']);
 }
-function closeModal(){ document.getElementById('detailOverlay').classList.remove('open'); }
+function closeModal(){
+  document.getElementById('detailOverlay').classList.remove('open');
+  clearUrlId();
+}
 
-// Google Drive 分享連結轉成可直接顯示的圖片網址
+// 把純文字中的網址變成可點擊的超連結（先轉義避免 XSS，再處理網址）
+function linkify(text){
+  const escaped = escapeHtml(text);
+  return escaped.replace(/(https?:\/\/[^\s<]+)/g, url =>
+    `<a href="${url}" target="_blank" rel="noopener">${url}</a>`
+  );
+}
+
+function copyTestimonyText(id){
+  const item = allData.find(d => String(d['ID']) === String(id));
+  if (!item) return;
+  copyToClipboard(item['見證文字'] || '', '已複製見證文字');
+}
+
+function copyTestimonyLink(id){
+  const url = `${location.origin}${location.pathname}?id=${id}`;
+  copyToClipboard(url, '已複製連結');
+}
+
+function copyToClipboard(text, successMsg){
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => showToast(successMsg)).catch(() => showToast('複製失敗，請手動選取文字', true));
+  } else {
+    showToast('這個瀏覽器不支援自動複製，請手動選取文字', true);
+  }
+}
+
+// 深連結：網址帶 ?id=xx 時，載入完成後自動開啟該筆見證
+function maybeOpenFromUrl(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  if (!id) return;
+  const item = allData.find(d => String(d['ID']) === String(id));
+  if (item) openDetail(item);
+}
+
+function setUrlId(id){
+  const url = new URL(location.href);
+  url.searchParams.set('id', id);
+  history.replaceState(null, '', url);
+}
+function clearUrlId(){
+  const url = new URL(location.href);
+  url.searchParams.delete('id');
+  history.replaceState(null, '', url);
+}
+
+// 把 Drive 分享連結轉成透過 Apps Script 代理的圖片網址（不受外部分享權限限制）
 function driveViewToImg_(url){
   const match = url.match(/[-\w]{25,}/);
-  if (match) return `https://drive.google.com/thumbnail?id=${match[0]}&sz=w1600`;
+  if (match) return `${SCRIPT_URL}?action=image&id=${match[0]}`;
   return url;
 }
 
@@ -569,6 +715,28 @@ function resizeImage(file, maxWidth, quality){
   });
 }
 
+function renderExistingImageList(){
+  const field = document.getElementById('existingImagesField');
+  const el = document.getElementById('existingImageList');
+  el.innerHTML = '';
+  if (!existingImages.length) { field.style.display = 'none'; return; }
+  field.style.display = 'block';
+  existingImages.forEach((url, i) => {
+    const row = document.createElement('div');
+    row.className = 'existing-img-row';
+    row.innerHTML = `
+      <img src="${driveViewToImg_(url)}">
+      <span style="font-size:12px;color:var(--ink-soft);">截圖 ${i + 1}</span>
+      <span class="remove-btn">移除</span>
+    `;
+    row.querySelector('.remove-btn').addEventListener('click', () => {
+      existingImages.splice(i, 1);
+      renderExistingImageList();
+    });
+    el.appendChild(row);
+  });
+}
+
 function renderFileList(){
   const el = document.getElementById('fileList');
   el.innerHTML = '';
@@ -595,31 +763,38 @@ function submitTestimony(){
 
   if (!content) { showToast('請至少填寫見證文字', true); return; }
 
+  const isEdit = !!editingId;
   const btn = document.getElementById('submitAdd');
-  btn.disabled = true; btn.textContent = '上傳中…';
+  btn.disabled = true; btn.textContent = isEdit ? '更新中…' : '上傳中…';
+
+  const payload = {
+    action: isEdit ? 'update' : 'add',
+    token: authToken,
+    title, testifierName, content, sourceUrl, note,
+    tags: [...selectedFormTags],
+    images: uploadedFiles.map(f => ({ base64:f.base64, mimeType:f.mimeType, label:f.label }))
+  };
+  if (isEdit) {
+    payload.id = editingId;
+    payload.existingImages = existingImages;
+  }
 
   fetch(SCRIPT_URL, {
     method: 'POST',
     headers: {'Content-Type':'text/plain'},
-    body: JSON.stringify({
-      action:'add',
-      token: authToken,
-      title, testifierName, content, sourceUrl, note,
-      tags: [...selectedFormTags],
-      images: uploadedFiles.map(f => ({ base64:f.base64, mimeType:f.mimeType, label:f.label }))
-    })
+    body: JSON.stringify(payload)
   }).then(r => r.json()).then(res => {
-    btn.disabled = false; btn.textContent = '送出並更新到資料庫';
+    btn.disabled = false; btn.textContent = isEdit ? '更新見證資料' : '送出並更新到資料庫';
     if (res.success) {
-      showToast('新增成功！');
+      showToast(isEdit ? '更新成功！' : '新增成功！');
       resetForm();
       closeDrawers();
       fetchData();
     } else {
-      showToast(res.message || '新增失敗', true);
+      showToast(res.message || (isEdit ? '更新失敗' : '新增失敗'), true);
     }
   }).catch(() => {
-    btn.disabled = false; btn.textContent = '送出並更新到資料庫';
+    btn.disabled = false; btn.textContent = isEdit ? '更新見證資料' : '送出並更新到資料庫';
     showToast('連線失敗', true);
   });
 }
@@ -628,8 +803,14 @@ function resetForm(){
   ['f_title','f_name','f_content','f_source','f_note'].forEach(id => document.getElementById(id).value = '');
   selectedFormTags.clear();
   uploadedFiles = [];
+  existingImages = [];
+  editingId = null;
+  document.getElementById('addDrawerTitle').textContent = '新增見證';
+  document.getElementById('submitAdd').textContent = '送出並更新到資料庫';
+  document.getElementById('uploadLabel').textContent = '截圖上傳（可多張，上傳後可自訂每張描述文字，檔名會自動變成「編號_描述文字」方便之後對照）';
   renderTagPicker();
   renderFileList();
+  renderExistingImageList();
 }
 
 function deleteItem(id){
@@ -654,7 +835,36 @@ function openDrawer(id){
   document.getElementById('drawerOverlay').classList.add('open');
   document.getElementById(id).classList.add('open');
 }
-function openAddDrawer(){ openDrawer('addDrawer'); }
+function openAddDrawer(){
+  resetForm();
+  openDrawer('addDrawer');
+}
+
+function openEditDrawer(id){
+  const item = allData.find(d => String(d['ID']) === String(id));
+  if (!item) { showToast('找不到這筆資料', true); return; }
+
+  closeModal();
+  resetForm();
+
+  editingId = id;
+  document.getElementById('f_title').value = item['標題'] || '';
+  document.getElementById('f_name').value = item['見證者名字'] || '';
+  document.getElementById('f_content').value = item['見證文字'] || '';
+  document.getElementById('f_source').value = item['原始出處網址'] || '';
+  document.getElementById('f_note').value = item['備註'] || '';
+
+  selectedFormTags = new Set((item['標籤'] || '').split(',').map(t => t.trim()).filter(Boolean));
+  existingImages = (item['截圖連結'] || '').split(',').map(s => s.trim()).filter(Boolean);
+
+  document.getElementById('addDrawerTitle').textContent = '編輯見證';
+  document.getElementById('submitAdd').textContent = '更新見證資料';
+  document.getElementById('uploadLabel').textContent = '新增截圖（原有的截圖列在上面，可以移除；這裡上傳的是額外要新增的）';
+
+  renderTagPicker();
+  renderExistingImageList();
+  openDrawer('addDrawer');
+}
 function closeDrawers(){
   document.getElementById('drawerOverlay').classList.remove('open');
   document.getElementById('loginDrawer').classList.remove('open');
