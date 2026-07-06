@@ -134,6 +134,7 @@
   .card h3{ font-size:16px; margin:0; color:var(--ink); }
   .card .snippet{ font-size:13px; color:var(--ink-soft); flex:1;
     display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  mark{ background:var(--gold); color:#fff; padding:0 2px; border-radius:3px; }
   .card .meta-row{ display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--ink-soft); }
   .card .tags-row{ display:flex; flex-wrap:wrap; gap:6px; }
   .tag-pill{
@@ -163,6 +164,8 @@
   .modal .content-text{ white-space:pre-wrap; font-size:14px; margin-bottom:18px; }
   .modal .shots{ display:flex; gap:10px; overflow-x:auto; margin-bottom:16px; }
   .modal .shots img{ height:220px; border-radius:10px; border:1px solid var(--line); }
+  .modal .shots .shot-item{ display:inline-block; flex-shrink:0; }
+  .modal .shots img.shot-img{ background:var(--line); min-width:120px; }
   .modal a.source-link{ font-size:13px; color:var(--accent); }
   .modal .quick-actions{ display:flex; gap:14px; margin-top:16px; }
   .modal .link-btn{
@@ -197,6 +200,10 @@
   .existing-img-row{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
   .existing-img-row img{ width:44px; height:44px; object-fit:cover; border-radius:6px; border:1px solid var(--line); }
   .existing-img-row span.remove-btn{ cursor:pointer; color:var(--danger); font-size:12px; text-decoration:underline; margin-left:auto; }
+  .tag-manage-row{ display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid var(--line); }
+  .tag-manage-row .tag-name{ flex:1; font-size:13px; }
+  .tag-manage-row select{ padding:6px 8px; border:1px solid var(--line); border-radius:8px; font-size:12px; max-width:130px; }
+  .tag-manage-cat-title{ font-size:12px; font-weight:600; color:var(--ink-soft); margin:14px 0 4px; }
   #dropZone{
     border:1.5px dashed var(--line); border-radius:10px; padding:18px; text-align:center;
     font-size:13px; color:var(--ink-soft); cursor:pointer; margin-bottom:12px;
@@ -311,13 +318,18 @@
   <div class="field">
     <label>原始出處網址</label>
     <input type="url" id="f_source" placeholder="FB 貼文連結" />
+    <div id="duplicateWarning" style="display:none;font-size:12px;color:var(--danger);margin-top:6px;"></div>
   </div>
   <div class="field">
     <label>標籤（可複選，也可以直接新增）</label>
     <div class="tag-picker" id="tagPicker"></div>
     <div style="display:flex;gap:8px;margin-top:8px;">
       <input type="text" id="newTagInput" placeholder="新增標籤" style="flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;">
+      <select id="newTagCategorySelect" style="padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;max-width:120px;"></select>
       <button type="button" id="addNewTagBtn" style="border:1px solid var(--line);background:none;border-radius:8px;padding:0 12px;cursor:pointer;">加入</button>
+    </div>
+    <div style="margin-top:8px;">
+      <span class="link-tag-manage" id="openTagManageBtn" style="font-size:12px;color:var(--accent);cursor:pointer;text-decoration:underline;">🏷️ 管理所有標籤分類</span>
     </div>
   </div>
   <div class="field" id="existingImagesField" style="display:none;">
@@ -337,6 +349,20 @@
   <button class="btn-primary" id="submitAdd">送出並更新到資料庫</button>
 </div>
 
+
+<div class="drawer" id="tagManageDrawer">
+  <h2>標籤分類管理</h2>
+  <p style="font-size:12px;color:var(--ink-soft);margin-top:-8px;">改分類後會直接存回「標籤分類」分頁，頁面其他地方也會跟著更新。</p>
+  <div id="tagManageList"></div>
+  <div class="field" style="margin-top:20px;border-top:1px solid var(--line);padding-top:16px;">
+    <label>新增一個標籤</label>
+    <div style="display:flex;gap:8px;">
+      <input type="text" id="manageNewTagInput" placeholder="標籤名稱" style="flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;">
+      <select id="manageNewTagCategorySelect" style="padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;max-width:120px;"></select>
+      <button type="button" id="manageAddTagBtn" style="border:1px solid var(--line);background:none;border-radius:8px;padding:0 12px;cursor:pointer;">新增</button>
+    </div>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -407,12 +433,57 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('addNewTagBtn').addEventListener('click', () => {
     const v = document.getElementById('newTagInput').value.trim();
     if (!v) return;
+    let category = document.getElementById('newTagCategorySelect').value;
+    if (category === '__new__') {
+      category = prompt('請輸入新的分類名稱：', '');
+      if (!category || !category.trim()) return;
+      category = category.trim();
+    }
     selectedFormTags.add(v);
+    if (!TAG_CATEGORIES[category]) TAG_CATEGORIES[category] = [];
+    if (!TAG_CATEGORIES[category].includes(v)) TAG_CATEGORIES[category].push(v);
     if (!ALL_TAGS.includes(v)) ALL_TAGS.push(v);
     document.getElementById('newTagInput').value = '';
     renderTagPicker();
+    saveTagCategory(v, category, false);
   });
+
+  document.getElementById('openTagManageBtn').addEventListener('click', () => {
+    renderTagManageDrawer();
+    openDrawer('tagManageDrawer');
+  });
+
+  document.getElementById('manageAddTagBtn').addEventListener('click', () => {
+    const input = document.getElementById('manageNewTagInput');
+    const v = input.value.trim();
+    if (!v) return;
+    let category = document.getElementById('manageNewTagCategorySelect').value;
+    if (category === '__new__') {
+      category = prompt('請輸入新的分類名稱：', '');
+      if (!category || !category.trim()) return;
+      category = category.trim();
+    }
+    input.value = '';
+    saveTagCategory(v, category, true);
+  });
+
+  document.getElementById('f_source').addEventListener('input', checkDuplicateSource);
 });
+
+// 檢查目前填入的出處網址是否跟資料庫裡已有的重複（編輯中的這一筆不算重複）
+function checkDuplicateSource(){
+  const url = document.getElementById('f_source').value.trim();
+  const warningEl = document.getElementById('duplicateWarning');
+  if (!url) { warningEl.style.display = 'none'; return null; }
+  const match = allData.find(d => d['原始出處網址'] && d['原始出處網址'].trim() === url && String(d['ID']) !== String(editingId));
+  if (match) {
+    warningEl.style.display = 'block';
+    warningEl.textContent = `⚠️ 這個網址已經收錄過了（標題：${match['標題'] || '未命名見證'}），確定要繼續新增嗎？`;
+  } else {
+    warningEl.style.display = 'none';
+  }
+  return match;
+}
 
 /*************** 資料讀取 ***************/
 function fetchData(){
@@ -448,8 +519,19 @@ function showFetchError(msg){
 /*************** 篩選 + 渲染卡片 ***************/
 let tagPanelOpen = false;
 
+function getTagCounts(){
+  const counts = {};
+  allData.forEach(item => {
+    (item['標籤'] || '').split(',').map(t => t.trim()).filter(Boolean).forEach(t => {
+      counts[t] = (counts[t] || 0) + 1;
+    });
+  });
+  return counts;
+}
+
 function renderTagFilters(){
   const el = document.getElementById('tagSection');
+  const counts = getTagCounts();
   el.innerHTML = '';
   Object.entries(TAG_CATEGORIES).forEach(([cat, tags], index) => {
     const group = document.createElement('div');
@@ -461,7 +543,7 @@ function renderTagFilters(){
     tags.forEach(tag => {
       const chip = document.createElement('span');
       chip.className = 'chip';
-      chip.textContent = tag;
+      chip.textContent = `${tag} (${counts[tag] || 0})`;
       chip.onclick = () => {
         selectedTag = (selectedTag === tag) ? null : tag;
         renderTagFilters();
@@ -531,8 +613,8 @@ function render(){
     const tags = (item['標籤'] || '').split(',').map(t => t.trim()).filter(Boolean);
     card.innerHTML = `
       <div class="quote-mark">"</div>
-      <h3>${escapeHtml(item['標題'] || '（未命名見證）')}</h3>
-      <div class="snippet">${escapeHtml(item['見證文字'] || '')}</div>
+      <h3>${highlightText(item['標題'] || '（未命名見證）', searchKeyword)}</h3>
+      <div class="snippet">${highlightText(item['見證文字'] || '', searchKeyword)}</div>
       <div class="tags-row">${tags.map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('')}</div>
       <div class="meta-row"><span>${escapeHtml(item['見證者名字'] || '匿名')}</span><span>${escapeHtml(item['新增日期'] || '')}</span></div>
     `;
@@ -545,12 +627,19 @@ function escapeHtml(str){
   return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 
+// 把符合搜尋關鍵字的文字用 <mark> 包起來，方便在卡片上快速掃到重點
+function highlightText(text, keyword){
+  const escaped = escapeHtml(text);
+  if (!keyword) return escaped;
+  const safeKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return escaped.replace(new RegExp(safeKeyword, 'gi'), m => `<mark>${m}</mark>`);
+}
+
 /*************** 詳細內容 modal ***************/
 function openDetail(item){
   const modal = document.getElementById('detailModal');
   const tags = (item['標籤'] || '').split(',').map(t => t.trim()).filter(Boolean);
-  const shots = (item['截圖連結'] || '').split(',').map(s => s.trim()).filter(Boolean)
-    .map(url => driveViewToImg_(url));
+  const rawShots = (item['截圖連結'] || '').split(',').map(s => s.trim()).filter(Boolean);
 
   modal.innerHTML = `
     <button class="close-btn" onclick="closeModal()">&times;</button>
@@ -558,7 +647,13 @@ function openDetail(item){
     <div class="modal-meta">${escapeHtml(item['見證者名字'] || '匿名')} · ${escapeHtml(item['新增日期'] || '')}</div>
     <div class="tags-row" style="margin-bottom:14px;">${tags.map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('')}</div>
     <div class="content-text">${linkify(item['見證文字'] || '')}</div>
-    ${shots.length ? `<div class="shots">${shots.map(u => `<img src="${u}" onclick="window.open('${u}','_blank')">`).join('')}</div>` : ''}
+    ${rawShots.length ? `<div class="shots">${rawShots.map(u => {
+      const id = extractDriveId_(u);
+      if (!id) {
+        return `<span class="shot-item"><a href="${escapeHtml(u)}" target="_blank" class="source-link" style="display:inline-flex;align-items:center;height:100%;">⚠️ 這張截圖連結格式有誤（原始內容：${escapeHtml(u)}）</a></span>`;
+      }
+      return `<span class="shot-item"><img class="shot-img" data-drive-url="${escapeHtml(u)}" onclick="openImageFull(this)"></span>`;
+    }).join('')}</div>` : ''}
     ${item['原始出處網址'] ? `<a class="source-link" href="${escapeHtml(item['原始出處網址'])}" target="_blank">查看原始出處 →</a>` : ''}
     ${item['備註'] ? `<div style="margin-top:14px;font-size:13px;color:var(--ink-soft);">備註：${escapeHtml(item['備註'])}</div>` : ''}
     <div class="quick-actions">
@@ -573,10 +668,47 @@ function openDetail(item){
   `;
   document.getElementById('detailOverlay').classList.add('open');
   setUrlId(item['ID']);
+
+  modal.querySelectorAll('.shot-img').forEach(img => loadProxyImage(img, img.dataset.driveUrl));
 }
 function closeModal(){
   document.getElementById('detailOverlay').classList.remove('open');
   clearUrlId();
+}
+
+// 從 Drive 分享連結中取出檔案 ID，取不到就回傳 null
+function extractDriveId_(url){
+  const match = (url || '').match(/[-\w]{25,}/);
+  return match ? match[0] : null;
+}
+
+// 非同步向 Apps Script 要圖片的 Base64 資料，組成 data URI 塞進 <img>
+function loadProxyImage(imgEl, driveUrl){
+  const id = extractDriveId_(driveUrl);
+  if (!id) { handleImgError(imgEl, driveUrl); return; }
+  fetch(`${SCRIPT_URL}?action=image&id=${id}`)
+    .then(r => r.json())
+    .then(res => {
+      if (res.success) {
+        imgEl.src = `data:${res.mimeType};base64,${res.base64}`;
+      } else {
+        handleImgError(imgEl, driveUrl, res.message);
+      }
+    })
+    .catch(() => handleImgError(imgEl, driveUrl));
+}
+
+// 點圖片放大：直接開新分頁顯示已經載入的圖片資料，不受 Drive 分享權限影響
+function openImageFull(imgEl){
+  if (imgEl.src && imgEl.src.startsWith('data:')) {
+    const w = window.open();
+    w.document.write(`<title>查看截圖</title><body style="margin:0;background:#111;"><img src="${imgEl.src}" style="max-width:100%;display:block;margin:0 auto;"></body>`);
+  }
+}
+
+function handleImgError(imgEl, originalUrl, message){
+  const wrap = imgEl.parentElement;
+  wrap.innerHTML = `<a href="${originalUrl}" target="_blank" class="source-link" style="display:inline-flex;align-items:center;height:100%;">⚠️ 圖片載入失敗${message ? '：' + escapeHtml(message) : ''}，點此在雲端硬碟開啟</a>`;
 }
 
 // 把純文字中的網址變成可點擊的超連結（先轉義避免 XSS，再處理網址）
@@ -626,12 +758,7 @@ function clearUrlId(){
   history.replaceState(null, '', url);
 }
 
-// 把 Drive 分享連結轉成透過 Apps Script 代理的圖片網址（不受外部分享權限限制）
-function driveViewToImg_(url){
-  const match = url.match(/[-\w]{25,}/);
-  if (match) return `${SCRIPT_URL}?action=image&id=${match[0]}`;
-  return url;
-}
+
 
 /*************** 登入 ***************/
 function updateLoginUI(){
@@ -681,6 +808,77 @@ function renderTagPicker(){
     };
     el.appendChild(chip);
   });
+  populateCategorySelect(document.getElementById('newTagCategorySelect'));
+}
+
+// 把目前所有分類名稱填進一個 <select>，並加上「➕ 新增分類」選項
+function populateCategorySelect(selectEl, selected){
+  if (!selectEl) return;
+  const prevValue = selected || selectEl.value;
+  selectEl.innerHTML = '';
+  Object.keys(TAG_CATEGORIES).forEach(cat => {
+    const opt = document.createElement('option');
+    opt.value = cat;
+    opt.textContent = cat;
+    selectEl.appendChild(opt);
+  });
+  const newOpt = document.createElement('option');
+  newOpt.value = '__new__';
+  newOpt.textContent = '➕ 新增分類…';
+  selectEl.appendChild(newOpt);
+  if (prevValue && [...selectEl.options].some(o => o.value === prevValue)) {
+    selectEl.value = prevValue;
+  }
+}
+
+// 把標籤分類寫回後台；refetch=true 時會重新整個抓一次資料（用在管理面板，需要看到最新統計）
+function saveTagCategory(tag, category, refetch){
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    headers: {'Content-Type':'text/plain'},
+    body: JSON.stringify({ action:'updateTagCategory', token: authToken, tag, category })
+  }).then(r => r.json()).then(res => {
+    if (res.success) {
+      showToast(`「${tag}」已歸類到「${category}」`);
+      if (refetch) fetchData();
+    } else {
+      showToast(res.message || '更新標籤分類失敗', true);
+    }
+  }).catch(() => showToast('連線失敗', true));
+}
+
+// 標籤分類管理面板：列出所有標籤，每個都能直接改分類
+function renderTagManageDrawer(){
+  const el = document.getElementById('tagManageList');
+  el.innerHTML = '';
+  Object.entries(TAG_CATEGORIES).forEach(([cat, tags]) => {
+    const title = document.createElement('div');
+    title.className = 'tag-manage-cat-title';
+    title.textContent = cat;
+    el.appendChild(title);
+    tags.forEach(tag => {
+      const row = document.createElement('div');
+      row.className = 'tag-manage-row';
+      const name = document.createElement('span');
+      name.className = 'tag-name';
+      name.textContent = tag;
+      const select = document.createElement('select');
+      row.appendChild(name);
+      row.appendChild(select);
+      el.appendChild(row);
+      populateCategorySelect(select, cat);
+      select.addEventListener('change', () => {
+        let newCat = select.value;
+        if (newCat === '__new__') {
+          newCat = prompt('請輸入新的分類名稱：', '');
+          if (!newCat || !newCat.trim()) { populateCategorySelect(select, cat); return; }
+          newCat = newCat.trim();
+        }
+        saveTagCategory(tag, newCat, true);
+      });
+    });
+  });
+  populateCategorySelect(document.getElementById('manageNewTagCategorySelect'));
 }
 
 function handleFiles(fileList){
@@ -724,8 +922,9 @@ function renderExistingImageList(){
   existingImages.forEach((url, i) => {
     const row = document.createElement('div');
     row.className = 'existing-img-row';
+    const id = extractDriveId_(url);
     row.innerHTML = `
-      <img src="${driveViewToImg_(url)}">
+      ${id ? `<img class="shot-img" data-drive-url="${escapeHtml(url)}">` : `<span style="font-size:11px;color:var(--danger);">格式有誤</span>`}
       <span style="font-size:12px;color:var(--ink-soft);">截圖 ${i + 1}</span>
       <span class="remove-btn">移除</span>
     `;
@@ -734,6 +933,7 @@ function renderExistingImageList(){
       renderExistingImageList();
     });
     el.appendChild(row);
+    if (id) loadProxyImage(row.querySelector('.shot-img'), url);
   });
 }
 
@@ -762,6 +962,12 @@ function submitTestimony(){
   const note = document.getElementById('f_note').value.trim();
 
   if (!content) { showToast('請至少填寫見證文字', true); return; }
+
+  const duplicate = checkDuplicateSource();
+  if (duplicate) {
+    const proceed = confirm(`這個出處網址已經收錄過了（標題：${duplicate['標題'] || '未命名見證'}），確定要繼續新增這一筆嗎？`);
+    if (!proceed) return;
+  }
 
   const isEdit = !!editingId;
   const btn = document.getElementById('submitAdd');
@@ -811,6 +1017,7 @@ function resetForm(){
   renderTagPicker();
   renderFileList();
   renderExistingImageList();
+  document.getElementById('duplicateWarning').style.display = 'none';
 }
 
 function deleteItem(id){
@@ -869,6 +1076,7 @@ function closeDrawers(){
   document.getElementById('drawerOverlay').classList.remove('open');
   document.getElementById('loginDrawer').classList.remove('open');
   document.getElementById('addDrawer').classList.remove('open');
+  document.getElementById('tagManageDrawer').classList.remove('open');
 }
 function showToast(msg, isError){
   const t = document.getElementById('toast');
