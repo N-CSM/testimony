@@ -34,7 +34,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 
 .wrap{max-width:1060px;margin:0 auto;padding:22px 20px 64px}
 
-/* Hero 雜誌感頂部區 */
 .hero{background:linear-gradient(135deg,var(--tag),var(--card) 65%);border:1px solid var(--line);border-radius:24px;padding:30px 32px;margin-bottom:18px;box-shadow:0 6px 24px rgba(44,36,32,.04)}
 .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
 .eyebrow-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -48,7 +47,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .theme-btn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 15px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 .theme-btn:hover{border-color:var(--accent)}
 
-/* 區塊容器 */
 .panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 24px;margin:18px 0;box-shadow:0 4px 16px rgba(44,36,32,.03)}
 .sec-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
 .sec-title-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -58,7 +56,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .smallbtn{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:6px 13px;font-size:13px;font-weight:700;cursor:pointer}
 .lnk{background:none;border:0;color:var(--sub);text-decoration:underline;cursor:pointer;font-size:14px;padding:4px}
 
-/* 近期更新精選（統一高度與清爽視覺） */
 .recent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:14px}
 .rcard{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:15px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s}
 .rcard:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 20px rgba(44,36,32,.08)}
@@ -69,7 +66,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .rcard p{margin:0 0 12px;font-size:13px;color:var(--sub);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .rcard-tag{font-size:12px;color:var(--tagink);background:var(--tag);display:inline-block;padding:2px 9px;border-radius:6px;align-self:flex-start;font-weight:700}
 
-/* 搜尋與熱門話題排行 */
 #q{width:100%;padding:11px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg);font-size:15px}
 .hot-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
 .hot-lbl{font-size:13px;font-weight:700;color:var(--sub)}
@@ -77,35 +73,32 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .hot-chip:hover{border-color:var(--accent);background:var(--accent-soft)}
 .hot-chip b{color:var(--accent)}
 
-/* 雙層狀況篩選 */
 .catgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
 .cat{text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:11px 13px;cursor:pointer;display:flex;flex-direction:column;gap:2px;transition:all .15s}
 .cat:hover{border-color:var(--accent)}
-.cat b{font-size:15px}.cat small{color:var(--sub);font-size:12px}
+.cat b{font-size:15px;pointer-events:none}.cat small{color:var(--sub);font-size:12px;pointer-events:none}
 .cat[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .cat[aria-pressed="true"] small{color:var(--bg)}
 .pillrow{display:flex;gap:8px;flex-wrap:wrap}
 .pill{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 15px;font-size:14px;font-weight:600;cursor:pointer}
 .pill[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
 
-/* 內容形式分類分頁（圖文 / YT橫式 / IG直式 / 事業） */
 .typetabs{display:flex;gap:8px;flex-wrap:wrap;border-bottom:2px solid var(--line);padding-bottom:14px;margin:8px 0 20px}
 .tt{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 16px;font-weight:700;cursor:pointer;font-size:14px}
 .tt[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.tt small{font-weight:400;opacity:.8;margin-left:5px}
+.tt small{font-weight:400;opacity:.8;margin-left:5px;pointer-events:none}
 
 section.group-sec{margin-top:28px}
 section.group-sec:first-child{margin-top:6px}
 section.group-sec h2{font-family:"Noto Serif TC","Songti TC",serif;font-size:22px;margin:0 0 14px;padding-left:12px;border-left:4px solid var(--accent);display:flex;align-items:center;gap:8px}
 section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:13px;color:var(--sub);font-weight:500}
 
-/* ========== 1. YouTube 橫式 16:9 影音專區 ========== */
+/* YouTube 橫式 16:9 專區 */
 .yt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
 .yt-card{background:var(--bg);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:transform .16s,border-color .16s}
 .yt-card:hover{transform:translateY(-3px);border-color:var(--yt-color)}
 .yt-thumb{position:relative;aspect-ratio:16/9;background:#181512;overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.yt-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s}
-.yt-card:hover .yt-thumb img{transform:scale(1.03)}
+.yt-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .yt-play{position:absolute;width:54px;height:38px;border-radius:10px;background:rgba(196,48,43,.92);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 14px rgba(0,0,0,.4)}
 .yt-badge{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.78);color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:6px}
 .yt-body{padding:16px;display:flex;flex-direction:column;flex:1}
@@ -113,7 +106,7 @@ section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:13px;
 .yt-body p{margin:0 0 10px;font-size:13px;color:var(--sub);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line}
 .yt-card.open .yt-body p{display:block;overflow:visible}
 
-/* ========== 2. IG Reels 直式 9:16 短影音專區 ========== */
+/* IG Reels 直式 9:16 專區 */
 .ig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:16px}
 .ig-card{background:var(--bg);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:transform .16s,border-color .16s}
 .ig-card:hover{transform:translateY(-3px);border-color:#E1306C}
@@ -128,7 +121,7 @@ section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:13px;
 .ig-body p{margin:0 0 8px;font-size:13px;color:var(--sub);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line}
 .ig-card.open .ig-body p{display:block;overflow:visible}
 
-/* ========== 3. 圖文見證與故事卡片 ========== */
+/* 圖文見證與事業故事卡片 */
 .card{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px}
 .top{display:grid;grid-template-columns:1fr 145px;gap:16px;align-items:start}
 .top.nothumb{grid-template-columns:1fr}
@@ -164,7 +157,6 @@ section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:13px;
 .loader{text-align:center;padding:48px 20px;color:var(--sub);font-size:15px}
 .note{margin:16px 0;padding:12px 16px;border:1px dashed var(--accent);border-radius:12px;font-size:13px;color:var(--sub)}
 
-/* 燈箱與管理視窗 */
 #lb,#modal{position:fixed;inset:0;background:rgba(15,12,10,.86);display:none;align-items:center;justify-content:center;z-index:30;padding:20px}
 #lb.on,#modal.on{display:flex}
 #bigImg{max-width:min(900px,95vw);max-height:85vh;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
@@ -205,7 +197,6 @@ section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:13px;
     <div class="stats" id="stats"></div>
   </header>
 
-  <!-- 近期更新 -->
   <section class="panel" id="recentPanel" style="display:none">
     <div class="sec-head">
       <div class="sec-title-wrap">
@@ -217,7 +208,6 @@ section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:13px;
     <div class="recent-grid" id="recentGrid"></div>
   </section>
 
-  <!-- 關鍵字搜尋 ＋ 熱門話題 -->
   <section class="panel">
     <div class="sec-head" style="margin-bottom:6px">
       <div class="sec-title-wrap">
@@ -230,7 +220,6 @@ section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:13px;
     <div class="hot-bar" id="hotBar" style="display:none"></div>
   </section>
 
-  <!-- 雙層動態分類篩選 -->
   <section class="panel">
     <div class="sec-head">
       <div class="sec-title-wrap">
@@ -246,7 +235,6 @@ section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:13px;
     </div>
   </section>
 
-  <!-- 找到的內容（依 YouTube 橫式 / IG 直式 / 圖文見證 / 事業故事分區呈現） -->
   <section class="panel">
     <div class="sec-head">
       <div class="sec-title-wrap">
@@ -262,13 +250,11 @@ section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:13px;
   <div class="note">以上為使用者個人經驗與生活體驗分享，感受因人而異，不代表醫療效能，亦不能取代醫師或專業醫療人員之診斷與建議。</div>
 </div>
 
-<!-- 圖片放大燈箱 -->
 <div id="lb" role="dialog" aria-label="放大圖片">
   <button id="x">✕ 關閉</button>
   <img id="bigImg" src="" alt="放大照片">
 </div>
 
-<!-- 管理員編輯視窗 (?mode=admin) -->
 <div id="modal" role="dialog" aria-label="審核與編輯標籤">
   <div class="mbox">
     <h3>✎ 審核與標籤設定</h3>
@@ -282,7 +268,7 @@ section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:13px;
     </div>
     <div class="mfield">
       <label>自訂「大分類：小關鍵詞」（手動覆蓋自動分類；多組請用逗號隔開，留白則恢復自動辨識）</label>
-      <input type="text" id="mTags" placeholder="例如：頭面五官：白內障, 特定族群照護：長輩保養">
+      <input type="text" id="mTags" placeholder="例如：頭面五官：先天性白內障, 特定族群照護：臥床照護">
     </div>
     <div class="mfield">
       <label>合規潤飾版內文（供對外睡眠私域顯示，去療效字眼；無則留白）</label>
@@ -358,9 +344,9 @@ if(APP_MODE === "sleep"){
   document.getElementById("liveBadge").textContent = "ADMIN 編輯權限已啟用";
 }
 
-function gname(t){ return t.split("：")[0]; }
+function gname(t){ return String(t).split("：")[0].trim(); }
+function sname(t){ var p = String(t).split("："); return p[1] ? p[1].trim() : ""; }
 
-/* 判斷每一筆資料屬於哪個呈現區塊 */
 function getSectionType(r){
   if(r.c === "事業見證") return "事業故事";
   if(r.k === "video"){
@@ -372,9 +358,14 @@ function getSectionType(r){
 
 function match(r, skipCat){
   if(!skipCat && cur !== "全部" && getSectionType(r) !== cur) return false;
-  if(grp && !r.g.some(function(t){ return gname(t) === grp && (!sub || t === grp + "：" + sub); })) return false;
+  if(grp){
+    var hitGrp = (r.g || []).some(function(t){
+      return gname(t) === grp && (!sub || sname(t) === sub);
+    });
+    if(!hitGrp) return false;
+  }
   if(kw){
-    var hay = (r.t + " " + r.x + " " + r.g.join(" ") + " " + r.prod + " " + r.sharer).toLowerCase();
+    var hay = (r.t + " " + r.x + " " + (r.g || []).join(" ") + " " + r.prod + " " + r.sharer).toLowerCase();
     if(hay.indexOf(kw) < 0) return false;
   }
   return true;
@@ -387,14 +378,13 @@ function adminControls(r){
 }
 
 function renderShortTags(gArr){
-  return '<div class="tags">' + gArr.map(function(g){
-    var parts = g.split("：");
-    var shortName = parts[1] || parts[0];
-    return '<span data-quicktag="' + esc(g) + '">#' + esc(shortName) + '</span>';
+  return '<div class="tags">' + (gArr || []).map(function(g){
+    var p0 = gname(g), p1 = sname(g);
+    var shortName = p1 || p0;
+    return '<span data-grp="' + esc(p0) + '" data-sub="' + esc(p1) + '">#' + esc(shortName) + '</span>';
   }).join("") + '</div>';
 }
 
-/* 1. YouTube 橫式 16:9 寬螢幕卡片 */
 function ytCard(r){
   var isOpen = !!open[r.id];
   var thumbHtml = r.vThumb
@@ -424,7 +414,6 @@ function ytCard(r){
   '</article>';
 }
 
-/* 2. IG Reels 直式 9:16 短影音卡片 */
 function igCard(r){
   var isOpen = !!open[r.id];
   var link = r.u || r.s || "#";
@@ -449,7 +438,6 @@ function igCard(r){
   '</article>';
 }
 
-/* 3. 圖文見證與事業故事卡片 */
 function postCard(r){
   var isBiz = r.c === "事業見證";
   var th = "";
@@ -499,7 +487,7 @@ function renderRecent(){
   rp.style.display = "block";
   var latest = DATA.slice(0, 4);
   document.getElementById("recentGrid").innerHTML = latest.map(function(r){
-    var firstTag = r.g && r.g[0] ? (r.g[0].split("：")[1] || r.g[0].split("：")[0]) : r.c;
+    var firstTag = r.g && r.g[0] ? (sname(r.g[0]) || gname(r.g[0])) : r.c;
     var fmtLabel = getSectionType(r);
     return '<div class="rcard" data-jump="' + r.id + '">' +
       '<div><div class="rcard-top"><span class="badge-new">NEW</span><span class="badge-fmt">' + esc(fmtLabel) + '</span></div>' +
@@ -531,36 +519,36 @@ function render(){
     }
 
     if(rows.length > n){
-      h += '<button class="more" data-more="' + secName + '">顯示更多（還有 ' + (rows.length - n) + ' 則）</button>';
+      h += '<button class="more" data-more="' + esc(secName) + '">顯示更多（還有 ' + (rows.length - n) + ' 則）</button>';
     }
     h += '</section>';
   });
 
   document.getElementById("out").innerHTML = h || '<div class="empty">找不到符合條件的見證內容。試試換個關鍵字，或點「清除全部篩選」。</div>';
 
-  // 分類頁籤計數
   var cn = {"全部": DATA.filter(function(r){ return match(r, true); }).length};
   activeSections.forEach(function(secName){
     cn[secName] = DATA.filter(function(r){ return getSectionType(r) === secName && match(r, true); }).length;
   });
 
   document.getElementById("cats").innerHTML = CATS.map(function(c){
-    return '<button class="tt" aria-pressed="' + (c === cur) + '" data-c="' + c + '">' + TABI[c] + c + '<small>' + cn[c] + '</small></button>';
+    return '<button class="tt" aria-pressed="' + (c === cur) + '" data-c="' + esc(c) + '">' + TABI[c] + esc(c) + '<small>' + cn[c] + '</small></button>';
   }).join("");
 
   document.getElementById("count").textContent = "（共 " + DATA.filter(function(r){ return match(r); }).length + " 則）";
 
-  // 統計雙層分類與動態小關鍵詞
   var gs = {}, sb = {}, subFlat = {};
   DATA.forEach(function(r){
     var seen = {};
-    r.g.forEach(function(t){
-      var p = t.split("："), g = p[0];
+    (r.g || []).forEach(function(t){
+      var g = gname(t), s = sname(t);
+      if(!g) return;
       if(!seen[g]){ seen[g] = 1; gs[g] = (gs[g] || 0) + 1; }
-      if(p[1]){
+      if(s){
         sb[g] = sb[g] || {};
-        sb[g][p[1]] = (sb[g][p[1]] || 0) + 1;
-        subFlat[t] = (subFlat[t] || 0) + 1;
+        sb[g][s] = (sb[g][s] || 0) + 1;
+        var key = g + "：" + s;
+        subFlat[key] = (subFlat[key] || 0) + 1;
       }
     });
   });
@@ -570,8 +558,8 @@ function render(){
   if(hotList.length){
     hb.style.display = "flex";
     hb.innerHTML = '<span class="hot-lbl">🔥 熱門話題：</span>' + hotList.map(function(fullTag){
-      var shortName = fullTag.split("：")[1] || fullTag;
-      return '<button class="hot-chip" data-quicktag="' + esc(fullTag) + '">#' + esc(shortName) + ' <b>' + subFlat[fullTag] + '</b></button>';
+      var p0 = gname(fullTag), p1 = sname(fullTag);
+      return '<button class="hot-chip" data-grp="' + esc(p0) + '" data-sub="' + esc(p1) + '">#' + esc(p1) + ' <b>' + subFlat[fullTag] + '</b></button>';
     }).join("");
   }
 
@@ -606,7 +594,7 @@ function render(){
   document.getElementById("stats").innerHTML = statArr.join("");
 }
 
-/* ==================== 事件監聽 ==================== */
+/* ==================== 事件監聽（徹底修復點擊切換變 0 則） ==================== */
 document.addEventListener("click", function(e){
   var b;
   if(b = e.target.closest("[data-jump]")){
@@ -620,19 +608,38 @@ document.addEventListener("click", function(e){
     if(el) el.scrollIntoView({behavior: "smooth", block: "center"});
     return;
   }
-  if(b = e.target.closest("[data-quicktag]")){
-    var parts = b.dataset.quicktag.split("：");
+  if(b = e.target.closest("[data-grp]")){
     cur = "全部";
-    grp = parts[0] || "";
-    sub = parts[1] || "";
+    grp = b.dataset.grp || "";
+    sub = b.dataset.sub || "";
     render();
     document.getElementById("tags").scrollIntoView({behavior: "smooth", block: "nearest"});
     return;
   }
-  if(b = e.target.closest("[data-c]")){ cur = b.dataset.c; render(); return; }
-  if(b = e.target.closest("[data-g]")){ grp = (grp === b.dataset.g) ? "" : b.dataset.g; sub = ""; render(); return; }
-  if(b = e.target.closest("[data-s]")){ sub = (sub === b.dataset.s) ? "" : b.dataset.s; render(); return; }
-  if(b = e.target.closest("[data-more]")){ shown[b.dataset.more] = (shown[b.dataset.more] || LIM) + LIM; render(); return; }
+  if(b = e.target.closest("[data-c]")){
+    cur = b.dataset.c;
+    render();
+    return;
+  }
+  if(b = e.target.closest("[data-g]")){
+    var clickedGrp = b.dataset.g;
+    grp = (grp === clickedGrp) ? "" : clickedGrp;
+    sub = "";
+    cur = "全部"; // 點選狀況主題時自動切回「全部」形式，避免卡在 0 則分類分頁
+    render();
+    return;
+  }
+  if(b = e.target.closest("[data-s]")){
+    var clickedSub = b.dataset.s;
+    sub = (sub === clickedSub) ? "" : clickedSub;
+    render();
+    return;
+  }
+  if(b = e.target.closest("[data-more]")){
+    shown[b.dataset.more] = (shown[b.dataset.more] || LIM) + LIM;
+    render();
+    return;
+  }
   if(b = e.target.closest("[data-tg]")){
     var cardEl = b.closest("[data-id]");
     if(cardEl){ var id = cardEl.dataset.id; open[id] = !open[id]; render(); }
@@ -728,19 +735,4 @@ document.addEventListener("keydown", function(e){
 function loadData(){
   var apiEndpoint = GAS_API_URL + "?api=1&mode=" + encodeURIComponent(APP_MODE);
   fetch(apiEndpoint)
-    .then(function(r){ return r.json(); })
-    .then(function(res){
-      if(!res.ok) throw new Error(res.error || "API 回傳異常");
-      DATA = res.data || [];
-      renderRecent();
-      render();
-    })
-    .catch(function(err){
-      document.getElementById("out").innerHTML = '<div class="empty">讀取資料發生錯誤（請確認已填入正確的 GAS_API_URL）：' + esc(err.message) + '</div>';
-    });
-}
-
-loadData();
-</script>
-</body>
-</html>
+    .then(function(r){ return r
