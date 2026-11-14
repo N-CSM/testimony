@@ -137,4 +137,584 @@ section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:14px;
 .tags span{font-size:12px;color:var(--tagink);background:var(--tag);border-radius:6px;padding:2px 10px;font-weight:700;cursor:pointer;transition:opacity .15s}
 .tags span:hover{opacity:.8}
 
-.th{aspect-ratio:
+.th{aspect-ratio:4/3;border-radius:10px;background:linear-gradient(135deg,var(--ph1),var(--ph2));overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--sub);cursor:pointer;border:1px solid var(--line)}
+.th img{width:100%;height:100%;object-fit:cover;display:block}
+.th.v{aspect-ratio:16/9}
+.th.v::after{content:"▶";position:absolute;width:36px;height:36px;border-radius:50%;background:var(--vid-badge);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+
+.extra{display:none;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.card.open .extra{display:block}
+.grid{display:grid;gap:8px;grid-template-columns:repeat(3,1fr);margin-top:8px}
+.ph{aspect-ratio:4/3;border:1px solid var(--line);border-radius:8px;cursor:zoom-in;padding:0;overflow:hidden;background:var(--card)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.vbox{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:8px;background:var(--vid-badge);color:#fff;text-decoration:none;font-size:14px;font-weight:700;margin-bottom:8px}
+.src{margin-top:8px;font-size:13px;color:var(--sub);word-break:break-all}
+.src a{color:var(--accent)}
+.tg{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:5px 14px;font-size:14px;cursor:pointer;color:var(--ink)}
+.more{display:block;margin:12px auto 0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 24px;cursor:pointer;font-weight:700}
+.empty{color:var(--sub);padding:36px 0;text-align:center}
+.loader{text-align:center;padding:48px 20px;color:var(--sub);font-size:15px}
+.note{margin:16px 0;padding:12px 16px;border:1px dashed var(--accent);border-radius:12px;font-size:13px;color:var(--sub)}
+
+/* 燈箱與管理編輯視窗 */
+#lb,#modal{position:fixed;inset:0;background:rgba(15,12,10,.86);display:none;align-items:center;justify-content:center;z-index:30;padding:20px}
+#lb.on,#modal.on{display:flex}
+#bigImg{max-width:min(900px,95vw);max-height:85vh;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+#x{position:absolute;top:calc(env(safe-area-inset-top,0px) + 16px);right:18px;padding:8px 16px;border-radius:8px;border:0;background:#fff;color:#222;font-weight:700;cursor:pointer}
+
+.mbox{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:18px;max-width:560px;width:100%;max-height:88vh;overflow-y:auto;padding:22px}
+.mbox h3{margin:0 0 12px;font-size:19px}
+.mfield{margin-bottom:14px}
+.mfield label{display:block;font-size:13px;font-weight:700;margin-bottom:5px;color:var(--sub)}
+.mfield input,.mfield textarea{width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.macts{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
+.btn-save{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:8px 18px;font-weight:700;cursor:pointer}
+.admin-btn{border:1px solid var(--accent);background:var(--tag);color:var(--tagink);border-radius:6px;padding:2px 10px;font-size:12px;font-weight:700;cursor:pointer}
+.sleep-badge{background:var(--biz-badge);color:#fff;font-size:11px;padding:1px 7px;border-radius:4px}
+
+@media(max-width:640px){
+  .top{grid-template-columns:1fr 100px}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .hero{padding:22px 20px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-top">
+      <div>
+        <div class="eyebrow-row">
+          <span class="eyebrow" id="eyebrowTxt">NEFFUL ・ 超新星會員專區</span>
+          <span class="date-pill" id="liveBadge">資料庫即時同步</span>
+        </div>
+        <h1 id="pageTitle">負離子見證與故事庫</h1>
+        <p class="lead" id="pageLead">把夥伴們的真實文字貼文、照片紀錄與影音訪談整理在一起，依照你關心的狀況快速篩選。</p>
+      </div>
+      <button class="theme-btn" id="themeToggle" aria-label="切換深淺色主題">🌙 深色模式</button>
+    </div>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <!-- 近期更新（含照片與影片縮圖） -->
+  <section class="panel" id="recentPanel" style="display:none">
+    <div class="sec-head">
+      <div class="sec-title-wrap">
+        <span class="sec-badge">LATEST</span>
+        <h2 class="st">近期更新</h2>
+      </div>
+      <span class="hint" style="margin:0">點擊卡片直接跳轉展開</span>
+    </div>
+    <div class="recent-grid" id="recentGrid"></div>
+  </section>
+
+  <!-- 關鍵字搜尋 ＋ 熱門話題排行 -->
+  <section class="panel">
+    <div class="sec-head" style="margin-bottom:6px">
+      <div class="sec-title-wrap">
+        <span class="sec-badge">SEARCH</span>
+        <label class="st" for="q">搜尋見證、關鍵詞或分享者</label>
+      </div>
+    </div>
+    <p class="hint">可直接輸入症狀、產品或分享者；搜尋會套用下方選擇的狀況主題。按「清除全部篩選」可看全部。</p>
+    <input id="q" type="search" placeholder="例如：失眠、腹水、飛蚊症、白髮、梅尼爾氏症..." aria-label="搜尋">
+    <div class="hot-bar" id="hotBar" style="display:none"></div>
+  </section>
+
+  <!-- 雙層動態分類篩選 -->
+  <section class="panel">
+    <div class="sec-head">
+      <div class="sec-title-wrap">
+        <span class="sec-badge">FILTER</span>
+        <h2 class="st">① 選擇你關心的狀況主題</h2>
+      </div>
+      <button class="smallbtn" id="reset">清除全部篩選</button>
+    </div>
+    <div class="catgrid" id="tags"></div>
+    <div id="subbox" style="display:none;margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)">
+      <h2 class="st" style="font-size:17px;margin-bottom:4px">② 再選更具體的小關鍵詞 <span style="font-size:13px;font-weight:400;color:var(--sub)">（也可直接看此主題的全部內容）</span></h2>
+      <div class="pillrow" id="subs" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <!-- 找到的內容主列表 -->
+  <section class="panel">
+    <div class="sec-head">
+      <div class="sec-title-wrap">
+        <span class="sec-badge">STORIES</span>
+        <h2 class="st">找到的內容 <span class="hint" id="count" style="display:inline"></span></h2>
+      </div>
+      <button class="lnk" id="all">全部展開</button>
+    </div>
+    <div class="typetabs" id="cats"></div>
+    <div id="out"><div class="loader">⏳ 正在從資料庫載入最新見證、照片與影片縮圖，請稍候...</div></div>
+  </section>
+
+  <div class="note">以上為使用者個人經驗與生活體驗分享，感受因人而異，不代表醫療效能，亦不能取代醫師或專業醫療人員之診斷與建議。</div>
+</div>
+
+<!-- 圖片放大燈箱 -->
+<div id="lb" role="dialog" aria-label="放大圖片">
+  <button id="x">✕ 關閉</button>
+  <img id="bigImg" src="" alt="放大照片">
+</div>
+
+<!-- 管理員編輯視窗 (?mode=admin) -->
+<div id="modal" role="dialog" aria-label="審核與編輯標籤">
+  <div class="mbox">
+    <h3>✎ 審核與標籤設定</h3>
+    <div id="mTitle" style="font-weight:700;margin-bottom:12px;color:var(--accent)"></div>
+    <div class="mfield">
+      <label>管理員密碼（首次輸入後自動記住）</label>
+      <input type="password" id="mPass" placeholder="請輸入管理密碼">
+    </div>
+    <div class="mfield">
+      <label><input type="checkbox" id="mSleep" style="width:auto;margin-right:6px"> 開放至對外睡眠私域 (?mode=sleep)</label>
+    </div>
+    <div class="mfield">
+      <label>指定「大分類：小關鍵詞」（選填，留白則由系統權重自動辨識；多組請用逗號隔開）</label>
+      <input type="text" id="mTags" placeholder="例如：特定族群照護：毛小孩, 特定族群照護：腹水／心絲蟲">
+    </div>
+    <div class="mfield">
+      <label>合規潤飾版內文（供對外睡眠私域顯示，去療效字眼；無則留白）</label>
+      <textarea id="mComp" rows="5" placeholder="若原文有醫療字眼，可在此貼上溫和合規版..."></textarea>
+    </div>
+    <div class="macts">
+      <button class="smallbtn" id="mCancel">取消</button>
+      <button class="btn-save" id="mSave">儲存至試算表</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ★ 請將下方引號內的網址，替換成你 Apps Script 部署後的 /exec 網址
+var GAS_API_URL = "https://script.google.com/macros/s/AKfycbxKNSFt0gO0FdU7WGX63IBsohtHR1mgX225w1LG6zv5RPX4ykTOfbikKq4je7kBBnLW/exec";
+
+var urlParams = new URLSearchParams(window.location.search);
+var APP_MODE = (urlParams.get("mode") || "member").toLowerCase();
+
+var DATA = [];
+var CATS = ["全部", "健康見證", "事業見證", "影音精選"];
+var cur = "全部", grp = "", sub = "", kw = "", LIM = 6, shown = {}, open = {}, editingRow = null;
+
+var EMO = {
+  "睡眠":"😴","頭面五官":"👁️","肩頸腰背":"🦴","四肢與關節":"🦵",
+  "循環與體質代謝":"💜","呼吸與消化系統":"🫁","婦科與泌尿循環":"🌸",
+  "皮膚與外在修護":"✨","身心情緒與高敏":"🌿","特定族群照護":"🐾",
+  "緊急狀況／疑難雜症":"🏥","事業與人生轉型":"🚀","綜合保養":"🌱"
+};
+var ORDER = Object.keys(EMO);
+var TABI = {"全部":"","健康見證":"💬 ","事業見證":"🚀 ","影音精選":"🎬 "};
+
+function esc(s){
+  return String(s || "").replace(/[&<>"]/g, function(m){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m];
+  });
+}
+
+/* ==================== 深淺色手動切換 ==================== */
+(function initTheme(){
+  var saved = localStorage.getItem("nefful_theme");
+  var btn = document.getElementById("themeToggle");
+  function apply(theme){
+    if(theme === "dark"){
+      document.documentElement.setAttribute("data-theme", "dark");
+      btn.textContent = "☀️ 淺色模式";
+    } else if(theme === "light"){
+      document.documentElement.setAttribute("data-theme", "light");
+      btn.textContent = "🌙 深色模式";
+    } else {
+      var isSysDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      btn.textContent = isSysDark ? "☀️ 淺色模式" : "🌙 深色模式";
+    }
+  }
+  apply(saved);
+  btn.addEventListener("click", function(){
+    var curTheme = document.documentElement.getAttribute("data-theme");
+    var isSysDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var next = (curTheme === "dark" || (!curTheme && isSysDark)) ? "light" : "dark";
+    localStorage.setItem("nefful_theme", next);
+    apply(next);
+  });
+})();
+
+/* ==================== 模式初始化 ==================== */
+if(APP_MODE === "sleep"){
+  CATS = ["全部", "健康見證", "影音精選"];
+  document.getElementById("eyebrowTxt").textContent = "NEFFUL ・ 睡眠與生活體驗專區";
+  document.getElementById("pageTitle").textContent = "負離子睡眠與日常體驗集";
+  document.getElementById("pageLead").textContent = "精選真實睡眠品質提升與日常健康保養故事分享。";
+} else if(APP_MODE === "admin"){
+  document.getElementById("eyebrowTxt").textContent = "NEFFUL ・ 管理員審核模式";
+  document.getElementById("liveBadge").textContent = "ADMIN 編輯權限已啟用";
+}
+
+function gname(t){ return t.split("：")[0]; }
+
+function match(r, skipCat){
+  if(!skipCat && cur !== "全部"){
+    if(cur === "影音精選"){ if(r.k !== "video") return false; }
+    else if(r.c !== cur) return false;
+  }
+  if(grp && !r.g.some(function(t){ return gname(t) === grp && (!sub || t === grp + "：" + sub); })) return false;
+  if(kw){
+    var hay = (r.t + " " + r.x + " " + r.g.join(" ") + " " + r.prod + " " + r.sharer).toLowerCase();
+    if(hay.indexOf(kw) < 0) return false;
+  }
+  return true;
+}
+
+function chead(r){
+  var isBiz = r.c === "事業見證";
+  var t = r.k === "video" ? "video" : (isBiz ? "biz" : "post");
+  var sy = r.k === "video" ? "▶" : (isBiz ? "★" : "▤");
+  var lb = r.c + (r.vPlat ? " · " + r.vPlat : "");
+  var rightHtml = "";
+  if(APP_MODE === "admin"){
+    rightHtml += (r.pub.indexOf("sleep") > -1 ? '<span class="sleep-badge">已公開 sleep</span> ' : '');
+    rightHtml += '<button class="admin-btn" data-edit="' + r.rowNum + '">✎ 審核／標籤</button>';
+  }
+  return '<div class="chead"><div class="chead-left"><span class="ico ' + t + '">' + sy + '</span><span class="ctype">' + esc(lb) + '</span></div><div>' + rightHtml + '</div></div>';
+}
+
+function renderShortTags(gArr){
+  return '<div class="tags">' + gArr.map(function(g){
+    var parts = g.split("：");
+    var shortName = parts[1] || parts[0];
+    return '<span data-quicktag="' + esc(g) + '">#' + esc(shortName) + '</span>';
+  }).join("") + '</div>';
+}
+
+/* 影音專屬 16:9 縮圖卡片（用於「影音精選」分頁） */
+function videoShowcaseCard(r){
+  var isOpen = !!open[r.id];
+  var thumbHtml = r.vThumb
+    ? '<img src="' + esc(r.vThumb) + '" loading="lazy" alt="' + esc(r.t) + '">'
+    : '<span style="color:var(--sub);font-size:13px">🎬 點擊觀看影片</span>';
+
+  return '<article class="vcard' + (isOpen ? " open" : "") + '" id="story-' + r.id + '" data-id="' + r.id + '">' +
+    '<div class="vthumb-box" onclick="window.open(\'' + esc(r.u) + '\',\'_blank\')">' +
+      thumbHtml +
+      '<span class="vplat-tag">' + esc(r.vPlat || "影音分享") + '</span>' +
+      '<div class="vplay-overlay"><div class="vplay-btn">▶</div></div>' +
+    '</div>' +
+    '<div class="vbody">' +
+      chead(r) +
+      '<div>' + (r.d ? '<span class="meta">' + esc(r.d) + '</span>' : '') + (r.sharer ? '<span class="meta">' + esc(r.sharer) + '</span>' : '') + '</div>' +
+      '<h3>' + esc(r.t) + '</h3>' +
+      '<p>' + esc(r.x) + '</p>' +
+      renderShortTags(r.g) +
+      '<div style="margin-top:auto;padding-top:12px;display:flex;gap:8px;flex-wrap:wrap">' +
+        (r.u ? '<a class="vbox" style="margin:0;padding:6px 12px;font-size:13px" href="' + esc(r.u) + '" target="_blank" rel="noopener">▶ 前往觀看影片</a>' : '') +
+        '<button class="tg" style="margin:0;font-size:13px" data-tg="1">' + (isOpen ? "收起文字" : "展開全文") + '</button>' +
+      '</div>' +
+    '</div>' +
+  '</article>';
+}
+
+/* 一般見證卡片（含右側照片或影片縮圖） */
+function card(r){
+  var thumbUrl = "";
+  if(r.k === "video" && r.vThumb) thumbUrl = r.vThumb;
+  else if(r.p && r.p.length > 0) thumbUrl = r.p[0].thumb;
+
+  var th = "";
+  if(thumbUrl){
+    var clickAttr = (r.k === "video" && r.u) ? ' onclick="window.open(\'' + esc(r.u) + '\',\'_blank\')"' : ' data-tg="1"';
+    th = '<div class="th' + (r.k === "video" ? " v" : "") + '"' + clickAttr + '><img src="' + esc(thumbUrl) + '" loading="lazy" alt="封面縮圖"></div>';
+  } else if(r.k === "video"){
+    th = '<div class="th v" data-tg="1">影片</div>';
+  }
+
+  var ex = "";
+  if(r.u){
+    ex += '<a class="vbox" href="' + esc(r.u) + '" target="_blank" rel="noopener">▶ 點擊前往觀看完整影片</a>';
+  }
+  if(r.p && r.p.length > 0){
+    ex += '<div class="grid">';
+    r.p.forEach(function(imgObj, i){
+      ex += '<button class="ph" data-full="' + esc(imgObj.full) + '" aria-label="放大第' + (i+1) + '張照片"><img src="' + esc(imgObj.thumb) + '" loading="lazy" alt="見證照片"></button>';
+    });
+    ex += '</div>';
+  }
+  if(r.prod){
+    var cleanProd = r.prod.replace(/\s*【標籤：.*?】/g, "").trim();
+    if(cleanProd) ex += '<div class="src"><b>使用搭配：</b>' + esc(cleanProd) + '</div>';
+  }
+  if(r.s){
+    var isLink = /^https?:\/\//i.test(r.s);
+    ex += '<div class="src"><b>來源出處：</b>' + (isLink ? '<a href="' + esc(r.s) + '" target="_blank" rel="noopener">' + esc(r.s) + '</a>' : esc(r.s)) + '</div>';
+  }
+
+  var isOpen = !!open[r.id];
+  var metaHtml = "";
+  if(r.d) metaHtml += '<span class="meta">' + esc(r.d) + '</span>';
+  if(r.sharer) metaHtml += '<span class="meta">分享者：' + esc(r.sharer) + '</span>';
+
+  return '<article class="card' + (isOpen ? " open" : "") + '" id="story-' + r.id + '" data-id="' + r.id + '">' +
+    '<div class="top' + (th ? "" : " nothumb") + '"><div>' + chead(r) + metaHtml +
+    '<h3>' + esc(r.t) + '</h3>' +
+    '<p class="txt">' + esc(r.x) + '</p>' +
+    renderShortTags(r.g) + '</div>' + th + '</div>' +
+    (ex ? '<div class="extra">' + ex + '</div>' : '') +
+    '<button class="tg" data-tg="1" aria-expanded="' + isOpen + '">' + (isOpen ? "收起內容" : "看全文" + (r.p.length ? "（含 " + r.p.length + " 張照片）" : "")) + '</button>' +
+  '</article>';
+}
+
+function renderRecent(){
+  var rp = document.getElementById("recentPanel");
+  if(!DATA.length){ rp.style.display = "none"; return; }
+  rp.style.display = "block";
+  var latest = DATA.slice(0, 4);
+  document.getElementById("recentGrid").innerHTML = latest.map(function(r){
+    var firstTag = r.g && r.g[0] ? (r.g[0].split("：")[1] || r.g[0].split("：")[0]) : r.c;
+    var mediaUrl = (r.k === "video" && r.vThumb) ? r.vThumb : (r.p && r.p.length ? r.p[0].thumb : "");
+    var mediaHtml = mediaUrl
+      ? '<div class="rcard-media' + (r.k === "video" ? " is-vid" : "") + '"><img src="' + esc(mediaUrl) + '" loading="lazy" alt="縮圖"></div>'
+      : '';
+    return '<div class="rcard" data-jump="' + r.id + '">' +
+      mediaHtml +
+      '<div class="rcard-body">' +
+        '<div><div class="rcard-top"><span class="badge-new">NEW</span><span class="rcard-date">' + esc(r.d || "最新收錄") + '</span></div>' +
+        '<h4>' + esc(r.t) + '</h4>' +
+        '<p>' + esc(r.x) + '</p></div>' +
+        '<span class="rcard-tag">#' + esc(firstTag) + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join("");
+}
+
+function render(){
+  var h = "";
+
+  if(cur === "影音精選"){
+    var vRows = DATA.filter(function(r){ return r.k === "video" && match(r, true); });
+    if(vRows.length){
+      var vn = shown["影音精選"] || 6;
+      h += '<section class="group-sec"><h2>影音見證與訪談<small>' + vRows.length + ' 支影片</small></h2>' +
+           '<div class="vid-showcase">' + vRows.slice(0, vn).map(videoShowcaseCard).join("") + '</div>';
+      if(vRows.length > vn) h += '<button class="more" data-more="影音精選">顯示更多影片（還有 ' + (vRows.length - vn) + ' 支）</button>';
+      h += '</section>';
+    }
+  } else {
+    var showCats = ["健康見證", "事業見證"].filter(function(c){ return CATS.indexOf(c) > -1; });
+    showCats.forEach(function(c){
+      var rows = DATA.filter(function(r){ return r.c === c && match(r); });
+      if(!rows.length) return;
+      var n = shown[c] || LIM;
+      h += '<section class="group-sec"><h2>' + c + '<small>' + rows.length + ' 則</small></h2>' + rows.slice(0, n).map(card).join("");
+      if(rows.length > n){
+        h += '<button class="more" data-more="' + c + '">顯示更多（還有 ' + (rows.length - n) + ' 則）</button>';
+      }
+      h += '</section>';
+    });
+  }
+
+  document.getElementById("out").innerHTML = h || '<div class="empty">找不到符合條件的見證內容。試試換個關鍵字，或點「清除全部篩選」。</div>';
+
+  // 分類頁籤計數
+  var cn = {
+    "全部": DATA.filter(function(r){ return match(r, true); }).length,
+    "健康見證": DATA.filter(function(r){ return r.c === "健康見證" && match(r, true); }).length,
+    "事業見證": DATA.filter(function(r){ return r.c === "事業見證" && match(r, true); }).length,
+    "影音精選": DATA.filter(function(r){ return r.k === "video" && match(r, true); }).length
+  };
+  document.getElementById("cats").innerHTML = CATS.map(function(c){
+    return '<button class="tt" aria-pressed="' + (c === cur) + '" data-c="' + c + '">' + TABI[c] + c + '<small>' + cn[c] + '</small></button>';
+  }).join("");
+
+  document.getElementById("count").textContent = "（共 " + DATA.filter(function(r){ return match(r); }).length + " 則）";
+
+  // 統計雙層分類與動態小關鍵詞
+  var gs = {}, sb = {}, subFlat = {};
+  DATA.forEach(function(r){
+    var seen = {};
+    r.g.forEach(function(t){
+      var p = t.split("："), g = p[0];
+      if(!seen[g]){ seen[g] = 1; gs[g] = (gs[g] || 0) + 1; }
+      if(p[1]){
+        sb[g] = sb[g] || {};
+        sb[g][p[1]] = (sb[g][p[1]] || 0) + 1;
+        subFlat[t] = (subFlat[t] || 0) + 1;
+      }
+    });
+  });
+
+  // 熱門話題排行條（程風新竹數據亮點風格）
+  var hotList = Object.keys(subFlat).sort(function(a, b){ return subFlat[b] - subFlat[a]; }).slice(0, 6);
+  var hb = document.getElementById("hotBar");
+  if(hotList.length){
+    hb.style.display = "flex";
+    hb.innerHTML = '<span class="hot-lbl">🔥 熱門分享話題：</span>' + hotList.map(function(fullTag){
+      var shortName = fullTag.split("：")[1] || fullTag;
+      return '<button class="hot-chip" data-quicktag="' + esc(fullTag) + '">#' + esc(shortName) + ' <b>' + subFlat[fullTag] + '</b></button>';
+    }).join("");
+  }
+
+  var gk = Object.keys(gs).sort(function(a, b){
+    var x = ORDER.indexOf(a), y = ORDER.indexOf(b);
+    return (x < 0 ? 99 : x) - (y < 0 ? 99 : y);
+  });
+
+  document.getElementById("tags").innerHTML = gk.map(function(g){
+    return '<button class="cat" aria-pressed="' + (g === grp) + '" data-g="' + esc(g) + '"><b>' + (EMO[g] || "📄") + " " + esc(g) + '</b><small>' + gs[g] + ' 則故事</small></button>';
+  }).join("");
+
+  var sk = grp && sb[grp] ? Object.keys(sb[grp]).sort(function(a, b){ return sb[grp][b] - sb[grp][a]; }) : [];
+  document.getElementById("subbox").style.display = sk.length ? "block" : "none";
+  document.getElementById("subs").innerHTML = sk.length
+    ? '<button class="pill" aria-pressed="' + (!sub) + '" data-s="">全部相關故事</button>' +
+      sk.map(function(x){
+        return '<button class="pill" aria-pressed="' + (x === sub) + '" data-s="' + esc(x) + '">' + esc(x) + ' · ' + sb[grp][x] + '</button>';
+      }).join("")
+    : "";
+
+  var statArr = [
+    '<span class="stat-pill">📚 共 ' + DATA.length + ' 則真實故事</span>',
+    '<span class="stat-pill">💬 ' + DATA.filter(function(r){ return r.c === "健康見證"; }).length + ' 則健康體驗</span>'
+  ];
+  if(APP_MODE !== "sleep"){
+    statArr.push('<span class="stat-pill">🚀 ' + DATA.filter(function(r){ return r.c === "事業見證"; }).length + ' 則事業轉型</span>');
+  }
+  statArr.push('<span class="stat-pill">🎬 ' + DATA.filter(function(r){ return r.k === "video"; }).length + ' 支影音分享</span>');
+  document.getElementById("stats").innerHTML = statArr.join("");
+}
+
+/* ==================== 事件監聽 ==================== */
+document.addEventListener("click", function(e){
+  var b;
+  if(b = e.target.closest("[data-jump]")){
+    var targetId = b.dataset.jump;
+    cur = "全部"; grp = ""; sub = ""; kw = "";
+    document.getElementById("q").value = "";
+    open[targetId] = true;
+    shown["健康見證"] = 999; shown["事業見證"] = 999;
+    render();
+    var el = document.getElementById("story-" + targetId);
+    if(el) el.scrollIntoView({behavior: "smooth", block: "center"});
+    return;
+  }
+  if(b = e.target.closest("[data-quicktag]")){
+    var parts = b.dataset.quicktag.split("：");
+    cur = "全部";
+    grp = parts[0] || "";
+    sub = parts[1] || "";
+    render();
+    document.getElementById("tags").scrollIntoView({behavior: "smooth", block: "nearest"});
+    return;
+  }
+  if(b = e.target.closest("[data-c]")){ cur = b.dataset.c; render(); return; }
+  if(b = e.target.closest("[data-g]")){ grp = (grp === b.dataset.g) ? "" : b.dataset.g; sub = ""; render(); return; }
+  if(b = e.target.closest("[data-s]")){ sub = (sub === b.dataset.s) ? "" : b.dataset.s; render(); return; }
+  if(b = e.target.closest("[data-more]")){ shown[b.dataset.more] = (shown[b.dataset.more] || LIM) + LIM; render(); return; }
+  if(b = e.target.closest("[data-tg]")){
+    var cardEl = b.closest("[data-id]");
+    if(cardEl){ var id = cardEl.dataset.id; open[id] = !open[id]; render(); }
+    return;
+  }
+  if(e.target.closest("#reset")){
+    cur = "全部"; grp = ""; sub = ""; kw = "";
+    document.getElementById("q").value = "";
+    render();
+    return;
+  }
+  if(e.target.closest("#all")){
+    var any = DATA.some(function(r){ return !open[r.id] && match(r); });
+    DATA.forEach(function(r){ open[r.id] = any; });
+    document.getElementById("all").textContent = any ? "全部收起" : "全部展開";
+    render();
+    return;
+  }
+  if(b = e.target.closest("[data-full]")){
+    document.getElementById("bigImg").src = b.dataset.full;
+    document.getElementById("lb").classList.add("on");
+    return;
+  }
+  if(e.target.id === "x" || e.target.id === "lb"){
+    document.getElementById("lb").classList.remove("on");
+    return;
+  }
+  if(b = e.target.closest("[data-edit]")){
+    var rn = Number(b.dataset.edit);
+    var item = DATA.find(function(x){ return x.rowNum === rn; });
+    if(!item) return;
+    editingRow = item;
+    document.getElementById("mTitle").textContent = item.t;
+    document.getElementById("mPass").value = localStorage.getItem("nefful_admin_pass") || "";
+    document.getElementById("mSleep").checked = item.pub.indexOf("sleep") > -1;
+    var mMatch = item.prod.match(/【標籤：(.*?)】/);
+    document.getElementById("mTags").value = mMatch ? mMatch[1] : "";
+    document.getElementById("mComp").value = item.compX || "";
+    document.getElementById("modal").classList.add("on");
+    return;
+  }
+  if(e.target.id === "mCancel" || e.target.id === "modal"){
+    document.getElementById("modal").classList.remove("on");
+  }
+});
+
+document.getElementById("mSave").addEventListener("click", function(){
+  if(!editingRow) return;
+  var pass = document.getElementById("mPass").value.trim();
+  if(!pass){ alert("請輸入管理密碼"); return; }
+  localStorage.setItem("nefful_admin_pass", pass);
+
+  var btn = document.getElementById("mSave");
+  btn.disabled = true; btn.textContent = "儲存中...";
+
+  var payload = {
+    pass: pass,
+    rowNum: editingRow.rowNum,
+    pub: document.getElementById("mSleep").checked ? "sleep" : "",
+    customTags: document.getElementById("mTags").value.trim(),
+    compX: document.getElementById("mComp").value.trim()
+  };
+
+  fetch(GAS_API_URL, {
+    method: "POST",
+    body: JSON.stringify(payload)
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(res){
+    btn.disabled = false; btn.textContent = "儲存至試算表";
+    if(!res.ok) throw new Error(res.error || "儲存失敗");
+    document.getElementById("modal").classList.remove("on");
+    loadData();
+  })
+  .catch(function(err){
+    btn.disabled = false; btn.textContent = "儲存至試算表";
+    alert("儲存失敗：" + err.message);
+  });
+});
+
+document.getElementById("q").addEventListener("input", function(e){
+  kw = e.target.value.trim().toLowerCase();
+  render();
+});
+
+document.addEventListener("keydown", function(e){
+  if(e.key === "Escape"){
+    document.getElementById("lb").classList.remove("on");
+    document.getElementById("modal").classList.remove("on");
+  }
+});
+
+function loadData(){
+  var apiEndpoint = GAS_API_URL + "?api=1&mode=" + encodeURIComponent(APP_MODE);
+  fetch(apiEndpoint)
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if(!res.ok) throw new Error(res.error || "API 回傳異常");
+      DATA = res.data || [];
+      renderRecent();
+      render();
+    })
+    .catch(function(err){
+      document.getElementById("out").innerHTML = '<div class="empty">讀取資料發生錯誤（請確認已填入正確的 GAS_API_URL）：' + esc(err.message) + '</div>';
+    });
+}
+
+loadData();
+</script>
+</body>
+</html>
