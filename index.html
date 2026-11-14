@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>超新星 負離子見證故事庫</title>
+<title>負離子見證故事庫</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
 <style>
@@ -728,9 +728,7 @@ document.addEventListener("click", function(e){
     editingRow = item;
     document.getElementById("mTitle").textContent = item.t;
     document.getElementById("mSleep").checked = item.pub.indexOf("sleep") > -1;
-    var mMatch = item.prod.match(/【標籤：(.*?)】/);
-    var curList = (mMatch ? mMatch[1] : (item.g || []).filter(function(x){ return x !== "待分類"; }).join(", "))
-      .split(/[,，]\s*/).map(function(s){ return s.trim(); }).filter(Boolean);
+    var curList = (item.g || []).filter(function(x){ return x !== "待分類"; });
     document.getElementById("mTags").value = curList.join(", ");
 
     var pickerHtml = Object.keys(TAG_TREE).map(function(g){
@@ -821,3 +819,4 @@ loadData();
 </script>
 </body>
 </html>
+
