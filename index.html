@@ -146,7 +146,7 @@ section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:13px;
 .extra{display:none;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
 .card.open .extra{display:block}
 .grid{display:grid;gap:8px;grid-template-columns:repeat(3,1fr);margin-top:8px}
-.ph{aspect-ratio:4/3;border:1px solid var(--line);border-radius:8px;cursor:zoom-in;padding:0;overflow:hidden;background:var(--card)}
+.ph{position:relative;aspect-ratio:4/3;border:1px solid var(--line);border-radius:8px;cursor:zoom-in;padding:0;overflow:hidden;background:var(--card)}
 .ph img{width:100%;height:100%;object-fit:cover;display:block}
 .src{margin-top:8px;font-size:13px;color:var(--sub);word-break:break-all}
 .src a{color:var(--accent)}
@@ -157,8 +157,8 @@ section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:13px;
 .loader{text-align:center;padding:48px 20px;color:var(--sub);font-size:15px}
 .note{margin:16px 0;padding:12px 16px;border:1px dashed var(--accent);border-radius:12px;font-size:13px;color:var(--sub)}
 
-#lb,#modal{position:fixed;inset:0;background:rgba(15,12,10,.86);display:none;align-items:center;justify-content:center;z-index:30;padding:20px}
-#lb.on,#modal.on{display:flex}
+#lb,#modal,#gate{position:fixed;inset:0;background:rgba(15,12,10,.86);display:none;align-items:center;justify-content:center;z-index:30;padding:20px}
+#lb.on,#modal.on,#gate.on{display:flex}
 #bigImg{max-width:min(900px,95vw);max-height:85vh;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
 #x{position:absolute;top:calc(env(safe-area-inset-top,0px) + 16px);right:18px;padding:8px 16px;border-radius:8px;border:0;background:#fff;color:#222;font-weight:700;cursor:pointer}
 
@@ -178,6 +178,13 @@ section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:13px;
   .ig-grid{grid-template-columns:repeat(2,1fr);gap:12px}
   .hero{padding:22px 20px}
 }
+
+.imgfail::after{content:"🔒 照片需開放檢視權限";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;font-size:11px;color:var(--sub)}
+.yt-thumb.imgfail::after,.ig-thumb.imgfail::after{color:#fff}
+.activebar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 12px}
+.fchip{border:1px solid var(--accent);background:var(--accent-soft);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:700;cursor:pointer}
+.fchip b{margin-left:6px;opacity:.7}
+.empty .smallbtn{margin-top:12px}
 </style>
 </head>
 <body>
@@ -243,11 +250,22 @@ section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:13px;
       </div>
       <button class="lnk" id="all">全部展開</button>
     </div>
+    <div class="activebar" id="activeBar" style="display:none"></div>
     <div class="typetabs" id="cats"></div>
     <div id="out"><div class="loader">⏳ 正在從資料庫載入最新見證、影音縮圖與故事，請稍候...</div></div>
   </section>
 
   <div class="note">以上為使用者個人經驗與生活體驗分享，感受因人而異，不代表醫療效能，亦不能取代醫師或專業醫療人員之診斷與建議。</div>
+</div>
+
+<div id="gate" role="dialog" aria-label="會員通行碼">
+  <div class="mbox">
+    <h3>🔑 會員通行碼</h3>
+    <p class="hint">請輸入夥伴提供的通行碼，才能瀏覽見證內容。</p>
+    <div class="mfield"><input type="password" id="gCode" placeholder="通行碼" autocomplete="off"></div>
+    <div id="gMsg" class="hint" style="color:#B54A3A"></div>
+    <div class="macts"><button class="btn-save" id="gGo">進入</button></div>
+  </div>
 </div>
 
 <div id="lb" role="dialog" aria-label="放大圖片">
@@ -302,8 +320,8 @@ var ORDER = Object.keys(EMO);
 var TABI = {"全部":"","YouTube 影音":"🎬 ","IG Reels 短影音":"📱 ","圖文見證":"💬 ","事業故事":"🚀 "};
 
 function esc(s){
-  return String(s || "").replace(/[&<>"]/g, function(m){
-    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m];
+  return String(s || "").replace(/[&<>"']/g, function(m){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m];
   });
 }
 
@@ -393,7 +411,7 @@ function ytCard(r){
   var link = r.u || r.s || "#";
 
   return '<article class="yt-card' + (isOpen ? " open" : "") + '" id="story-' + r.id + '" data-id="' + r.id + '">' +
-    '<div class="yt-thumb" onclick="window.open(\'' + esc(link) + '\',\'_blank\')">' +
+    '<div class="yt-thumb" data-href="' + esc(link) + '">' +
       thumbHtml +
       '<span class="yt-badge">🎬 ' + esc(r.vPlat || "YouTube 影音") + '</span>' +
       '<div class="yt-play">▶</div>' +
@@ -420,7 +438,7 @@ function igCard(r){
   var thumbHtml = r.vThumb ? '<img src="' + esc(r.vThumb) + '" loading="lazy" alt="' + esc(r.t) + '">' : '';
 
   return '<article class="ig-card' + (isOpen ? " open" : "") + '" id="story-' + r.id + '" data-id="' + r.id + '">' +
-    '<div class="ig-thumb" onclick="window.open(\'' + esc(link) + '\',\'_blank\')">' +
+    '<div class="ig-thumb" data-href="' + esc(link) + '">' +
       thumbHtml +
       '<div class="ig-top-bar"><span class="ig-pill">📱 Reels 短影音</span></div>' +
       '<div class="ig-play-circle">▶</div>' +
@@ -498,6 +516,28 @@ function renderRecent(){
   }).join("");
 }
 
+function emptyHtml(){
+  var why = [];
+  if(grp) why.push("主題「" + esc(grp + (sub ? "：" + sub : "")) + "」");
+  if(kw) why.push("搜尋「" + esc(kw) + "」");
+  if(cur !== "全部") why.push("類型「" + esc(cur) + "」");
+  return '<div class="empty">目前的條件' + (why.length ? "（" + why.join("＋") + "）" : "") + '沒有符合的內容。' +
+         '<br><button class="smallbtn" data-clear="all">清除全部篩選，看全部內容</button></div>';
+}
+function renderActiveBar(){
+  var chips = [];
+  if(grp) chips.push('<button class="fchip" data-clear="topic">主題：' + esc(grp + (sub ? "：" + sub : "")) + '<b>✕</b></button>');
+  if(kw) chips.push('<button class="fchip" data-clear="kw">搜尋：' + esc(kw) + '<b>✕</b></button>');
+  var bar = document.getElementById("activeBar");
+  bar.style.display = chips.length ? "flex" : "none";
+  bar.innerHTML = chips.length ? '<span class="hint" style="margin:0">目前篩選：</span>' + chips.join("") : "";
+}
+function applyGroups(groups){
+  if(!groups || !groups.length) return;
+  groups.forEach(function(x){ EMO[x.g] = x.e || EMO[x.g] || "📄"; });
+  ORDER = groups.map(function(x){ return x.g; });
+}
+
 function render(){
   var h = "";
   var activeSections = CATS.slice(1);
@@ -524,14 +564,14 @@ function render(){
     h += '</section>';
   });
 
-  document.getElementById("out").innerHTML = h || '<div class="empty">找不到符合條件的見證內容。試試換個關鍵字，或點「清除全部篩選」。</div>';
+  document.getElementById("out").innerHTML = h || emptyHtml();
 
   var cn = {"全部": DATA.filter(function(r){ return match(r, true); }).length};
   activeSections.forEach(function(secName){
     cn[secName] = DATA.filter(function(r){ return getSectionType(r) === secName && match(r, true); }).length;
   });
 
-  document.getElementById("cats").innerHTML = CATS.map(function(c){
+  document.getElementById("cats").innerHTML = CATS.filter(function(c){ return c === "全部" || c === cur || cn[c] > 0; }).map(function(c){
     return '<button class="tt" aria-pressed="' + (c === cur) + '" data-c="' + esc(c) + '">' + TABI[c] + esc(c) + '<small>' + cn[c] + '</small></button>';
   }).join("");
 
@@ -592,11 +632,25 @@ function render(){
     '<span class="stat-pill">💬 ' + postCnt + ' 篇圖文見證</span>'
   ];
   document.getElementById("stats").innerHTML = statArr.join("");
+  renderActiveBar();
 }
 
 /* ==================== 事件監聽（徹底修復點擊切換變 0 則） ==================== */
 document.addEventListener("click", function(e){
   var b;
+  if(b = e.target.closest("[data-href]")){
+    var hrefTo = b.dataset.href;
+    if(/^https?:\/\//i.test(hrefTo)) window.open(hrefTo, "_blank", "noopener");
+    return;
+  }
+  if(b = e.target.closest("[data-clear]")){
+    var what = b.dataset.clear;
+    if(what === "topic" || what === "all"){ grp = ""; sub = ""; }
+    if(what === "kw" || what === "all"){ kw = ""; document.getElementById("q").value = ""; }
+    if(what === "all"){ cur = "全部"; }
+    render();
+    return;
+  }
   if(b = e.target.closest("[data-jump]")){
     var targetId = b.dataset.jump;
     cur = "全部"; grp = ""; sub = ""; kw = "";
@@ -720,6 +774,11 @@ document.getElementById("mSave").addEventListener("click", function(){
   });
 });
 
+document.addEventListener("error", function(e){
+  var t = e.target;
+  if(t && t.tagName === "IMG"){ t.style.visibility = "hidden"; if(t.parentNode) t.parentNode.classList.add("imgfail"); }
+}, true);
+
 document.getElementById("q").addEventListener("input", function(e){
   kw = e.target.value.trim().toLowerCase();
   render();
@@ -732,7 +791,45 @@ document.addEventListener("keydown", function(e){
   }
 });
 
+function askCode(wrong){
+  var g = document.getElementById("gate");
+  if(wrong) localStorage.removeItem("nefful_member_code");
+  document.getElementById("gMsg").textContent = wrong ? "通行碼不正確，請再試一次。" : "";
+  g.classList.add("on");
+  document.getElementById("gCode").focus();
+}
+function submitCode(){
+  var v = document.getElementById("gCode").value.trim();
+  if(!v) return;
+  localStorage.setItem("nefful_member_code", v);
+  document.getElementById("gate").classList.remove("on");
+  loadData();
+}
+document.getElementById("gGo").addEventListener("click", submitCode);
+document.getElementById("gCode").addEventListener("keydown", function(e){ if(e.key === "Enter") submitCode(); });
+
 function loadData(){
-  var apiEndpoint = GAS_API_URL + "?api=1&mode=" + encodeURIComponent(APP_MODE);
+  var code = localStorage.getItem("nefful_member_code") || "";
+  var apiEndpoint = GAS_API_URL + "?api=1&mode=" + encodeURIComponent(APP_MODE) + (code ? "&code=" + encodeURIComponent(code) : "");
   fetch(apiEndpoint)
-    .then(function(r){ return r
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if(!res.ok){
+        if(res.error === "NEED_CODE"){ askCode(false); return; }
+        if(res.error === "通行碼不正確"){ askCode(true); return; }
+        throw new Error(res.error || "載入失敗");
+      }
+      applyGroups(res.groups);
+      DATA = res.data || [];
+      renderRecent();
+      render();
+    })
+    .catch(function(err){
+      document.getElementById("out").innerHTML = '<div class="empty">資料載入失敗：' + esc(err.message) +
+        '<br><button class="smallbtn" onclick="loadData()">重新載入</button></div>';
+    });
+}
+loadData();
+</script>
+</body>
+</html>
