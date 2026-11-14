@@ -1,1090 +1,140 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>見證資料庫</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>超新星 負離子見證故事庫</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#F6F4EF;
-    --surface:#FFFFFF;
-    --ink:#262521;
-    --ink-soft:#736F66;
-    --accent:#2F5C4C;
-    --accent-dark:#204236;
-    --accent-soft:#DCE8E1;
-    --gold:#B8894A;
-    --line:#E6E1D6;
-    --danger:#B4483C;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Noto Sans TC', sans-serif;
-    line-height:1.6;
-  }
-  h1,h2,h3,.serif{ font-family:'Noto Serif TC', serif; }
-
-  /* ---------- Header ---------- */
-  header.top{
-    position:sticky; top:0; z-index:40;
-    background:rgba(246,244,239,0.92);
-    backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--line);
-    padding:18px 24px;
-  }
-  .top-inner{
-    max-width:1080px; margin:0 auto;
-    display:flex; align-items:center; justify-content:space-between; gap:16px;
-  }
-  .brand{ display:flex; align-items:baseline; gap:10px; }
-  .brand .mark{
-    font-family:'Noto Serif TC', serif; font-size:28px; font-weight:700; color:var(--accent-dark);
-    line-height:1;
-  }
-  .brand .sub{ font-size:12px; color:var(--ink-soft); letter-spacing:.05em; }
-  #loginBtn{
-    border:1px solid var(--accent); background:transparent; color:var(--accent);
-    padding:8px 18px; border-radius:100px; font-size:14px; cursor:pointer;
-    transition:.15s;
-  }
-  #loginBtn:hover{ background:var(--accent); color:#fff; }
-  #loginBtn.active{ background:var(--accent); color:#fff; }
-
-  /* ---------- Hero / search ---------- */
-  .hero{
-    max-width:1080px; margin:0 auto; padding:40px 24px 8px;
-  }
-  .hero h1{ font-size:26px; margin:0 0 6px; color:var(--ink); }
-  .hero p{ margin:0 0 24px; color:var(--ink-soft); font-size:14px; }
-  .search-box{
-    position:relative;
-    max-width:520px;
-  }
-  .search-box input{
-    width:100%; padding:14px 18px 14px 44px; border-radius:12px;
-    border:1px solid var(--line); background:var(--surface);
-    font-size:15px; color:var(--ink);
-  }
-  .search-box input:focus{ outline:2px solid var(--accent-soft); border-color:var(--accent); }
-  .search-box svg{ position:absolute; left:16px; top:50%; transform:translateY(-50%); opacity:.5; }
-
-  /* ---------- Tag filters ---------- */
-  .tag-section{ max-width:1080px; margin:0 auto; padding:16px 24px 6px; }
-  .tag-toggle{
-    display:flex; align-items:center; justify-content:space-between;
-    cursor:pointer; padding:10px 16px; background:var(--surface);
-    border:1px solid var(--line); border-radius:12px; user-select:none;
-  }
-  .tag-toggle .label{ font-size:14px; font-weight:600; color:var(--ink); }
-  .tag-toggle .label .current{ font-weight:400; color:var(--accent); margin-left:6px; }
-  .tag-toggle .chevron{ transition:transform .2s ease; color:var(--ink-soft); font-size:13px; }
-  .tag-toggle.open .chevron{ transform:rotate(180deg); }
-  .tag-groups-wrap{
-    max-height:0; overflow:hidden; transition:max-height .25s ease;
-  }
-  .tag-groups-inner{ padding-top:12px; }
-  .tag-group{
-    border-radius:12px; padding:10px 14px; margin-bottom:10px;
-  }
-  .tag-group .cat-label{
-    display:block; font-size:12px; font-weight:600; color:var(--ink); margin-bottom:6px;
-  }
-  .cat-color-0{ background:#EAF1EC; }
-  .cat-color-1{ background:#F3ECE3; }
-  .cat-color-2{ background:#EDF0F5; }
-  .cat-color-3{ background:#F5ECEE; }
-  .cat-color-4{ background:#EEF0E7; }
-  .cat-color-5{ background:#EDE9F2; }
-  .cat-color-6{ background:#EAF2F0; }
-  .chip{
-    display:inline-flex; align-items:center;
-    border:1px solid var(--line); background:var(--surface);
-    color:var(--ink); font-size:13px; padding:6px 14px;
-    border-radius:100px; margin:4px 6px 4px 0; cursor:pointer;
-    transition:.15s;
-  }
-  .chip:hover{ border-color:var(--accent); }
-  .chip.selected{ background:var(--accent); border-color:var(--accent); color:#fff; }
-  #clearTags{
-    font-size:12px; color:var(--ink-soft); text-decoration:underline; cursor:pointer; margin-left:4px;
-  }
-
-  /* ---------- Results ---------- */
-  .results-meta{
-    max-width:1080px; margin:0 auto; padding:8px 24px 0; font-size:13px; color:var(--ink-soft);
-  }
-  .grid{
-    max-width:1080px; margin:0 auto; padding:16px 24px 60px;
-    display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:18px;
-  }
-  .card{
-    background:var(--surface); border:1px solid var(--line); border-radius:14px;
-    padding:20px; cursor:pointer; transition:.15s; position:relative;
-    display:flex; flex-direction:column; gap:10px;
-  }
-  .card:hover{ border-color:var(--accent); transform:translateY(-2px); box-shadow:0 6px 18px rgba(47,92,76,0.08); }
-  .card .quote-mark{
-    font-family:'Noto Serif TC', serif; font-size:34px; color:var(--accent-soft); line-height:.6;
-  }
-  .card h3{ font-size:16px; margin:0; color:var(--ink); }
-  .card .snippet{ font-size:13px; color:var(--ink-soft); flex:1;
-    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
-  mark{ background:var(--gold); color:#fff; padding:0 2px; border-radius:3px; }
-  .card .meta-row{ display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--ink-soft); }
-  .card .tags-row{ display:flex; flex-wrap:wrap; gap:6px; }
-  .tag-pill{
-    font-size:11px; background:var(--accent-soft); color:var(--accent-dark);
-    padding:3px 10px; border-radius:100px;
-  }
-  .empty-state{
-    max-width:1080px; margin:40px auto; padding:40px; text-align:center; color:var(--ink-soft);
-  }
-
-  /* ---------- Modal (detail) ---------- */
-  .overlay{
-    position:fixed; inset:0; background:rgba(38,37,33,0.55);
-    display:none; align-items:flex-start; justify-content:center;
-    padding:40px 16px; overflow-y:auto; z-index:100;
-  }
-  .overlay.open{ display:flex; }
-  .modal{
-    background:var(--surface); border-radius:16px; max-width:640px; width:100%;
-    padding:32px; position:relative;
-  }
-  .modal .close-btn{
-    position:absolute; top:18px; right:18px; border:none; background:none; font-size:22px; cursor:pointer; color:var(--ink-soft);
-  }
-  .modal h2{ font-size:20px; margin:0 0 4px; }
-  .modal .modal-meta{ font-size:12px; color:var(--ink-soft); margin-bottom:16px; }
-  .modal .content-text{ white-space:pre-wrap; font-size:14px; margin-bottom:18px; }
-  .modal .shots{ display:flex; gap:10px; overflow-x:auto; margin-bottom:16px; }
-  .modal .shots img{ height:220px; border-radius:10px; border:1px solid var(--line); }
-  .modal .shots .shot-item{ display:inline-block; flex-shrink:0; }
-  .modal .shots img.shot-img{ background:var(--line); min-width:120px; }
-  .modal a.source-link{ font-size:13px; color:var(--accent); }
-  .modal .quick-actions{ display:flex; gap:14px; margin-top:16px; }
-  .modal .link-btn{
-    border:none; background:none; color:var(--accent); font-size:13px; cursor:pointer; padding:0;
-  }
-  .modal .link-btn:hover{ text-decoration:underline; }
-  .modal .admin-actions{ margin-top:18px; border-top:1px solid var(--line); padding-top:14px; }
-
-  /* ---------- Admin drawer ---------- */
-  .drawer-overlay{
-    position:fixed; inset:0; background:rgba(38,37,33,0.4);
-    display:none; z-index:90;
-  }
-  .drawer-overlay.open{ display:block; }
-  .drawer{
-    position:fixed; top:0; right:0; height:100%; width:min(460px,100%);
-    background:var(--surface); z-index:95; box-shadow:-8px 0 24px rgba(0,0,0,0.08);
-    transform:translateX(100%); transition:.25s ease; overflow-y:auto; padding:28px;
-  }
-  .drawer.open{ transform:translateX(0); }
-  .drawer h2{ font-size:19px; margin:0 0 18px; }
-  .field{ margin-bottom:16px; }
-  .field label{ display:block; font-size:13px; color:var(--ink-soft); margin-bottom:6px; }
-  .field input[type=text], .field input[type=url], .field textarea{
-    width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:14px; font-family:inherit;
-  }
-  .field textarea{ min-height:110px; resize:vertical; }
-  .tag-picker .chip{ font-size:12px; }
-  .file-row{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
-  .file-row input[type=text]{ flex:1; padding:8px 10px; border:1px solid var(--line); border-radius:8px; font-size:13px; }
-  .file-row img{ width:44px; height:44px; object-fit:cover; border-radius:6px; border:1px solid var(--line); }
-  .existing-img-row{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
-  .existing-img-row img{ width:44px; height:44px; object-fit:cover; border-radius:6px; border:1px solid var(--line); }
-  .existing-img-row span.remove-btn{ cursor:pointer; color:var(--danger); font-size:12px; text-decoration:underline; margin-left:auto; }
-  .tag-manage-row{ display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid var(--line); }
-  .tag-manage-row .tag-name{ flex:1; font-size:13px; }
-  .tag-manage-row select{ padding:6px 8px; border:1px solid var(--line); border-radius:8px; font-size:12px; max-width:130px; }
-  .tag-manage-cat-title{ font-size:12px; font-weight:600; color:var(--ink-soft); margin:14px 0 4px; }
-  #dropZone{
-    border:1.5px dashed var(--line); border-radius:10px; padding:18px; text-align:center;
-    font-size:13px; color:var(--ink-soft); cursor:pointer; margin-bottom:12px;
-  }
-  #dropZone:hover{ border-color:var(--accent); }
-  .btn-primary{
-    background:var(--accent); color:#fff; border:none; padding:12px 20px; border-radius:10px;
-    font-size:14px; cursor:pointer; width:100%; margin-top:8px;
-  }
-  .btn-primary:hover{ background:var(--accent-dark); }
-  .btn-primary:disabled{ opacity:.5; cursor:not-allowed; }
-  .toast{
-    position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
-    background:var(--ink); color:#fff; padding:12px 22px; border-radius:100px; font-size:13px;
-    z-index:200; display:none;
-  }
-  .toast.error{ background:var(--danger); }
-
-  /* login mini form inside drawer trigger */
-  .login-panel .field input{ margin-bottom:0; }
-
-  @media (max-width:600px){
-    .grid{ grid-template-columns:1fr; }
-    .drawer{ width:100%; }
-    .top{ padding:14px 16px; }
-    .brand .mark{ font-size:22px; }
-    .brand .sub{ display:none; }
-    .hero{ padding:28px 16px 4px; }
-    .hero h1{ font-size:21px; }
-    .search-box{ max-width:100%; }
-    .tag-section{ padding:12px 16px 4px; }
-    .grid{ padding:14px 16px 48px; }
-    .results-meta{ padding:6px 16px 0; }
-    .modal{ padding:22px; border-radius:12px; }
-    .modal .shots img{ height:160px; }
-    .drawer{ padding:22px; }
-  }
-
-  @media (max-width:380px){
-    .chip{ font-size:12px; padding:5px 12px; }
-    .tag-toggle .label{ font-size:13px; }
-  }
-</style>
-</head>
-<body>
-
-<header class="top">
-  <div class="top-inner">
-    <div class="brand">
-      <span class="mark">見證資料庫</span>
-      <span class="sub">超新星 · 真實故事典藏</span>
-    </div>
-    <button id="loginBtn">登入</button>
-  </div>
-</header>
-
-<section class="hero">
-  <h1>找到一段真實的改變</h1>
-  <p>輸入關鍵字，或點選下方標籤，瀏覽已收錄的見證</p>
-  <div class="search-box">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="searchInput" placeholder="搜尋文字、見證者、標籤…" />
-  </div>
-</section>
-
-<section class="tag-section">
-  <div class="tag-toggle" id="tagToggle">
-    <span class="label">🏷️ 標籤篩選<span class="current" id="tagToggleCurrent"></span></span>
-    <span class="chevron">▾</span>
-  </div>
-  <div class="tag-groups-wrap" id="tagGroupsWrap">
-    <div class="tag-groups-inner" id="tagSection"></div>
-  </div>
-</section>
-
-<div class="results-meta" id="resultsMeta"></div>
-<div class="grid" id="grid"></div>
-<div class="empty-state" id="emptyState" style="display:none;">目前沒有符合的見證，換個關鍵字或標籤試試看</div>
-
-<!-- 詳細內容 modal -->
-<div class="overlay" id="detailOverlay">
-  <div class="modal" id="detailModal"></div>
-</div>
-
-<!-- 登入 / 新增 側邊欄 -->
-<div class="drawer-overlay" id="drawerOverlay"></div>
-<div class="drawer" id="loginDrawer">
-  <h2>管理員登入</h2>
-  <div class="login-panel">
-    <div class="field">
-      <label>通關密碼</label>
-      <input type="text" id="passwordInput" placeholder="輸入密碼" />
-    </div>
-    <button class="btn-primary" id="submitLogin">登入</button>
-  </div>
-</div>
-
-<div class="drawer" id="addDrawer">
-  <h2 id="addDrawerTitle">新增見證</h2>
-  <div class="field">
-    <label>標題</label>
-    <input type="text" id="f_title" placeholder="例如：長期偏頭痛終於好轉" />
-  </div>
-  <div class="field">
-    <label>見證者名字</label>
-    <input type="text" id="f_name" placeholder="可填暱稱，例如：三寶媽 Vivi" />
-  </div>
-  <div class="field">
-    <label>見證文字</label>
-    <textarea id="f_content" placeholder="貼上你複製的見證內容"></textarea>
-  </div>
-  <div class="field">
-    <label>原始出處網址</label>
-    <input type="url" id="f_source" placeholder="FB 貼文連結" />
-    <div id="duplicateWarning" style="display:none;font-size:12px;color:var(--danger);margin-top:6px;"></div>
-  </div>
-  <div class="field">
-    <label>標籤（可複選，也可以直接新增）</label>
-    <div class="tag-picker" id="tagPicker"></div>
-    <div style="display:flex;gap:8px;margin-top:8px;">
-      <input type="text" id="newTagInput" placeholder="新增標籤" style="flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;">
-      <select id="newTagCategorySelect" style="padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;max-width:120px;"></select>
-      <button type="button" id="addNewTagBtn" style="border:1px solid var(--line);background:none;border-radius:8px;padding:0 12px;cursor:pointer;">加入</button>
-    </div>
-    <div style="margin-top:8px;">
-      <span class="link-tag-manage" id="openTagManageBtn" style="font-size:12px;color:var(--accent);cursor:pointer;text-decoration:underline;">🏷️ 管理所有標籤分類</span>
-    </div>
-  </div>
-  <div class="field" id="existingImagesField" style="display:none;">
-    <label>現有截圖（可移除，移除後不會刪除 Drive 裡的檔案）</label>
-    <div id="existingImageList"></div>
-  </div>
-  <div class="field">
-    <label id="uploadLabel">截圖上傳（可多張，上傳後可自訂每張描述文字，檔名會自動變成「編號_描述文字」方便之後對照）</label>
-    <div id="dropZone">點擊或拖曳圖片到這裡上傳</div>
-    <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
-    <div id="fileList"></div>
-  </div>
-  <div class="field">
-    <label>備註（選填）</label>
-    <textarea id="f_note" placeholder="脈絡、提供人、使用注意事項等"></textarea>
-  </div>
-  <button class="btn-primary" id="submitAdd">送出並更新到資料庫</button>
-</div>
-
-
-<div class="drawer" id="tagManageDrawer">
-  <h2>標籤分類管理</h2>
-  <p style="font-size:12px;color:var(--ink-soft);margin-top:-8px;">改分類後會直接存回「標籤分類」分頁，頁面其他地方也會跟著更新。</p>
-  <div id="tagManageList"></div>
-  <div class="field" style="margin-top:20px;border-top:1px solid var(--line);padding-top:16px;">
-    <label>新增一個標籤</label>
-    <div style="display:flex;gap:8px;">
-      <input type="text" id="manageNewTagInput" placeholder="標籤名稱" style="flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;">
-      <select id="manageNewTagCategorySelect" style="padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;max-width:120px;"></select>
-      <button type="button" id="manageAddTagBtn" style="border:1px solid var(--line);background:none;border-radius:8px;padding:0 12px;cursor:pointer;">新增</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-/*************** 設定：請把下面換成你部署後的 Apps Script 網址 ***************/
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyu2-ceMYAF_GaPbBBRAdahPi6pDfVJ6eEQfvWIn04Ee58fCZvVV-BS1zzh4PHbED1o3Q/exec';
-
-/*************** 標籤分類：改成從後台「標籤分類」分頁動態讀取，不再寫死在程式碼裡 ***************/
-let TAG_CATEGORIES = {}; // { 分類: [標籤,...] }，fetchData 拿到資料後才會填入
-let ALL_TAGS = [];
-
-function applyTagCategories(list){
-  TAG_CATEGORIES = {};
-  (list || []).forEach(({ category, tags }) => { TAG_CATEGORIES[category] = tags; });
-  ALL_TAGS = Object.values(TAG_CATEGORIES).flat();
+:root{
+  --bg:#FAF7F2;--card:#FFFFFF;--ink:#2C2420;--sub:#7A6855;--line:#E2D5C3;
+  --accent:#B8920A;--accent-soft:rgba(184,146,10,.12);--tag:#F5E6B8;--tagink:#5C4608;
+  --ph1:#E2D5C3;--ph2:#F5F0E8;--vid-badge:#B54A3A;--biz-badge:#4F7A6A;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px)
 }
-
-/*************** 狀態 ***************/
-let allData = [];
-let selectedTag = null; // 瀏覽篩選：一次只能選一個標籤
-let searchKeyword = '';
-let selectedFormTags = new Set();
-let uploadedFiles = []; // { file, base64, mimeType, label }
-let existingImages = []; // 編輯模式下，現有（尚未被移除）的截圖網址
-let editingId = null; // null = 新增模式；有值 = 正在編輯該筆 ID
-let authToken = sessionStorage.getItem('testimonyToken') || null;
-
-/*************** 初始化 ***************/
-document.addEventListener('DOMContentLoaded', () => {
-  fetchData(); // 資料跟標籤分類都在這裡一起載入，載入完成後會自動渲染畫面
-  updateLoginUI();
-
-  document.getElementById('searchInput').addEventListener('input', e => {
-    searchKeyword = e.target.value.trim().toLowerCase();
-    render();
-  });
-
-  document.getElementById('loginBtn').addEventListener('click', () => {
-    if (authToken) {
-      openAddDrawer();
-    } else {
-      openDrawer('loginDrawer');
-    }
-  });
-
-  document.getElementById('tagToggle').addEventListener('click', () => {
-    setTagPanelOpen(!tagPanelOpen);
-  });
-
-  document.getElementById('submitLogin').addEventListener('click', doLogin);
-  document.getElementById('submitAdd').addEventListener('click', submitTestimony);
-
-  document.getElementById('drawerOverlay').addEventListener('click', closeDrawers);
-  document.getElementById('detailOverlay').addEventListener('click', e => {
-    if (e.target.id === 'detailOverlay') closeModal();
-  });
-
-  const dropZone = document.getElementById('dropZone');
-  const fileInput = document.getElementById('fileInput');
-  dropZone.addEventListener('click', () => fileInput.click());
-  dropZone.addEventListener('dragover', e => { e.preventDefault(); });
-  dropZone.addEventListener('drop', e => {
-    e.preventDefault();
-    handleFiles(e.dataTransfer.files);
-  });
-  fileInput.addEventListener('change', e => handleFiles(e.target.files));
-
-  document.getElementById('addNewTagBtn').addEventListener('click', () => {
-    const v = document.getElementById('newTagInput').value.trim();
-    if (!v) return;
-    let category = document.getElementById('newTagCategorySelect').value;
-    if (category === '__new__') {
-      category = prompt('請輸入新的分類名稱：', '');
-      if (!category || !category.trim()) return;
-      category = category.trim();
-    }
-    selectedFormTags.add(v);
-    if (!TAG_CATEGORIES[category]) TAG_CATEGORIES[category] = [];
-    if (!TAG_CATEGORIES[category].includes(v)) TAG_CATEGORIES[category].push(v);
-    if (!ALL_TAGS.includes(v)) ALL_TAGS.push(v);
-    document.getElementById('newTagInput').value = '';
-    renderTagPicker();
-    saveTagCategory(v, category, false);
-  });
-
-  document.getElementById('openTagManageBtn').addEventListener('click', () => {
-    renderTagManageDrawer();
-    openDrawer('tagManageDrawer');
-  });
-
-  document.getElementById('manageAddTagBtn').addEventListener('click', () => {
-    const input = document.getElementById('manageNewTagInput');
-    const v = input.value.trim();
-    if (!v) return;
-    let category = document.getElementById('manageNewTagCategorySelect').value;
-    if (category === '__new__') {
-      category = prompt('請輸入新的分類名稱：', '');
-      if (!category || !category.trim()) return;
-      category = category.trim();
-    }
-    input.value = '';
-    saveTagCategory(v, category, true);
-  });
-
-  document.getElementById('f_source').addEventListener('input', checkDuplicateSource);
-});
-
-// 檢查目前填入的出處網址是否跟資料庫裡已有的重複（編輯中的這一筆不算重複）
-function checkDuplicateSource(){
-  const url = document.getElementById('f_source').value.trim();
-  const warningEl = document.getElementById('duplicateWarning');
-  if (!url) { warningEl.style.display = 'none'; return null; }
-  const match = allData.find(d => d['原始出處網址'] && d['原始出處網址'].trim() === url && String(d['ID']) !== String(editingId));
-  if (match) {
-    warningEl.style.display = 'block';
-    warningEl.textContent = `⚠️ 這個網址已經收錄過了（標題：${match['標題'] || '未命名見證'}），確定要繼續新增嗎？`;
-  } else {
-    warningEl.style.display = 'none';
-  }
-  return match;
-}
-
-/*************** 資料讀取 ***************/
-function fetchData(){
-  fetch(SCRIPT_URL + '?action=list')
-    .then(r => r.json())
-    .then(res => {
-      if (res.success) {
-        allData = res.data;
-        applyTagCategories(res.tagCategories);
-        renderTagFilters();
-        renderTagPicker();
-        render();
-        maybeOpenFromUrl();
-      } else {
-        showFetchError(res.message || '讀取失敗');
-      }
-    })
-    .catch(err => {
-      console.error('讀取見證資料失敗：', err);
-      showFetchError('無法連線到資料庫，請確認 SCRIPT_URL 有沒有設定正確，或稍後再試一次');
-    });
-}
-
-function showFetchError(msg){
-  showToast(msg, true);
-  const empty = document.getElementById('emptyState');
-  empty.style.display = 'block';
-  empty.innerHTML = `⚠️ ${escapeHtml(msg)}<br><span style="font-size:12px;">可以試著把這個網址貼到瀏覽器打開看看：<br>${escapeHtml(SCRIPT_URL)}?action=list</span>`;
-  document.getElementById('resultsMeta').textContent = '';
-  document.getElementById('grid').innerHTML = '';
-}
-
-/*************** 篩選 + 渲染卡片 ***************/
-let tagPanelOpen = false;
-
-function getTagCounts(){
-  const counts = {};
-  allData.forEach(item => {
-    (item['標籤'] || '').split(',').map(t => t.trim()).filter(Boolean).forEach(t => {
-      counts[t] = (counts[t] || 0) + 1;
-    });
-  });
-  return counts;
-}
-
-function renderTagFilters(){
-  const el = document.getElementById('tagSection');
-  const counts = getTagCounts();
-  el.innerHTML = '';
-  Object.entries(TAG_CATEGORIES).forEach(([cat, tags], index) => {
-    const group = document.createElement('div');
-    group.className = `tag-group cat-color-${index % 7}`;
-    const label = document.createElement('span');
-    label.className = 'cat-label';
-    label.textContent = cat;
-    group.appendChild(label);
-    tags.forEach(tag => {
-      const chip = document.createElement('span');
-      chip.className = 'chip';
-      chip.textContent = `${tag} (${counts[tag] || 0})`;
-      chip.onclick = () => {
-        selectedTag = (selectedTag === tag) ? null : tag;
-        renderTagFilters();
-        render();
-      };
-      if (selectedTag === tag) chip.classList.add('selected');
-      group.appendChild(chip);
-    });
-    el.appendChild(group);
-  });
-  if (selectedTag) {
-    const clear = document.createElement('span');
-    clear.id = 'clearTags';
-    clear.textContent = '清除標籤篩選';
-    clear.onclick = () => { selectedTag = null; renderTagFilters(); render(); };
-    el.appendChild(clear);
-  }
-
-  const current = document.getElementById('tagToggleCurrent');
-  current.textContent = selectedTag ? `· 目前：${selectedTag}` : '';
-
-  // 內容變動後，如果面板是展開狀態，重新計算高度避免被裁切
-  if (tagPanelOpen) setTagPanelOpen(true);
-}
-
-function setTagPanelOpen(open){
-  tagPanelOpen = open;
-  const wrap = document.getElementById('tagGroupsWrap');
-  const toggle = document.getElementById('tagToggle');
-  if (open) {
-    wrap.style.maxHeight = wrap.scrollHeight + 'px';
-    toggle.classList.add('open');
-  } else {
-    wrap.style.maxHeight = '0px';
-    toggle.classList.remove('open');
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1F1A17;--card:#2A2420;--ink:#F5F0E8;--sub:#B9A98F;--line:#4A3F36;
+    --accent:#D4AD3C;--accent-soft:rgba(212,173,60,.16);--tag:#4A3D18;--tagink:#F5E6B8;
+    --ph1:#3D3530;--ph2:#2C2420;--vid-badge:#D96B5A;--biz-badge:#6FA18E;color-scheme:dark
   }
 }
-
-function getFilteredData(){
-  return allData.filter(item => {
-    const itemTags = (item['標籤'] || '').split(',').map(t => t.trim()).filter(Boolean);
-    if (selectedTag && !itemTags.includes(selectedTag)) {
-      return false;
-    }
-    if (searchKeyword) {
-      const haystack = [item['標題'], item['見證者名字'], item['見證文字'], itemTags.join(' ')]
-        .join(' ').toLowerCase();
-      if (!haystack.includes(searchKeyword)) return false;
-    }
-    return true;
-  }).sort((a,b) => Number(b['ID']) - Number(a['ID']));
+:root[data-theme="dark"]{
+  --bg:#1F1A17;--card:#2A2420;--ink:#F5F0E8;--sub:#B9A98F;--line:#4A3F36;
+  --accent:#D4AD3C;--accent-soft:rgba(212,173,60,.16);--tag:#4A3D18;--tagink:#F5E6B8;
+  --ph1:#3D3530;--ph2:#2C2420;--vid-badge:#D96B5A;--biz-badge:#6FA18E;color-scheme:dark
 }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;line-height:1.75;transition:background .2s,color .2s}
+button,input,textarea{font:inherit;color:var(--ink)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
-function render(){
-  const data = getFilteredData();
-  const grid = document.getElementById('grid');
-  const meta = document.getElementById('resultsMeta');
-  const empty = document.getElementById('emptyState');
-  empty.innerHTML = '目前沒有符合的見證，換個關鍵字或標籤試試看';
-  meta.textContent = `共 ${data.length} 筆見證`;
-  grid.innerHTML = '';
-  empty.style.display = data.length ? 'none' : 'block';
+.wrap{max-width:1040px;margin:0 auto;padding:22px 20px 64px}
 
-  data.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    const tags = (item['標籤'] || '').split(',').map(t => t.trim()).filter(Boolean);
-    card.innerHTML = `
-      <div class="quote-mark">"</div>
-      <h3>${highlightText(item['標題'] || '（未命名見證）', searchKeyword)}</h3>
-      <div class="snippet">${highlightText(item['見證文字'] || '', searchKeyword)}</div>
-      <div class="tags-row">${tags.map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('')}</div>
-      <div class="meta-row"><span>${escapeHtml(item['見證者名字'] || '匿名')}</span><span>${escapeHtml(item['新增日期'] || '')}</span></div>
-    `;
-    card.onclick = () => openDetail(item);
-    grid.appendChild(card);
-  });
-}
+/* 1. 雜誌感 Hero 頂部區（融合兩站優點） */
+.hero{background:linear-gradient(135deg,var(--tag),var(--card) 65%);border:1px solid var(--line);border-radius:24px;padding:30px 32px;margin-bottom:18px;box-shadow:0 6px 24px rgba(44,36,32,.04)}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.eyebrow-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.eyebrow{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.12em}
+.date-pill{background:var(--ink);color:var(--bg);font-size:11px;font-weight:700;padding:2px 10px;border-radius:999px;letter-spacing:.05em}
+.hero h1{font-family:"Noto Serif TC","Songti TC",serif;font-size:clamp(26px,5vw,40px);margin:8px 0 6px;letter-spacing:.03em;line-height:1.25}
+.lead{color:var(--sub);margin:0;max-width:680px;font-size:15px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.stat-pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 14px;font-size:13px;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
 
-function escapeHtml(str){
-  return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-}
+.theme-btn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 15px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.theme-btn:hover{border-color:var(--accent)}
 
-// 把符合搜尋關鍵字的文字用 <mark> 包起來，方便在卡片上快速掃到重點
-function highlightText(text, keyword){
-  const escaped = escapeHtml(text);
-  if (!keyword) return escaped;
-  const safeKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return escaped.replace(new RegExp(safeKeyword, 'gi'), m => `<mark>${m}</mark>`);
-}
+/* 區塊卡片容器 */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 24px;margin:18px 0;box-shadow:0 4px 16px rgba(44,36,32,.03)}
+.sec-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.sec-title-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sec-badge{background:var(--accent);color:#fff;font-size:12px;font-weight:700;padding:2px 10px;border-radius:6px;letter-spacing:.04em}
+.st{font-size:19px;font-weight:900;margin:0;letter-spacing:.02em}
+.hint{color:var(--sub);font-size:14px;margin:0 0 12px}
+.smallbtn{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:6px 13px;font-size:13px;font-weight:700;cursor:pointer}
+.smallbtn:hover{border-color:var(--accent)}
+.lnk{background:none;border:0;color:var(--sub);text-decoration:underline;cursor:pointer;font-size:14px;padding:4px}
 
-/*************** 詳細內容 modal ***************/
-function openDetail(item){
-  const modal = document.getElementById('detailModal');
-  const tags = (item['標籤'] || '').split(',').map(t => t.trim()).filter(Boolean);
-  const rawShots = (item['截圖連結'] || '').split(',').map(s => s.trim()).filter(Boolean);
+/* 2. 近期更新精選網格（支援圖片與影片縮圖） */
+.recent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:14px}
+.rcard{background:var(--bg);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s}
+.rcard:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 20px rgba(44,36,32,.08)}
+.rcard-media{aspect-ratio:16/9;background:linear-gradient(135deg,var(--ph1),var(--ph2));position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--sub);font-size:13px}
+.rcard-media img{width:100%;height:100%;object-fit:cover;display:block}
+.rcard-media.is-vid::after{content:"▶";position:absolute;width:40px;height:40px;border-radius:50%;background:rgba(181,74,58,.9);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.rcard-body{padding:14px;display:flex;flex-direction:column;justify-content:space-between;flex:1}
+.rcard-top{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px}
+.badge-new{background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px}
+.rcard-date{font-size:12px;color:var(--sub)}
+.rcard h4{margin:0 0 6px;font-size:15px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rcard p{margin:0 0 10px;font-size:13px;color:var(--sub);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rcard-tag{font-size:12px;color:var(--tagink);background:var(--tag);display:inline-block;padding:2px 9px;border-radius:6px;align-self:flex-start;font-weight:700}
 
-  modal.innerHTML = `
-    <button class="close-btn" onclick="closeModal()">&times;</button>
-    <h2>${escapeHtml(item['標題'] || '（未命名見證）')}</h2>
-    <div class="modal-meta">${escapeHtml(item['見證者名字'] || '匿名')} · ${escapeHtml(item['新增日期'] || '')}</div>
-    <div class="tags-row" style="margin-bottom:14px;">${tags.map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('')}</div>
-    <div class="content-text">${linkify(item['見證文字'] || '')}</div>
-    ${rawShots.length ? `<div class="shots">${rawShots.map(u => {
-      const id = extractDriveId_(u);
-      if (!id) {
-        return `<span class="shot-item"><a href="${escapeHtml(u)}" target="_blank" class="source-link" style="display:inline-flex;align-items:center;height:100%;">⚠️ 這張截圖連結格式有誤（原始內容：${escapeHtml(u)}）</a></span>`;
-      }
-      return `<span class="shot-item"><img class="shot-img" data-drive-url="${escapeHtml(u)}" onclick="openImageFull(this)"></span>`;
-    }).join('')}</div>` : ''}
-    ${item['原始出處網址'] ? `<a class="source-link" href="${escapeHtml(item['原始出處網址'])}" target="_blank">查看原始出處 →</a>` : ''}
-    ${item['備註'] ? `<div style="margin-top:14px;font-size:13px;color:var(--ink-soft);">備註：${escapeHtml(item['備註'])}</div>` : ''}
-    <div class="quick-actions">
-      <button type="button" class="link-btn" onclick="copyTestimonyText('${item['ID']}')">📋 複製見證文字</button>
-      <button type="button" class="link-btn" onclick="copyTestimonyLink('${item['ID']}')">🔗 複製連結</button>
-    </div>
-    ${authToken ? `
-      <div class="admin-actions">
-        <button class="btn-primary" style="background:var(--accent);" onclick="openEditDrawer('${item['ID']}')">編輯這筆見證</button>
-        <button class="btn-primary" style="background:var(--danger);margin-top:8px;" onclick="deleteItem('${item['ID']}')">刪除這筆見證</button>
-      </div>` : ''}
-  `;
-  document.getElementById('detailOverlay').classList.add('open');
-  setUrlId(item['ID']);
+/* 3. 熱門話題排行條（程風新竹數據亮點風格） */
+.hot-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.hot-lbl{font-size:13px;font-weight:700;color:var(--sub)}
+.hot-chip{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:4px 12px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s}
+.hot-chip:hover{border-color:var(--accent);background:var(--accent-soft)}
+.hot-chip b{color:var(--accent)}
 
-  modal.querySelectorAll('.shot-img').forEach(img => loadProxyImage(img, img.dataset.driveUrl));
-}
-function closeModal(){
-  document.getElementById('detailOverlay').classList.remove('open');
-  clearUrlId();
-}
+/* 4. 搜尋與雙層篩選器 */
+#q{width:100%;padding:11px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg);font-size:15px}
+.catgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.cat{text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:11px 13px;cursor:pointer;display:flex;flex-direction:column;gap:2px;transition:all .15s}
+.cat:hover{border-color:var(--accent)}
+.cat b{font-size:15px}.cat small{color:var(--sub);font-size:12px}
+.cat[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.cat[aria-pressed="true"] small{color:var(--bg)}
+.pillrow{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 15px;font-size:14px;font-weight:600;cursor:pointer}
+.pill[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
 
-// 從 Drive 分享連結中取出檔案 ID，取不到就回傳 null
-function extractDriveId_(url){
-  const match = (url || '').match(/[-\w]{25,}/);
-  return match ? match[0] : null;
-}
+/* 5. 內容類型頁籤（全部 / 健康見證 / 事業見證 / 影音精選） */
+.typetabs{display:flex;gap:8px;flex-wrap:wrap;border-bottom:2px solid var(--line);padding-bottom:14px;margin:8px 0 18px}
+.tt{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 16px;font-weight:700;cursor:pointer;font-size:14px}
+.tt[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tt small{font-weight:400;opacity:.8;margin-left:5px}
 
-// 非同步向 Apps Script 要圖片的 Base64 資料，組成 data URI 塞進 <img>
-function loadProxyImage(imgEl, driveUrl){
-  const id = extractDriveId_(driveUrl);
-  if (!id) { handleImgError(imgEl, driveUrl); return; }
-  fetch(`${SCRIPT_URL}?action=image&id=${id}`)
-    .then(r => r.json())
-    .then(res => {
-      if (res.success) {
-        imgEl.src = `data:${res.mimeType};base64,${res.base64}`;
-      } else {
-        handleImgError(imgEl, driveUrl, res.message);
-      }
-    })
-    .catch(() => handleImgError(imgEl, driveUrl));
-}
+/* 6. 影音精選專區（16:9 縮圖卡片牆） */
+.vid-showcase{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px}
+.vcard{background:var(--bg);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,border-color .15s}
+.vcard:hover{transform:translateY(-2px);border-color:var(--accent)}
+.vthumb-box{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,var(--ph1),var(--ph2));overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.vthumb-box img{width:100%;height:100%;object-fit:cover;display:block}
+.vplay-overlay{position:absolute;inset:0;background:rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;transition:background .15s}
+.vcard:hover .vplay-overlay{background:rgba(0,0,0,.4)}
+.vplay-btn{width:48px;height:48px;border-radius:50%;background:var(--vid-badge);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.vplat-tag{position:absolute;top:10px;left:10px;background:rgba(20,18,16,.82);color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:6px}
+.vbody{padding:15px;display:flex;flex-direction:column;flex:1}
+.vbody h3{margin:4px 0 6px;font-size:16px;line-height:1.45}
+.vbody p{margin:0 0 10px;font-size:13px;color:var(--sub);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line}
+.vcard.open .vbody p{display:block;overflow:visible}
 
-// 點圖片放大：直接開新分頁顯示已經載入的圖片資料，不受 Drive 分享權限影響
-function openImageFull(imgEl){
-  if (imgEl.src && imgEl.src.startsWith('data:')) {
-    const w = window.open();
-    w.document.write(`<title>查看截圖</title><body style="margin:0;background:#111;"><img src="${imgEl.src}" style="max-width:100%;display:block;margin:0 auto;"></body>`);
-  }
-}
+/* 7. 文章見證卡片 */
+section.group-sec{margin-top:26px}
+section.group-sec h2{font-family:"Noto Serif TC","Songti TC",serif;font-size:22px;margin:0 0 14px;padding-left:12px;border-left:4px solid var(--accent)}
+section.group-sec h2 small{font-family:"Noto Sans TC",sans-serif;font-size:14px;color:var(--sub);font-weight:400;margin-left:8px}
 
-function handleImgError(imgEl, originalUrl, message){
-  const wrap = imgEl.parentElement;
-  wrap.innerHTML = `<a href="${originalUrl}" target="_blank" class="source-link" style="display:inline-flex;align-items:center;height:100%;">⚠️ 圖片載入失敗${message ? '：' + escapeHtml(message) : ''}，點此在雲端硬碟開啟</a>`;
-}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px}
+.top{display:grid;grid-template-columns:1fr 140px;gap:16px;align-items:start}
+.top.nothumb{grid-template-columns:1fr}
+.chead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.chead-left{display:flex;align-items:center;gap:8px}
+.ico{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;flex:none}
+.ico.post{background:#8A6B1E}.ico.video{background:var(--vid-badge)}.ico.biz{background:var(--biz-badge)}
+.ctype{font-size:13px;font-weight:700;color:var(--sub)}
+.meta{display:inline-block;background:var(--tag);color:var(--tagink);font-size:12px;font-weight:700;padding:2px 9px;border-radius:5px;margin:0 6px 6px 0}
+.card h3{margin:0 0 6px;font-size:18px;line-height:1.5}
+.txt{white-space:pre-line;margin:0;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.card.open .txt{display:block;overflow:visible}
 
-// 把純文字中的網址變成可點擊的超連結（先轉義避免 XSS，再處理網址）
-function linkify(text){
-  const escaped = escapeHtml(text);
-  return escaped.replace(/(https?:\/\/[^\s<]+)/g, url =>
-    `<a href="${url}" target="_blank" rel="noopener">${url}</a>`
-  );
-}
+/* 精簡短標籤膠囊 */
+.tags{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
+.tags span{font-size:12px;color:var(--tagink);background:var(--tag);border-radius:6px;padding:2px 10px;font-weight:700;cursor:pointer;transition:opacity .15s}
+.tags span:hover{opacity:.8}
 
-function copyTestimonyText(id){
-  const item = allData.find(d => String(d['ID']) === String(id));
-  if (!item) return;
-  copyToClipboard(item['見證文字'] || '', '已複製見證文字');
-}
-
-function copyTestimonyLink(id){
-  const url = `${location.origin}${location.pathname}?id=${id}`;
-  copyToClipboard(url, '已複製連結');
-}
-
-function copyToClipboard(text, successMsg){
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(() => showToast(successMsg)).catch(() => showToast('複製失敗，請手動選取文字', true));
-  } else {
-    showToast('這個瀏覽器不支援自動複製，請手動選取文字', true);
-  }
-}
-
-// 深連結：網址帶 ?id=xx 時，載入完成後自動開啟該筆見證
-function maybeOpenFromUrl(){
-  const params = new URLSearchParams(location.search);
-  const id = params.get('id');
-  if (!id) return;
-  const item = allData.find(d => String(d['ID']) === String(id));
-  if (item) openDetail(item);
-}
-
-function setUrlId(id){
-  const url = new URL(location.href);
-  url.searchParams.set('id', id);
-  history.replaceState(null, '', url);
-}
-function clearUrlId(){
-  const url = new URL(location.href);
-  url.searchParams.delete('id');
-  history.replaceState(null, '', url);
-}
-
-
-
-/*************** 登入 ***************/
-function updateLoginUI(){
-  const btn = document.getElementById('loginBtn');
-  if (authToken) {
-    btn.textContent = '＋ 新增見證';
-    btn.classList.add('active');
-  } else {
-    btn.textContent = '登入';
-    btn.classList.remove('active');
-  }
-}
-
-function doLogin(){
-  const password = document.getElementById('passwordInput').value;
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    headers: {'Content-Type':'text/plain'},
-    body: JSON.stringify({ action:'login', password })
-  }).then(r => r.json()).then(res => {
-    if (res.success) {
-      authToken = res.token;
-      sessionStorage.setItem('testimonyToken', authToken);
-      closeDrawers();
-      updateLoginUI();
-      showToast('登入成功');
-      render();
-    } else {
-      showToast(res.message || '登入失敗', true);
-    }
-  }).catch(() => showToast('連線失敗', true));
-}
-
-/*************** 新增見證表單 ***************/
-function renderTagPicker(){
-  const el = document.getElementById('tagPicker');
-  el.innerHTML = '';
-  ALL_TAGS.forEach(tag => {
-    const chip = document.createElement('span');
-    chip.className = 'chip';
-    chip.textContent = tag;
-    if (selectedFormTags.has(tag)) chip.classList.add('selected');
-    chip.onclick = () => {
-      if (selectedFormTags.has(tag)) selectedFormTags.delete(tag);
-      else selectedFormTags.add(tag);
-      renderTagPicker();
-    };
-    el.appendChild(chip);
-  });
-  populateCategorySelect(document.getElementById('newTagCategorySelect'));
-}
-
-// 把目前所有分類名稱填進一個 <select>，並加上「➕ 新增分類」選項
-function populateCategorySelect(selectEl, selected){
-  if (!selectEl) return;
-  const prevValue = selected || selectEl.value;
-  selectEl.innerHTML = '';
-  Object.keys(TAG_CATEGORIES).forEach(cat => {
-    const opt = document.createElement('option');
-    opt.value = cat;
-    opt.textContent = cat;
-    selectEl.appendChild(opt);
-  });
-  const newOpt = document.createElement('option');
-  newOpt.value = '__new__';
-  newOpt.textContent = '➕ 新增分類…';
-  selectEl.appendChild(newOpt);
-  if (prevValue && [...selectEl.options].some(o => o.value === prevValue)) {
-    selectEl.value = prevValue;
-  }
-}
-
-// 把標籤分類寫回後台；refetch=true 時會重新整個抓一次資料（用在管理面板，需要看到最新統計）
-function saveTagCategory(tag, category, refetch){
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    headers: {'Content-Type':'text/plain'},
-    body: JSON.stringify({ action:'updateTagCategory', token: authToken, tag, category })
-  }).then(r => r.json()).then(res => {
-    if (res.success) {
-      showToast(`「${tag}」已歸類到「${category}」`);
-      if (refetch) fetchData();
-    } else {
-      showToast(res.message || '更新標籤分類失敗', true);
-    }
-  }).catch(() => showToast('連線失敗', true));
-}
-
-// 標籤分類管理面板：列出所有標籤，每個都能直接改分類
-function renderTagManageDrawer(){
-  const el = document.getElementById('tagManageList');
-  el.innerHTML = '';
-  Object.entries(TAG_CATEGORIES).forEach(([cat, tags]) => {
-    const title = document.createElement('div');
-    title.className = 'tag-manage-cat-title';
-    title.textContent = cat;
-    el.appendChild(title);
-    tags.forEach(tag => {
-      const row = document.createElement('div');
-      row.className = 'tag-manage-row';
-      const name = document.createElement('span');
-      name.className = 'tag-name';
-      name.textContent = tag;
-      const select = document.createElement('select');
-      row.appendChild(name);
-      row.appendChild(select);
-      el.appendChild(row);
-      populateCategorySelect(select, cat);
-      select.addEventListener('change', () => {
-        let newCat = select.value;
-        if (newCat === '__new__') {
-          newCat = prompt('請輸入新的分類名稱：', '');
-          if (!newCat || !newCat.trim()) { populateCategorySelect(select, cat); return; }
-          newCat = newCat.trim();
-        }
-        saveTagCategory(tag, newCat, true);
-      });
-    });
-  });
-  populateCategorySelect(document.getElementById('manageNewTagCategorySelect'));
-}
-
-function handleFiles(fileList){
-  Array.from(fileList).forEach(file => {
-    if (!file.type.startsWith('image/')) return;
-    resizeImage(file, 1600, 0.8).then(({ base64, mimeType }) => {
-      const label = `截圖${uploadedFiles.length + 1}`;
-      uploadedFiles.push({ file, base64, mimeType, label });
-      renderFileList();
-    });
-  });
-}
-
-function resizeImage(file, maxWidth, quality){
-  return new Promise(resolve => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      const img = new Image();
-      img.onload = () => {
-        const scale = Math.min(1, maxWidth / img.width);
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width * scale;
-        canvas.height = img.height * scale;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        const dataUrl = canvas.toDataURL('image/jpeg', quality);
-        resolve({ base64: dataUrl.split(',')[1], mimeType: 'image/jpeg' });
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-function renderExistingImageList(){
-  const field = document.getElementById('existingImagesField');
-  const el = document.getElementById('existingImageList');
-  el.innerHTML = '';
-  if (!existingImages.length) { field.style.display = 'none'; return; }
-  field.style.display = 'block';
-  existingImages.forEach((url, i) => {
-    const row = document.createElement('div');
-    row.className = 'existing-img-row';
-    const id = extractDriveId_(url);
-    row.innerHTML = `
-      ${id ? `<img class="shot-img" data-drive-url="${escapeHtml(url)}">` : `<span style="font-size:11px;color:var(--danger);">格式有誤</span>`}
-      <span style="font-size:12px;color:var(--ink-soft);">截圖 ${i + 1}</span>
-      <span class="remove-btn">移除</span>
-    `;
-    row.querySelector('.remove-btn').addEventListener('click', () => {
-      existingImages.splice(i, 1);
-      renderExistingImageList();
-    });
-    el.appendChild(row);
-    if (id) loadProxyImage(row.querySelector('.shot-img'), url);
-  });
-}
-
-function renderFileList(){
-  const el = document.getElementById('fileList');
-  el.innerHTML = '';
-  uploadedFiles.forEach((f, i) => {
-    const row = document.createElement('div');
-    row.className = 'file-row';
-    row.innerHTML = `
-      <img src="data:${f.mimeType};base64,${f.base64}">
-      <input type="text" value="${escapeHtml(f.label)}" placeholder="描述文字（會加在編號後面當檔名）">
-      <span style="cursor:pointer;color:var(--ink-soft);" title="移除">&times;</span>
-    `;
-    row.querySelector('input').addEventListener('input', e => { f.label = e.target.value; });
-    row.querySelector('span').addEventListener('click', () => { uploadedFiles.splice(i,1); renderFileList(); });
-    el.appendChild(row);
-  });
-}
-
-function submitTestimony(){
-  const title = document.getElementById('f_title').value.trim();
-  const testifierName = document.getElementById('f_name').value.trim();
-  const content = document.getElementById('f_content').value.trim();
-  const sourceUrl = document.getElementById('f_source').value.trim();
-  const note = document.getElementById('f_note').value.trim();
-
-  if (!content) { showToast('請至少填寫見證文字', true); return; }
-
-  const duplicate = checkDuplicateSource();
-  if (duplicate) {
-    const proceed = confirm(`這個出處網址已經收錄過了（標題：${duplicate['標題'] || '未命名見證'}），確定要繼續新增這一筆嗎？`);
-    if (!proceed) return;
-  }
-
-  const isEdit = !!editingId;
-  const btn = document.getElementById('submitAdd');
-  btn.disabled = true; btn.textContent = isEdit ? '更新中…' : '上傳中…';
-
-  const payload = {
-    action: isEdit ? 'update' : 'add',
-    token: authToken,
-    title, testifierName, content, sourceUrl, note,
-    tags: [...selectedFormTags],
-    images: uploadedFiles.map(f => ({ base64:f.base64, mimeType:f.mimeType, label:f.label }))
-  };
-  if (isEdit) {
-    payload.id = editingId;
-    payload.existingImages = existingImages;
-  }
-
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    headers: {'Content-Type':'text/plain'},
-    body: JSON.stringify(payload)
-  }).then(r => r.json()).then(res => {
-    btn.disabled = false; btn.textContent = isEdit ? '更新見證資料' : '送出並更新到資料庫';
-    if (res.success) {
-      showToast(isEdit ? '更新成功！' : '新增成功！');
-      resetForm();
-      closeDrawers();
-      fetchData();
-    } else {
-      showToast(res.message || (isEdit ? '更新失敗' : '新增失敗'), true);
-    }
-  }).catch(() => {
-    btn.disabled = false; btn.textContent = isEdit ? '更新見證資料' : '送出並更新到資料庫';
-    showToast('連線失敗', true);
-  });
-}
-
-function resetForm(){
-  ['f_title','f_name','f_content','f_source','f_note'].forEach(id => document.getElementById(id).value = '');
-  selectedFormTags.clear();
-  uploadedFiles = [];
-  existingImages = [];
-  editingId = null;
-  document.getElementById('addDrawerTitle').textContent = '新增見證';
-  document.getElementById('submitAdd').textContent = '送出並更新到資料庫';
-  document.getElementById('uploadLabel').textContent = '截圖上傳（可多張，上傳後可自訂每張描述文字，檔名會自動變成「編號_描述文字」方便之後對照）';
-  renderTagPicker();
-  renderFileList();
-  renderExistingImageList();
-  document.getElementById('duplicateWarning').style.display = 'none';
-}
-
-function deleteItem(id){
-  if (!confirm('確定要刪除這筆見證嗎？截圖不會自動從 Drive 刪除，可以之後自行清理。')) return;
-  fetch(SCRIPT_URL, {
-    method:'POST',
-    headers:{'Content-Type':'text/plain'},
-    body: JSON.stringify({ action:'delete', token: authToken, id })
-  }).then(r=>r.json()).then(res => {
-    if (res.success) {
-      showToast('已刪除');
-      closeModal();
-      fetchData();
-    } else {
-      showToast(res.message || '刪除失敗', true);
-    }
-  });
-}
-
-/*************** 抽屜 / toast 共用 ***************/
-function openDrawer(id){
-  document.getElementById('drawerOverlay').classList.add('open');
-  document.getElementById(id).classList.add('open');
-}
-function openAddDrawer(){
-  resetForm();
-  openDrawer('addDrawer');
-}
-
-function openEditDrawer(id){
-  const item = allData.find(d => String(d['ID']) === String(id));
-  if (!item) { showToast('找不到這筆資料', true); return; }
-
-  closeModal();
-  resetForm();
-
-  editingId = id;
-  document.getElementById('f_title').value = item['標題'] || '';
-  document.getElementById('f_name').value = item['見證者名字'] || '';
-  document.getElementById('f_content').value = item['見證文字'] || '';
-  document.getElementById('f_source').value = item['原始出處網址'] || '';
-  document.getElementById('f_note').value = item['備註'] || '';
-
-  selectedFormTags = new Set((item['標籤'] || '').split(',').map(t => t.trim()).filter(Boolean));
-  existingImages = (item['截圖連結'] || '').split(',').map(s => s.trim()).filter(Boolean);
-
-  document.getElementById('addDrawerTitle').textContent = '編輯見證';
-  document.getElementById('submitAdd').textContent = '更新見證資料';
-  document.getElementById('uploadLabel').textContent = '新增截圖（原有的截圖列在上面，可以移除；這裡上傳的是額外要新增的）';
-
-  renderTagPicker();
-  renderExistingImageList();
-  openDrawer('addDrawer');
-}
-function closeDrawers(){
-  document.getElementById('drawerOverlay').classList.remove('open');
-  document.getElementById('loginDrawer').classList.remove('open');
-  document.getElementById('addDrawer').classList.remove('open');
-  document.getElementById('tagManageDrawer').classList.remove('open');
-}
-function showToast(msg, isError){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast' + (isError ? ' error' : '');
-  t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 2600);
-}
-</script>
-</body>
-</html>
+.th{aspect-ratio:
