@@ -49,7 +49,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 
 .wrap{max-width:1080px;margin:0 auto;padding:18px 18px 72px}
 
-/* ==================== Hero 區塊 ==================== */
 .hero{background:linear-gradient(135deg,var(--tag),var(--card) 68%);border:1px solid var(--line);border-radius:24px;padding:28px 30px;margin-bottom:14px;box-shadow:0 6px 24px rgba(44,36,32,.04)}
 .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
 .eyebrow-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -61,7 +60,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .stat-pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 13px;font-size:13px;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;gap:5px}
 .theme-btn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex:none}
 
-/* ==================== 5. 置頂固定精簡「搜尋＋主題篩選」列 ==================== */
 .sticky-bar{
   position:sticky;top:0;z-index:20;
   background:rgba(250,247,242,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
@@ -90,22 +88,17 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .tt[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .tt small{font-weight:400;opacity:.8;margin-left:4px;pointer-events:none}
 
-/* ==================== 2. 三色交錯「換場」區塊樣式 ==================== */
 .stage-sec{border-radius:24px;padding:24px 22px;margin:20px 0;border:1px solid var(--line);transition:background .2s}
-
-/* 換場 A：淡象牙白 */
 .stage-ivory{background:var(--surface-ivory)}
 .stage-ivory .sec-title{font-family:"Noto Serif TC",serif;font-size:23px;color:var(--ink);border-left:5px solid var(--accent);padding-left:12px}
 .stage-ivory .sec-badge{background:var(--accent);color:#fff}
 
-/* 換場 B：淡金暖調 */
 .stage-gold{background:var(--surface-gold);border-color:rgba(184,146,10,.35)}
 .stage-gold .sec-title{font-family:"Noto Serif TC",serif;font-size:24px;color:#5C4608;border-left:5px solid #9A7605;padding-left:12px}
 :root[data-theme="dark"] .stage-gold .sec-title{color:#F5E6B8}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stage-gold .sec-title{color:#F5E6B8}}
 .stage-gold .sec-badge{background:#8A6B1E;color:#fff}
 
-/* 換場 C：深咖啡質感（重點影音與精選區） */
 .stage-coffee{background:var(--surface-coffee);color:#F5F0E8;border-color:#4A3C31}
 .stage-coffee .sec-title{font-family:"Noto Serif TC",serif;font-size:25px;color:#F7E5B2;border-left:5px solid #D4AD3C;padding-left:12px}
 .stage-coffee .sec-sub{color:#C8B9A6}
@@ -118,7 +111,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .sec-title{margin:0;line-height:1.3}
 .sec-sub{font-size:14px;color:var(--sub);font-weight:500}
 
-/* ==================== 1. 影音橫向滑動牆 (Horizontal Snap Carousel) ==================== */
 .h-scroll{
   display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
   padding:4px 2px 12px;-webkit-overflow-scrolling:touch;scrollbar-width:thin
@@ -126,7 +118,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .h-scroll::-webkit-scrollbar{height:6px}
 .h-scroll::-webkit-scrollbar-thumb{background:rgba(184,146,10,.35);border-radius:999px}
 
-/* YouTube 橫向卡片 */
 .yt-card{
   flex:0 0 min(320px,82vw);scroll-snap-align:start;
   background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:18px;
@@ -142,7 +133,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .yt-body h3{margin:0 0 6px;font-size:16.5px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .yt-body p{margin:0 0 10px;font-size:14px;line-height:1.6;color:var(--sub);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 
-/* IG Reels 橫向卡片 */
 .ig-card{
   flex:0 0 min(210px,56vw);scroll-snap-align:start;
   background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:18px;
@@ -158,7 +148,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .ig-overlay-title{position:absolute;bottom:10px;left:11px;right:11px;z-index:2;color:#fff;font-size:14.5px;font-weight:700;line-height:1.4;text-align:left;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .ig-body{padding:11px 12px;display:flex;flex-direction:column;flex:1;min-width:0}
 
-/* 近期更新橫向小卡 */
 .rcard{
   flex:0 0 min(260px,76vw);scroll-snap-align:start;
   background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:16px;
@@ -171,7 +160,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .rcard h4{margin:0 0 6px;font-size:16px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .rcard p{margin:0 0 10px;font-size:14px;color:var(--sub);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 
-/* ==================== 6 & 11. 圖文與事業卡片（重點引言＋下方全寬照片） ==================== */
 .post-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(460px,100%),1fr));gap:16px}
 .card{
   background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:18px;
@@ -188,7 +176,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 
 .card h3{margin:0 0 10px;font-size:19px;line-height:1.45;overflow-wrap:anywhere;word-break:break-word}
 
-/* 重點引言區塊 */
 .pull-quote{
   margin:0 0 12px;padding:10px 14px;
   background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;
@@ -201,7 +188,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   overflow-wrap:anywhere;word-break:break-word
 }
 
-/* 卡片底部全寬照片預覽列 */
 .card-photos{display:flex;gap:8px;margin-top:14px;overflow:hidden}
 .card-photo-item{position:relative;flex:1 1 0;max-width:140px;aspect-ratio:4/3;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--ph2)}
 .card-photo-item img{width:100%;height:100%;object-fit:cover;display:block}
@@ -217,7 +203,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .loader{text-align:center;padding:48px 20px;color:var(--sub);font-size:16px}
 .note{margin:18px 0;padding:14px 16px;border:1px dashed var(--accent);border-radius:12px;font-size:13.5px;line-height:1.7;color:var(--sub)}
 
-/* ==================== 3. 彈出式閱讀視窗 (Reader Modal) ==================== */
 .overlay{position:fixed;inset:0;background:rgba(15,12,10,.82);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:40;padding:16px}
 .overlay.on{display:flex}
 
@@ -242,13 +227,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .reader-meta-box{margin-top:16px;padding:12px 15px;background:var(--bg);border-radius:12px;font-size:14.5px;color:var(--sub)}
 .vlink-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:10px;background:var(--yt-color);color:#fff;text-decoration:none;font-size:15px;font-weight:700;margin-bottom:14px}
 
-/* ==================== 10. 多張照片燈箱（左右滑動＋長按存圖） ==================== */
 #lb{z-index:50;flex-direction:column;gap:12px;user-select:none}
 .lb-top{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);left:18px;right:18px;display:flex;justify-content:space-between;align-items:center;z-index:52}
 .lb-counter{background:rgba(0,0,0,.65);color:#fff;padding:5px 13px;border-radius:999px;font-size:14px;font-weight:700}
 #x{padding:7px 16px;border-radius:999px;border:0;background:#fff;color:#222;font-weight:700;cursor:pointer}
 .lb-stage{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%}
-/* 保持原生 img 可長按存圖 */
 #bigImg{max-width:min(920px,94vw);max-height:78vh;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.6);object-fit:contain;-webkit-touch-callout:default}
 .lb-nav{
   position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;
@@ -259,7 +242,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 #lbNext{right:12px}
 .lb-tip{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);color:rgba(255,255,255,.8);font-size:13px;background:rgba(0,0,0,.55);padding:4px 14px;border-radius:999px}
 
-/* ==================== 管理員編輯視窗 ==================== */
 .mbox{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:20px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;padding:22px}
 .mbox h3{margin:0 0 14px;font-size:19px}
 .mfield{margin-bottom:14px}
@@ -292,7 +274,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     <div class="hero-top">
       <div>
         <div class="eyebrow-row">
-          <span class="eyebrow" id="eyebrowTxt">本資料庫由真善美成功團隊夥伴們共同建構維護</span>
+          <span class="eyebrow" id="eyebrowTxt">NEFFUL ・ 超新星會員專區</span>
           <span class="date-pill" id="liveBadge">資料庫即時同步</span>
         </div>
         <h1 id="pageTitle">負離子見證與故事庫</h1>
@@ -303,7 +285,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     <div class="stats" id="stats"></div>
   </header>
 
-  <!-- 5. 置頂固定精簡「搜尋＋主題篩選」列 -->
   <nav class="sticky-bar" aria-label="快速搜尋與主題篩選">
     <div class="sb-row">
       <div class="sb-search">
@@ -319,7 +300,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     <div class="typetabs" id="cats"></div>
   </nav>
 
-  <!-- 主內容區塊（三色交錯換場） -->
   <main id="out">
     <div class="loader">⏳ 正在從資料庫載入最新見證、影音縮圖與故事，請稍候...</div>
   </main>
@@ -327,7 +307,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   <div class="note">以上為使用者個人經驗與生活體驗分享，感受因人而異，不代表醫療效能，亦不能取代醫師或專業醫療人員之診斷與建議。</div>
 </div>
 
-<!-- 3. 彈出式閱讀視窗 (Reader Modal) -->
 <div class="overlay" id="readerModal" role="dialog" aria-modal="true" aria-label="完整故事閱讀">
   <div class="reader-box">
     <div class="reader-head">
@@ -348,7 +327,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   </div>
 </div>
 
-<!-- 10. 多張照片燈箱（支援左右滑動＋長按存圖） -->
 <div class="overlay" id="lb" role="dialog" aria-modal="true" aria-label="放大檢視照片">
   <div class="lb-top">
     <span class="lb-counter" id="lbCounter">1 / 1</span>
@@ -362,7 +340,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   <div class="lb-tip">左右滑動切換照片 · 長按圖片可儲存下載</div>
 </div>
 
-<!-- 管理員編輯視窗（支援修改標題、原始內文、標籤與合規版） -->
 <div class="overlay" id="modal" role="dialog" aria-modal="true" aria-label="編輯見證與標籤">
   <div class="mbox">
     <h3>✎ 編輯見證內容與標籤</h3>
@@ -406,8 +383,8 @@ var TAG_TREE = {};
 var CATS = ["全部", "YouTube 影音", "IG Reels 短影音", "圖文見證", "事業故事"];
 var cur = "全部", grp = "", sub = "", kw = "", LIM = 4, shown = {}, editingRow = null;
 
-// 燈箱狀態
 var LB_LIST = [], LB_IDX = 0, touchStartX = 0;
+var IMG_CACHE = {};
 
 var EMO = {
   "睡眠":"😴","頭面五官":"👁️","肩頸腰背":"🦴","四肢與關節":"🦵",
@@ -431,7 +408,6 @@ function linkifyText(s){
   });
 }
 
-// 擷取文章第一句作為重點引言
 function extractQuote(r){
   var text = String(r.x || "").trim();
   if(!text) return "";
@@ -445,7 +421,6 @@ function extractQuote(r){
   return candidate + (candidate.length < first.length ? "⋯" : "");
 }
 
-/* ==================== 深淺色手動切換 ==================== */
 (function initTheme(){
   var saved = localStorage.getItem("nefful_theme");
   var btn = document.getElementById("themeToggle");
@@ -471,7 +446,6 @@ function extractQuote(r){
   });
 })();
 
-/* ==================== 模式初始化 ==================== */
 if(APP_MODE === "sleep"){
   CATS = ["全部", "YouTube 影音", "IG Reels 短影音", "圖文見證"];
   document.getElementById("eyebrowTxt").textContent = "NEFFUL ・ 睡眠與生活體驗專區";
@@ -524,7 +498,6 @@ function renderShortTags(gArr){
   }).join("") + '</div>';
 }
 
-/* ==================== 卡片樣板（點擊一律開啟閱讀視窗） ==================== */
 function ytCard(r){
   var thumbHtml = r.vThumb
     ? '<img src="' + esc(r.vThumb) + '" referrerpolicy="no-referrer" loading="lazy" alt="' + esc(r.t) + '">'
@@ -568,7 +541,6 @@ function postCard(r){
   var isBiz = r.c === "事業見證";
   var quote = extractQuote(r);
 
-  // 底部照片列（最多預覽 3 張，超過顯示 +N）
   var photosHtml = "";
   if(r.p && r.p.length > 0){
     var showImgs = r.p.slice(0, 3);
@@ -601,19 +573,16 @@ function postCard(r){
   '</article>';
 }
 
-/* ==================== 3. 開啟彈出式閱讀視窗 ==================== */
 function openReader(id){
   var r = DATA.find(function(x){ return String(x.id) === String(id); });
   if(!r) return;
 
-  var isBiz = r.c === "事業見證";
   var badges = '<span class="meta">' + esc(r.c) + '</span>';
   if(r.sharer) badges += '<span class="meta">分享者：' + esc(r.sharer) + '</span>';
   document.getElementById("rBadges").innerHTML = badges;
   document.getElementById("rAdminSlot").innerHTML = adminControls(r);
   document.getElementById("rTitle").textContent = r.t;
 
-  // 若有影片連結（包含事業故事裡的影片）
   var vidHtml = "";
   if(r.u){
     var btnLabel = (r.vType === "IG") ? "▶ 前往 Instagram 觀看短影音" : "▶ 觀看完整影片";
@@ -624,7 +593,6 @@ function openReader(id){
 
   document.getElementById("rBody").innerHTML = linkifyText(r.x);
 
-  // 多圖相簿（點擊開啟可左右滑動燈箱）
   var pBox = document.getElementById("rPhotos");
   if(r.p && r.p.length > 0){
     pBox.style.display = "grid";
@@ -658,7 +626,6 @@ function openReader(id){
   document.getElementById("readerModal").classList.add("on");
 }
 
-/* ==================== 10. 多張照片燈箱控制（左右滑動＋按鈕＋鍵盤） ==================== */
 function openLightbox(storyId, startIdx){
   var r = DATA.find(function(x){ return String(x.id) === String(storyId); });
   if(!r || !r.p || !r.p.length) return;
@@ -671,6 +638,9 @@ function openLightbox(storyId, startIdx){
 function updateLightboxView(){
   if(!LB_LIST.length) return;
   var img = document.getElementById("bigImg");
+  img.style.visibility = "visible";
+  delete img.dataset.retry;
+  delete img.dataset.proxied;
   img.src = LB_LIST[LB_IDX].full;
   document.getElementById("lbCounter").textContent = (LB_IDX + 1) + " / " + LB_LIST.length;
   var showNav = LB_LIST.length > 1 ? "flex" : "none";
@@ -684,7 +654,6 @@ function stepLightbox(delta){
   updateLightboxView();
 }
 
-// 手指左右滑動偵測（超過 40px 才切換，完全不干擾長按下載圖片）
 var lbStage = document.getElementById("lbStage");
 lbStage.addEventListener("touchstart", function(e){
   if(e.touches && e.touches.length === 1) touchStartX = e.touches[0].clientX;
@@ -698,10 +667,8 @@ lbStage.addEventListener("touchend", function(e){
   }
 }, {passive: true});
 
-/* ==================== 13. 動態精選（混合不同類型，每次換新感） ==================== */
 function buildDynamicHighlights(){
   if(!DATA.length){ RECENT_PICKS = []; return; }
-  // 混合圖文、事業、影音各挑最新或隨機精選，避免全被最後4支影片佔滿
   var posts = DATA.filter(function(r){ return getSectionType(r) === "圖文見證"; });
   var biz = DATA.filter(function(r){ return getSectionType(r) === "事業故事"; });
   var vids = DATA.filter(function(r){ return r.k === "video"; });
@@ -712,7 +679,6 @@ function buildDynamicHighlights(){
   if(vids[0]) pool.push(vids[0]);
   if(posts[1]) pool.push(posts[1]);
 
-  // 補滿 4 則
   for(var i = 0; i < DATA.length && pool.length < 4; i++){
     if(pool.indexOf(DATA[i]) === -1) pool.push(DATA[i]);
   }
@@ -725,13 +691,11 @@ function applyGroups(groups){
   ORDER = groups.map(function(x){ return x.g; });
 }
 
-/* ==================== 主渲染引擎（含三色交錯換場） ==================== */
 function render(){
   var stageThemes = ["stage-ivory", "stage-coffee", "stage-gold"];
   var stageIdx = 0;
   var h = "";
 
-  // 0. 無篩選條件時，頂部顯示「精選焦點（橫向滑動）」
   var isFiltering = Boolean(grp || sub || kw || cur !== "全部");
   if(!isFiltering && RECENT_PICKS.length){
     h += '<section class="stage-sec ' + stageThemes[stageIdx++ % 3] + '">' +
@@ -750,7 +714,6 @@ function render(){
       }).join("") + '</div></section>';
   }
 
-  // 1. 各大分類區塊（三色交錯換場 + 預設 4 則）
   var activeSections = CATS.slice(1);
   activeSections.forEach(function(secName){
     var rows = DATA.filter(function(r){ return getSectionType(r) === secName && match(r); });
@@ -787,7 +750,6 @@ function render(){
   }
   document.getElementById("out").innerHTML = h;
 
-  // 更新置頂篩選列狀態
   var cn = {"全部": DATA.filter(function(r){ return match(r, true); }).length};
   activeSections.forEach(function(secName){
     cn[secName] = DATA.filter(function(r){ return getSectionType(r) === secName && match(r, true); }).length;
@@ -797,7 +759,6 @@ function render(){
     return '<button class="tt" aria-pressed="' + (c === cur) + '" data-c="' + esc(c) + '">' + TABI[c] + esc(c) + '<small>' + cn[c] + '</small></button>';
   }).join("");
 
-  // 統計大類與子類數量
   var gs = {}, sb = {};
   DATA.forEach(function(r){
     var seen = {};
@@ -830,7 +791,6 @@ function render(){
       }).join("")
     : "";
 
-  // Hero 數據膠囊
   var ytCnt = DATA.filter(function(r){ return getSectionType(r) === "YouTube 影音"; }).length;
   var igCnt = DATA.filter(function(r){ return getSectionType(r) === "IG Reels 短影音"; }).length;
   var postCnt = DATA.filter(function(r){ return getSectionType(r) === "圖文見證"; }).length;
@@ -845,18 +805,15 @@ function render(){
   ].join("");
 }
 
-/* ==================== 事件監聽 ==================== */
 document.addEventListener("click", function(e){
   var b;
 
-  // 1. 優先處理編輯按鈕（避免觸發開啟閱讀視窗）
   if(b = e.target.closest("[data-edit]")){
     e.stopPropagation();
     openAdminEditor(Number(b.dataset.edit));
     return;
   }
 
-  // 2. 優先處理標籤膠囊篩選
   if(b = e.target.closest("[data-grp]")){
     e.stopPropagation();
     document.getElementById("readerModal").classList.remove("on");
@@ -868,16 +825,13 @@ document.addEventListener("click", function(e){
     return;
   }
 
-  // 3. 點擊照片開啟多圖燈箱
   if(b = e.target.closest("[data-lb-story]")){
     e.stopPropagation();
     openLightbox(b.dataset.lbStory, Number(b.dataset.lbIdx || 0));
     return;
   }
 
-  // 4. 點擊卡片開啟彈出式閱讀視窗
   if(b = e.target.closest("[data-open]")){
-    // 若點擊的是卡片內的超連結則直接外開
     if(e.target.closest("a")) return;
     openReader(b.dataset.open);
     return;
@@ -909,13 +863,11 @@ document.addEventListener("click", function(e){
     return;
   }
 
-  // 關閉閱讀視窗
   if(e.target.id === "rClose" || e.target.id === "readerModal"){
     document.getElementById("readerModal").classList.remove("on");
     return;
   }
 
-  // 燈箱控制
   if(e.target.id === "lbPrev"){ stepLightbox(-1); return; }
   if(e.target.id === "lbNext"){ stepLightbox(1); return; }
   if(e.target.id === "x" || e.target.id === "lb" || e.target.id === "lbStage"){
@@ -923,7 +875,6 @@ document.addEventListener("click", function(e){
     return;
   }
 
-  // 管理員編輯標籤選擇
   if(b = e.target.closest("[data-picktag]")){
     var tagVal = b.getAttribute("data-picktag");
     var inp = document.getElementById("mTags");
@@ -996,7 +947,6 @@ document.getElementById("mSave").addEventListener("click", function(){
   });
 });
 
-// 置頂篩選列事件
 document.getElementById("grpSelect").addEventListener("change", function(e){
   grp = e.target.value;
   sub = "";
@@ -1018,7 +968,6 @@ clearQBtn.addEventListener("click", function(){
   render();
 });
 
-// 鍵盤支援（ESC 關閉視窗、左右鍵切換燈箱照片）
 document.addEventListener("keydown", function(e){
   var lbOn = document.getElementById("lb").classList.contains("on");
   if(lbOn){
@@ -1033,8 +982,7 @@ document.addEventListener("keydown", function(e){
   }
 });
 
-var IMG_CACHE = {};
-
+// 三段式圖片換線＋Apps Script 後端代理接手
 document.addEventListener("error", function(e){
   var t = e.target;
   if(!t || t.tagName !== "IMG") return;
@@ -1042,39 +990,39 @@ document.addEventListener("error", function(e){
   var src = t.getAttribute("src") || "";
   if(src.indexOf("data:") === 0) return;
 
-  // 擷取 Google Drive 檔案 ID
+  var step = Number(t.dataset.retry || 0);
   var m = src.match(/\/d\/([a-zA-Z0-9_-]+)/) || src.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-  if(m && m[1] && !t.dataset.proxied){
-    var fid = m[1];
-    t.dataset.proxied = "1";
 
-    // 若快取已有此圖，直接套用
-    if(IMG_CACHE[fid]){
-      t.src = IMG_CACHE[fid];
+  if(m && m[1]){
+    var fid = m[1];
+    if(step === 0){
+      t.dataset.retry = "1";
+      t.src = "https://drive.google.com/thumbnail?id=" + fid + "&sz=w1000";
+      return;
+    } else if(step === 1 && !t.dataset.proxied){
+      t.dataset.retry = "2";
+      t.dataset.proxied = "1";
+      if(IMG_CACHE[fid]){
+        t.src = IMG_CACHE[fid];
+        return;
+      }
+      fetch(GAS_API_URL + "?img=" + encodeURIComponent(fid))
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if(res && res.ok && res.dataUrl){
+            IMG_CACHE[fid] = res.dataUrl;
+            t.src = res.dataUrl;
+          } else {
+            throw new Error("proxy fail");
+          }
+        })
+        .catch(function(){
+          t.style.visibility = "hidden";
+          if(t.parentNode) t.parentNode.classList.add("imgfail");
+        });
       return;
     }
-
-    // 透過後端 Apps Script 安全讀取並轉為標準圖片格式（支援長按下載）
-    fetch(GAS_API_URL + "?img=" + encodeURIComponent(fid))
-      .then(function(r){ return r.json(); })
-      .then(function(res){
-        if(res && res.ok && res.dataUrl){
-          IMG_CACHE[fid] = res.dataUrl;
-          t.src = res.dataUrl;
-        } else {
-          throw new Error("proxy fail");
-        }
-      })
-      .catch(function(){
-        t.style.visibility = "hidden";
-        if(t.parentNode) t.parentNode.classList.add("imgfail");
-      });
-    return;
   }
-
-  t.style.visibility = "hidden";
-  if(t.parentNode) t.parentNode.classList.add("imgfail");
-}, true);
 
   t.style.visibility = "hidden";
   if(t.parentNode) t.parentNode.classList.add("imgfail");
