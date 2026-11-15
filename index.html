@@ -274,7 +274,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     <div class="hero-top">
       <div>
         <div class="eyebrow-row">
-          <span class="eyebrow" id="eyebrowTxt">NEFFUL ・ 超新星會員專區</span>
+          <span class="eyebrow" id="eyebrowTxt">本資料庫由真善美成功團隊夥伴們共同建構維護</span>
           <span class="date-pill" id="liveBadge">資料庫即時同步</span>
         </div>
         <h1 id="pageTitle">負離子見證與故事庫</h1>
@@ -384,7 +384,6 @@ var CATS = ["全部", "YouTube 影音", "IG Reels 短影音", "圖文見證", "�
 var cur = "全部", grp = "", sub = "", kw = "", LIM = 4, shown = {}, editingRow = null;
 
 var LB_LIST = [], LB_IDX = 0, touchStartX = 0;
-var IMG_CACHE = {};
 
 var EMO = {
   "睡眠":"😴","頭面五官":"👁️","肩頸腰背":"🦴","四肢與關節":"🦵",
@@ -452,7 +451,6 @@ if(APP_MODE === "sleep"){
   document.getElementById("pageTitle").textContent = "負離子睡眠與日常體驗集";
   document.getElementById("pageLead").textContent = "精選真實睡眠品質提升與日常健康保養故事分享。";
 } else if(APP_MODE === "admin"){
-  document.getElementById("eyebrowTxt").textContent = "NEFFUL ・ 管理員審核模式";
   document.getElementById("liveBadge").textContent = "ADMIN 編輯權限已啟用";
 }
 
@@ -640,7 +638,6 @@ function updateLightboxView(){
   var img = document.getElementById("bigImg");
   img.style.visibility = "visible";
   delete img.dataset.retry;
-  delete img.dataset.proxied;
   img.src = LB_LIST[LB_IDX].full;
   document.getElementById("lbCounter").textContent = (LB_IDX + 1) + " / " + LB_LIST.length;
   var showNav = LB_LIST.length > 1 ? "flex" : "none";
@@ -982,48 +979,24 @@ document.addEventListener("keydown", function(e){
   }
 });
 
-// 三段式圖片換線＋Apps Script 後端代理接手
 document.addEventListener("error", function(e){
   var t = e.target;
   if(!t || t.tagName !== "IMG") return;
-
   var src = t.getAttribute("src") || "";
-  if(src.indexOf("data:") === 0) return;
-
   var step = Number(t.dataset.retry || 0);
   var m = src.match(/\/d\/([a-zA-Z0-9_-]+)/) || src.match(/[?&]id=([a-zA-Z0-9_-]+)/);
 
-  if(m && m[1]){
+  if(m && m[1] && step < 2){
     var fid = m[1];
+    t.dataset.retry = String(step + 1);
     if(step === 0){
-      t.dataset.retry = "1";
       t.src = "https://drive.google.com/thumbnail?id=" + fid + "&sz=w1000";
       return;
-    } else if(step === 1 && !t.dataset.proxied){
-      t.dataset.retry = "2";
-      t.dataset.proxied = "1";
-      if(IMG_CACHE[fid]){
-        t.src = IMG_CACHE[fid];
-        return;
-      }
-      fetch(GAS_API_URL + "?img=" + encodeURIComponent(fid))
-        .then(function(r){ return r.json(); })
-        .then(function(res){
-          if(res && res.ok && res.dataUrl){
-            IMG_CACHE[fid] = res.dataUrl;
-            t.src = res.dataUrl;
-          } else {
-            throw new Error("proxy fail");
-          }
-        })
-        .catch(function(){
-          t.style.visibility = "hidden";
-          if(t.parentNode) t.parentNode.classList.add("imgfail");
-        });
+    } else if(step === 1){
+      t.src = "https://lh3.googleusercontent.com/d/" + fid + "=w1000";
       return;
     }
   }
-
   t.style.visibility = "hidden";
   if(t.parentNode) t.parentNode.classList.add("imgfail");
 }, true);
