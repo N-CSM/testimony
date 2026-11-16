@@ -49,15 +49,15 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 
 .wrap{max-width:1080px;margin:0 auto;padding:18px 18px 72px}
 
-.hero{background:linear-gradient(135deg,var(--tag),var(--card) 68%);border:1px solid var(--line);border-radius:24px;padding:28px 30px;margin-bottom:14px;box-shadow:0 6px 24px rgba(44,36,32,.04)}
+.hero{background:linear-gradient(135deg,var(--tag),var(--card) 68%);border:1px solid var(--line);border-radius:24px;padding:26px 28px;margin-bottom:14px;box-shadow:0 6px 24px rgba(44,36,32,.04)}
 .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
 .eyebrow-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.eyebrow{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.12em}
+.eyebrow{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.08em}
 .date-pill{background:var(--ink);color:var(--bg);font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px}
-.hero h1{font-family:"Noto Serif TC","Songti TC",serif;font-size:clamp(25px,5vw,38px);margin:8px 0 6px;letter-spacing:.03em;line-height:1.25}
+.hero h1{font-family:"Noto Serif TC","Songti TC",serif;font-size:clamp(25px,5vw,36px);margin:8px 0 6px;letter-spacing:.03em;line-height:1.25}
 .lead{color:var(--sub);margin:0;max-width:720px;font-size:15.5px;line-height:1.7}
-.stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
-.stat-pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 13px;font-size:13px;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;gap:5px}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.stat-pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;gap:4px}
 .theme-btn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex:none}
 
 .sticky-bar{
@@ -84,30 +84,25 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 
 .typetabs{display:flex;gap:6px;overflow-x:auto;padding-top:8px;margin-top:8px;scrollbar-width:none}
 .typetabs::-webkit-scrollbar{display:none}
-.tt{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 13px;font-weight:700;cursor:pointer;font-size:13.5px;white-space:nowrap;flex:none}
+.tt{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 14px;font-weight:700;cursor:pointer;font-size:14px;white-space:nowrap;flex:none}
 .tt[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .tt small{font-weight:400;opacity:.8;margin-left:4px;pointer-events:none}
 
-.stage-sec{border-radius:24px;padding:24px 22px;margin:20px 0;border:1px solid var(--line);transition:background .2s}
+.stage-sec{border-radius:24px;padding:22px 20px;margin:18px 0;border:1px solid var(--line);transition:background .2s}
 .stage-ivory{background:var(--surface-ivory)}
-.stage-ivory .sec-title{font-family:"Noto Serif TC",serif;font-size:23px;color:var(--ink);border-left:5px solid var(--accent);padding-left:12px}
-.stage-ivory .sec-badge{background:var(--accent);color:#fff}
+.stage-ivory .sec-title{font-family:"Noto Serif TC",serif;font-size:22px;color:var(--ink);border-left:5px solid var(--accent);padding-left:12px}
 
 .stage-gold{background:var(--surface-gold);border-color:rgba(184,146,10,.35)}
-.stage-gold .sec-title{font-family:"Noto Serif TC",serif;font-size:24px;color:#5C4608;border-left:5px solid #9A7605;padding-left:12px}
+.stage-gold .sec-title{font-family:"Noto Serif TC",serif;font-size:22px;color:#5C4608;border-left:5px solid #9A7605;padding-left:12px}
 :root[data-theme="dark"] .stage-gold .sec-title{color:#F5E6B8}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stage-gold .sec-title{color:#F5E6B8}}
-.stage-gold .sec-badge{background:#8A6B1E;color:#fff}
 
 .stage-coffee{background:var(--surface-coffee);color:#F5F0E8;border-color:#4A3C31}
-.stage-coffee .sec-title{font-family:"Noto Serif TC",serif;font-size:25px;color:#F7E5B2;border-left:5px solid #D4AD3C;padding-left:12px}
+.stage-coffee .sec-title{font-family:"Noto Serif TC",serif;font-size:23px;color:#F7E5B2;border-left:5px solid #D4AD3C;padding-left:12px}
 .stage-coffee .sec-sub{color:#C8B9A6}
-.stage-coffee .sec-badge{background:#D4AD3C;color:#1F1712}
 .stage-coffee .more{background:#3A2E26;color:#F5F0E8;border-color:#5C4B3E}
 
 .sec-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.sec-title-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.sec-badge{font-size:11.5px;font-weight:800;padding:2px 9px;border-radius:6px;letter-spacing:.05em}
 .sec-title{margin:0;line-height:1.3}
 .sec-sub{font-size:14px;color:var(--sub);font-weight:500}
 
@@ -119,7 +114,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .h-scroll::-webkit-scrollbar-thumb{background:rgba(184,146,10,.35);border-radius:999px}
 
 .yt-card{
-  flex:0 0 min(320px,82vw);scroll-snap-align:start;
+  flex:0 0 min(310px,80vw);scroll-snap-align:start;
   background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:18px;
   overflow:hidden;display:flex;flex-direction:column;cursor:pointer;
   transition:transform .16s,box-shadow .16s
@@ -127,9 +122,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .yt-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.14)}
 .yt-thumb{position:relative;aspect-ratio:16/9;background:#181512;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .yt-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.yt-play{position:absolute;width:50px;height:36px;border-radius:10px;background:rgba(196,48,43,.92);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px}
-.yt-badge{position:absolute;top:9px;left:9px;background:rgba(0,0,0,.78);color:#fff;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:6px}
-.yt-body{padding:14px 15px;display:flex;flex-direction:column;flex:1;min-width:0}
+.yt-play{position:absolute;width:48px;height:34px;border-radius:9px;background:rgba(196,48,43,.92);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px}
+.yt-cat-pill{position:absolute;top:9px;left:9px;background:rgba(0,0,0,.72);color:#fff;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:6px}
+.yt-cat-pill.biz{background:var(--biz-badge)}
+.yt-body{padding:13px 15px;display:flex;flex-direction:column;flex:1;min-width:0}
 .yt-body h3{margin:0 0 6px;font-size:16.5px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .yt-body p{margin:0 0 10px;font-size:14px;line-height:1.6;color:var(--sub);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 
@@ -142,20 +138,20 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .ig-card:hover{transform:translateY(-3px)}
 .ig-thumb{position:relative;aspect-ratio:9/14;background:var(--ig-grad);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;text-align:center;color:#fff}
 .ig-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.ig-thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.82) 0%,rgba(0,0,0,.12) 55%,rgba(0,0,0,.25) 100%)}
-.ig-pill{position:absolute;top:9px;left:9px;z-index:2;background:rgba(0,0,0,.65);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px}
-.ig-play-circle{position:relative;z-index:2;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.26);border:2px solid #fff;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px}
+.ig-thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.1) 55%,rgba(0,0,0,.25) 100%)}
+.ig-cat-pill{position:absolute;top:9px;left:9px;z-index:2;background:rgba(0,0,0,.65);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px}
+.ig-cat-pill.biz{background:var(--biz-badge)}
+.ig-play-circle{position:relative;z-index:2;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.26);border:2px solid #fff;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px}
 .ig-overlay-title{position:absolute;bottom:10px;left:11px;right:11px;z-index:2;color:#fff;font-size:14.5px;font-weight:700;line-height:1.4;text-align:left;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ig-body{padding:11px 12px;display:flex;flex-direction:column;flex:1;min-width:0}
+.ig-body{padding:10px 12px;display:flex;flex-direction:column;flex:1;min-width:0}
 
 .rcard{
-  flex:0 0 min(260px,76vw);scroll-snap-align:start;
+  flex:0 0 min(255px,75vw);scroll-snap-align:start;
   background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:16px;
-  padding:15px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;min-width:0
+  padding:14px 15px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;min-width:0
 }
 .rcard:hover{border-color:var(--accent)}
-.rcard-top{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:8px}
-.badge-new{background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
+.rcard-top{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px}
 .badge-fmt{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--bg);border:1px solid var(--line);color:var(--sub)}
 .rcard h4{margin:0 0 6px;font-size:16px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .rcard p{margin:0 0 10px;font-size:14px;color:var(--sub);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
@@ -163,33 +159,27 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .post-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(460px,100%),1fr));gap:16px}
 .card{
   background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:18px;
-  padding:20px;display:flex;flex-direction:column;cursor:pointer;min-width:0;
+  padding:18px 20px;display:flex;flex-direction:column;cursor:pointer;min-width:0;
   transition:transform .16s,border-color .16s,box-shadow .16s
 }
 .card:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 8px 20px rgba(44,36,32,.07)}
-.chead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;flex-wrap:wrap}
-.chead-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.ico{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;flex:none}
+.chead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.chead-left{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.ico{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11.5px;flex:none}
 .ico.post{background:#8A6B1E}.ico.biz{background:var(--biz-badge)}
 .ctype{font-size:13.5px;font-weight:700;color:var(--sub)}
 .meta{display:inline-block;background:var(--tag);color:var(--tagink);font-size:12.5px;font-weight:700;padding:2px 9px;border-radius:5px}
 
-.card h3{margin:0 0 10px;font-size:19px;line-height:1.45;overflow-wrap:anywhere;word-break:break-word}
+.card h3{margin:0 0 8px;font-size:18.5px;line-height:1.45;overflow-wrap:anywhere;word-break:break-word}
 
-.pull-quote{
-  margin:0 0 12px;padding:10px 14px;
-  background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;
-  font-family:"Noto Serif TC",serif;font-size:16.5px;font-weight:700;line-height:1.6;
-  color:var(--ink);overflow-wrap:anywhere;word-break:break-word
-}
 .txt-preview{
   margin:0;font-size:15.5px;line-height:1.75;color:var(--sub);
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
   overflow-wrap:anywhere;word-break:break-word
 }
 
-.card-photos{display:flex;gap:8px;margin-top:14px;overflow:hidden}
-.card-photo-item{position:relative;flex:1 1 0;max-width:140px;aspect-ratio:4/3;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--ph2)}
+.card-photos{display:flex;gap:8px;margin-top:12px;overflow:hidden}
+.card-photo-item{position:relative;flex:1 1 0;max-width:135px;aspect-ratio:4/3;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--ph2)}
 .card-photo-item img{width:100%;height:100%;object-fit:cover;display:block}
 .th-count{position:absolute;inset:0;background:rgba(0,0,0,.55);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center}
 
@@ -198,7 +188,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .tags span{font-size:12.5px;color:var(--tagink);background:var(--tag);border-radius:6px;padding:2px 9px;font-weight:700;cursor:pointer}
 .read-more-cue{font-size:13.5px;font-weight:700;color:var(--accent);white-space:nowrap}
 
-.more{display:block;margin:16px auto 0;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:9px 26px;cursor:pointer;font-size:14.5px;font-weight:700}
+.more{display:block;margin:16px auto 0;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 24px;cursor:pointer;font-size:14px;font-weight:700}
 .empty{color:var(--sub);padding:36px 16px;text-align:center;font-size:16px;background:var(--card);border-radius:18px;border:1px solid var(--line)}
 .loader{text-align:center;padding:48px 20px;color:var(--sub);font-size:16px}
 .note{margin:18px 0;padding:14px 16px;border:1px dashed var(--accent);border-radius:12px;font-size:13.5px;line-height:1.7;color:var(--sub)}
@@ -212,20 +202,20 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   box-shadow:0 20px 50px rgba(0,0,0,.45);overflow:hidden
 }
 .reader-head{
-  padding:14px 20px;border-bottom:1px solid var(--line);
+  padding:13px 18px;border-bottom:1px solid var(--line);
   display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--bg)
 }
-.reader-close{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 15px;font-size:14px;font-weight:700;cursor:pointer}
-.reader-scroll{padding:22px 24px 32px;overflow-y:auto;line-height:1.9;font-size:16.5px;overflow-wrap:anywhere;word-break:break-word}
-.reader-scroll h2{font-family:"Noto Serif TC",serif;font-size:23px;line-height:1.4;margin:8px 0 14px}
+.reader-close{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 14px;font-size:13.5px;font-weight:700;cursor:pointer}
+.reader-scroll{padding:20px 22px 30px;overflow-y:auto;line-height:1.9;font-size:16.5px;overflow-wrap:anywhere;word-break:break-word}
+.reader-scroll h2{font-family:"Noto Serif TC",serif;font-size:22px;line-height:1.4;margin:4px 0 14px}
 .reader-body{white-space:pre-line;margin:0 0 18px}
 .inline-link{color:var(--accent);text-decoration:underline;word-break:break-all;font-weight:600}
 
-.reader-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:16px 0}
+.reader-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px;margin:16px 0}
 .ph{position:relative;aspect-ratio:4/3;border:1px solid var(--line);border-radius:10px;cursor:zoom-in;padding:0;overflow:hidden;background:var(--bg)}
 .ph img{width:100%;height:100%;object-fit:cover;display:block}
-.reader-meta-box{margin-top:16px;padding:12px 15px;background:var(--bg);border-radius:12px;font-size:14.5px;color:var(--sub)}
-.vlink-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:10px;background:var(--yt-color);color:#fff;text-decoration:none;font-size:15px;font-weight:700;margin-bottom:14px}
+.reader-meta-box{margin-top:16px;padding:11px 14px;background:var(--bg);border-radius:12px;font-size:14px;color:var(--sub)}
+.vlink-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;background:var(--yt-color);color:#fff;text-decoration:none;font-size:14.5px;font-weight:700;margin-bottom:14px}
 
 #lb{z-index:50;flex-direction:column;gap:12px;user-select:none}
 .lb-top{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);left:18px;right:18px;display:flex;justify-content:space-between;align-items:center;z-index:52}
@@ -242,28 +232,29 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 #lbNext{right:12px}
 .lb-tip{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);color:rgba(255,255,255,.8);font-size:13px;background:rgba(0,0,0,.55);padding:4px 14px;border-radius:999px}
 
-.mbox{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:20px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;padding:22px}
-.mbox h3{margin:0 0 14px;font-size:19px}
-.mfield{margin-bottom:14px}
-.mfield label{display:block;font-size:14px;font-weight:700;margin-bottom:5px;color:var(--sub)}
-.mfield input[type="text"],.mfield textarea{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:16px}
-.macts{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
+.mbox{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:20px;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;padding:22px}
+.mbox h3{margin:0 0 14px;font-size:18.5px}
+.mrow2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mfield{margin-bottom:12px}
+.mfield label{display:block;font-size:13.5px;font-weight:700;margin-bottom:4px;color:var(--sub)}
+.mfield input[type="text"],.mfield textarea{width:100%;padding:8px 11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:15.5px}
+.macts{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}
 .btn-save{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:9px 20px;font-size:15px;font-weight:700;cursor:pointer}
-.admin-btn{border:1px solid var(--accent);background:var(--tag);color:var(--tagink);border-radius:7px;padding:4px 11px;font-size:13px;font-weight:700;cursor:pointer}
-.sleep-badge{background:var(--biz-badge);color:#fff;font-size:12px;padding:2px 8px;border-radius:5px}
+.admin-btn{border:1px solid var(--accent);background:var(--tag);color:var(--tagink);border-radius:7px;padding:3px 10px;font-size:12.5px;font-weight:700;cursor:pointer}
+.sleep-badge{background:var(--biz-badge);color:#fff;font-size:11.5px;padding:2px 7px;border-radius:5px}
 
 @media(max-width:640px){
   .wrap{padding:12px 10px 64px}
   .hero{padding:18px 16px;border-radius:20px}
   .sticky-bar{border-radius:14px;padding:9px 10px}
-  .stage-sec{padding:18px 14px;border-radius:20px;margin:16px 0}
+  .stage-sec{padding:18px 14px;border-radius:20px;margin:14px 0}
   .card{padding:16px 15px}
-  .card h3{font-size:19px}
-  .pull-quote{font-size:16px;padding:9px 12px}
-  .txt-preview{font-size:16px}
+  .card h3{font-size:18.5px}
+  .txt-preview{font-size:15.5px}
   .reader-box{max-height:92vh;border-radius:18px}
-  .reader-scroll{padding:18px 16px 28px;font-size:17px}
+  .reader-scroll{padding:18px 16px 26px;font-size:16.5px}
   .lb-nav{width:38px;height:38px;font-size:18px}
+  .mrow2{grid-template-columns:1fr}
 }
 .imgfail::after{content:"🔒 圖片未公開";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;font-size:12px;color:var(--sub);background:var(--ph2)}
 </style>
@@ -275,12 +266,12 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
       <div>
         <div class="eyebrow-row">
           <span class="eyebrow" id="eyebrowTxt">本資料庫由真善美成功團隊夥伴們共同建構維護</span>
-          <span class="date-pill" id="liveBadge">資料庫即時同步</span>
+          <span class="date-pill" id="liveBadge">即時同步</span>
         </div>
         <h1 id="pageTitle">負離子見證與故事庫</h1>
-        <p class="lead" id="pageLead">把夥伴們的真實圖文見證、YouTube 訪談影集與 IG Reels 短影音整理在一起，依照你關心的狀況快速篩選。</p>
+        <p class="lead" id="pageLead">彙整夥伴們的真實圖文、影音訪談與短片，依主題快速檢索。</p>
       </div>
-      <button class="theme-btn" id="themeToggle" aria-label="切換深淺色主題">🌙 深色模式</button>
+      <button class="theme-btn" id="themeToggle" aria-label="切換深淺色主題">🌙 深色</button>
     </div>
     <div class="stats" id="stats"></div>
   </header>
@@ -288,11 +279,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   <nav class="sticky-bar" aria-label="快速搜尋與主題篩選">
     <div class="sb-row">
       <div class="sb-search">
-        <input id="q" type="search" placeholder="搜尋症狀、產品或分享者..." aria-label="搜尋">
-        <button class="sb-clear-q" id="clearQ" aria-label="清除搜尋文字">✕</button>
+        <input id="q" type="search" placeholder="搜尋關鍵字、產品或人名..." aria-label="搜尋">
+        <button class="sb-clear-q" id="clearQ" aria-label="清除搜尋">✕</button>
       </div>
-      <select class="sb-select" id="grpSelect" aria-label="選擇狀況主題">
-        <option value="">📌 全部狀況主題</option>
+      <select class="sb-select" id="grpSelect" aria-label="選擇主題">
+        <option value="">📌 全部主題</option>
       </select>
       <button class="sb-reset" id="reset">重置</button>
     </div>
@@ -301,13 +292,13 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   </nav>
 
   <main id="out">
-    <div class="loader">⏳ 正在從資料庫載入最新見證、影音縮圖與故事，請稍候...</div>
+    <div class="loader">⏳ 載入中...</div>
   </main>
 
   <div class="note">以上為使用者個人經驗與生活體驗分享，感受因人而異，不代表醫療效能，亦不能取代醫師或專業醫療人員之診斷與建議。</div>
 </div>
 
-<div class="overlay" id="readerModal" role="dialog" aria-modal="true" aria-label="完整故事閱讀">
+<div class="overlay" id="readerModal" role="dialog" aria-modal="true" aria-label="閱讀全文">
   <div class="reader-box">
     <div class="reader-head">
       <div id="rBadges" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"></div>
@@ -327,7 +318,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   </div>
 </div>
 
-<div class="overlay" id="lb" role="dialog" aria-modal="true" aria-label="放大檢視照片">
+<div class="overlay" id="lb" role="dialog" aria-modal="true" aria-label="放大照片">
   <div class="lb-top">
     <span class="lb-counter" id="lbCounter">1 / 1</span>
     <button id="x">✕ 關閉</button>
@@ -337,35 +328,55 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     <img id="bigImg" src="" referrerpolicy="no-referrer" alt="放大照片">
     <button class="lb-nav" id="lbNext" aria-label="下一張">›</button>
   </div>
-  <div class="lb-tip">左右滑動切換照片 · 長按圖片可儲存下載</div>
+  <div class="lb-tip">左右滑動切換 · 長按圖片儲存</div>
 </div>
 
-<div class="overlay" id="modal" role="dialog" aria-modal="true" aria-label="編輯見證與標籤">
+<div class="overlay" id="modal" role="dialog" aria-modal="true" aria-label="編輯內容">
   <div class="mbox">
-    <h3>✎ 編輯見證內容與標籤</h3>
-    <div class="mfield">
-      <label>標題（儲存將直接更新試算表）</label>
-      <input type="text" id="mTitleInput" placeholder="輸入見證標題...">
+    <h3>✎ 編輯內容與標籤</h3>
+    <div class="mrow2">
+      <div class="mfield">
+        <label>標題</label>
+        <input type="text" id="mTitleInput" placeholder="輸入標題...">
+      </div>
+      <div class="mfield">
+        <label>分享者姓名</label>
+        <input type="text" id="mSharerInput" placeholder="如：林卉庭、芮比...">
+      </div>
     </div>
     <div class="mfield">
-      <label>見證內文（儲存將直接更新試算表原始內文）</label>
-      <textarea id="mRawBody" rows="6" placeholder="輸入或修改見證內文..."></textarea>
+      <label>內文</label>
+      <textarea id="mRawBody" rows="5" placeholder="輸入或修改內文..."></textarea>
+    </div>
+    <div class="mrow2">
+      <div class="mfield">
+        <label>使用產品／搭配</label>
+        <input type="text" id="mProdInput" placeholder="使用產品...">
+      </div>
+      <div class="mfield">
+        <label>影片連結（YouTube / IG）</label>
+        <input type="text" id="mVideoInput" placeholder="https://...">
+      </div>
     </div>
     <div class="mfield">
-      <label><input type="checkbox" id="mSleep" style="width:auto;margin-right:6px"> 開放至對外睡眠私域 (?mode=sleep)</label>
+      <label>來源出處</label>
+      <input type="text" id="mSourceInput" placeholder="來源連結或說明...">
     </div>
     <div class="mfield">
-      <label>點選分類標籤（可複選；若全部清空按儲存，將鎖定為「無標籤」不再自動猜測）：</label>
-      <div id="mTagPicker" style="max-height:190px;overflow-y:auto;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--bg);margin-bottom:8px"></div>
+      <label><input type="checkbox" id="mSleep" style="width:auto;margin-right:6px"> 開放至睡眠專區 (?mode=sleep)</label>
+    </div>
+    <div class="mfield">
+      <label>分類標籤（可複選；若全部清空按儲存，將鎖定為「無標籤」）：</label>
+      <div id="mTagPicker" style="max-height:170px;overflow-y:auto;border:1px solid var(--line);border-radius:10px;padding:9px;background:var(--bg);margin-bottom:6px"></div>
       <input type="text" id="mTags" placeholder="點上方按鈕自動填入，或全部清空後儲存">
     </div>
     <div class="mfield">
-      <label>合規潤飾版內文（供對外睡眠私域顯示，去療效字眼；無則留白）</label>
-      <textarea id="mComp" rows="4" placeholder="若原文有醫療字眼，可在此貼上溫和合規版..."></textarea>
+      <label>合規潤飾版內文（供睡眠專區顯示；無則留白）</label>
+      <textarea id="mComp" rows="3" placeholder="溫和合規版內文..."></textarea>
     </div>
     <div class="macts">
       <button class="sb-reset" id="mCancel">取消</button>
-      <button class="btn-save" id="mSave">儲存至試算表</button>
+      <button class="btn-save" id="mSave">儲存</button>
     </div>
   </div>
 </div>
@@ -380,7 +391,8 @@ var APP_MODE = (urlParams.get("mode") || "member").toLowerCase();
 var DATA = [];
 var RECENT_PICKS = [];
 var TAG_TREE = {};
-var CATS = ["全部", "YouTube 影音", "IG Reels 短影音", "圖文見證", "事業故事"];
+// ★ 架構一：純格式極簡分類
+var CATS = ["全部", "影音", "短片", "圖文"];
 var cur = "全部", grp = "", sub = "", kw = "", LIM = 4, shown = {}, editingRow = null;
 
 var LB_LIST = [], LB_IDX = 0, touchStartX = 0;
@@ -392,7 +404,7 @@ var EMO = {
   "緊急狀況／疑難雜症":"🏥","事業與人生轉型":"🚀","綜合保養":"🌱","待分類":"🏷️"
 };
 var ORDER = Object.keys(EMO);
-var TABI = {"全部":"","YouTube 影音":"🎬 ","IG Reels 短影音":"📱 ","圖文見證":"💬 ","事業故事":"🚀 "};
+var TABI = {"全部":"","影音":"🎬 ","短片":"📱 ","圖文":"💬 "};
 
 function esc(s){
   return String(s || "").replace(/[&<>"']/g, function(m){
@@ -407,17 +419,8 @@ function linkifyText(s){
   });
 }
 
-function extractQuote(r){
-  var text = String(r.x || "").trim();
-  if(!text) return "";
-  var lines = text.split(/\n+/).map(function(l){ return l.trim(); }).filter(function(l){
-    return l.length >= 6 && !/^https?:\/\//i.test(l) && !/^#/.test(l);
-  });
-  var first = lines[0] || text;
-  var sent = first.split(/[。！？!?]/)[0].trim();
-  var candidate = (sent.length >= 8 && sent.length <= 55) ? sent : first.slice(0, 52);
-  if(candidate === r.t) return "";
-  return candidate + (candidate.length < first.length ? "⋯" : "");
+function shortCat(c){
+  return String(c || "").indexOf("事業") > -1 ? "事業" : "健康";
 }
 
 (function initTheme(){
@@ -426,13 +429,13 @@ function extractQuote(r){
   function apply(theme){
     if(theme === "dark"){
       document.documentElement.setAttribute("data-theme", "dark");
-      btn.textContent = "☀️ 淺色模式";
+      btn.textContent = "☀️ 淺色";
     } else if(theme === "light"){
       document.documentElement.setAttribute("data-theme", "light");
-      btn.textContent = "🌙 深色模式";
+      btn.textContent = "🌙 深色";
     } else {
       var isSysDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-      btn.textContent = isSysDark ? "☀️ 淺色模式" : "🌙 深色模式";
+      btn.textContent = isSysDark ? "☀️ 淺色" : "🌙 深色";
     }
   }
   apply(saved);
@@ -446,24 +449,22 @@ function extractQuote(r){
 })();
 
 if(APP_MODE === "sleep"){
-  CATS = ["全部", "YouTube 影音", "IG Reels 短影音", "圖文見證"];
-  document.getElementById("eyebrowTxt").textContent = "NEFFUL ・ 睡眠與生活體驗專區";
+  document.getElementById("eyebrowTxt").textContent = "NEFFUL ・ 睡眠與生活體驗";
   document.getElementById("pageTitle").textContent = "負離子睡眠與日常體驗集";
-  document.getElementById("pageLead").textContent = "精選真實睡眠品質提升與日常健康保養故事分享。";
+  document.getElementById("pageLead").textContent = "精選真實睡眠品質與日常保養分享。";
 } else if(APP_MODE === "admin"){
-  document.getElementById("liveBadge").textContent = "ADMIN 編輯權限已啟用";
+  document.getElementById("liveBadge").textContent = "ADMIN 編輯模式";
 }
 
 function gname(t){ return String(t).split("：")[0].trim(); }
 function sname(t){ var p = String(t).split("："); return p[1] ? p[1].trim() : ""; }
 
 function getSectionType(r){
-  if(r.c === "事業見證") return "事業故事";
   if(r.k === "video"){
-    if(r.vType === "IG" || r.vFmt === "portrait") return "IG Reels 短影音";
-    return "YouTube 影音";
+    if(r.vType === "IG" || r.vFmt === "portrait") return "短片";
+    return "影音";
   }
-  return "圖文見證";
+  return "圖文";
 }
 
 function match(r, skipCat){
@@ -497,14 +498,15 @@ function renderShortTags(gArr){
 }
 
 function ytCard(r){
+  var isBiz = shortCat(r.c) === "事業";
   var thumbHtml = r.vThumb
     ? '<img src="' + esc(r.vThumb) + '" referrerpolicy="no-referrer" loading="lazy" alt="' + esc(r.t) + '">'
-    : '<span style="color:#fff;font-size:14px">🎬 YouTube 影片</span>';
+    : '<span style="color:#fff;font-size:14px">🎬 影音</span>';
 
   return '<article class="yt-card" data-open="' + r.id + '">' +
     '<div class="yt-thumb">' +
       thumbHtml +
-      '<span class="yt-badge">🎬 ' + esc(r.vPlat || "YouTube") + '</span>' +
+      '<span class="yt-cat-pill' + (isBiz ? ' biz' : '') + '">' + shortCat(r.c) + '</span>' +
       '<div class="yt-play">▶</div>' +
     '</div>' +
     '<div class="yt-body">' +
@@ -520,15 +522,20 @@ function ytCard(r){
 }
 
 function igCard(r){
-  var thumbHtml = r.vThumb ? '<img src="' + esc(r.vThumb) + '" referrerpolicy="no-referrer" loading="lazy" alt="' + esc(r.t) + '">' : '';
+  var isBiz = shortCat(r.c) === "事業";
+  var thumbHtml = r.vThumb
+    ? '<img src="' + esc(r.vThumb) + '" referrerpolicy="no-referrer" loading="lazy" alt="' + esc(r.t) + '">'
+    : '<img data-ig-url="' + esc(r.u) + '" referrerpolicy="no-referrer" loading="lazy" alt="' + esc(r.t) + '" style="display:none">';
+
   return '<article class="ig-card" data-open="' + r.id + '">' +
     '<div class="ig-thumb">' +
       thumbHtml +
-      '<span class="ig-pill">📱 Reels</span>' +
+      '<span class="ig-cat-pill' + (isBiz ? ' biz' : '') + '">' + shortCat(r.c) + '</span>' +
       '<div class="ig-play-circle">▶</div>' +
       '<div class="ig-overlay-title">' + esc(r.t) + '</div>' +
     '</div>' +
     '<div class="ig-body">' +
+      (r.sharer ? '<div style="margin-bottom:6px"><span class="meta">' + esc(r.sharer) + '</span></div>' : '') +
       (APP_MODE === "admin" ? '<div style="margin-bottom:6px">' + adminControls(r) + '</div>' : '') +
       renderShortTags(r.g) +
     '</div>' +
@@ -536,8 +543,8 @@ function igCard(r){
 }
 
 function postCard(r){
-  var isBiz = r.c === "事業見證";
-  var quote = extractQuote(r);
+  var cLabel = shortCat(r.c);
+  var isBiz = cLabel === "事業";
 
   var photosHtml = "";
   if(r.p && r.p.length > 0){
@@ -548,25 +555,24 @@ function postCard(r){
     }).join("") + '</div>';
   }
 
-  var vidCue = r.u ? '<span class="meta" style="background:var(--yt-color);color:#fff">🎬 附影片連結</span>' : '';
+  var vidCue = r.u ? '<span class="meta" style="background:var(--yt-color);color:#fff">🎬 影片連結</span>' : '';
 
   return '<article class="card" data-open="' + r.id + '">' +
     '<div class="chead">' +
       '<div class="chead-left">' +
         '<span class="ico ' + (isBiz ? "biz" : "post") + '">' + (isBiz ? "★" : "▤") + '</span>' +
-        '<span class="ctype">' + esc(r.c) + '</span>' +
-        (r.sharer ? '<span class="meta">分享者：' + esc(r.sharer) + '</span>' : '') +
+        '<span class="ctype">' + cLabel + '</span>' +
+        (r.sharer ? '<span class="meta">' + esc(r.sharer) + '</span>' : '') +
         vidCue +
       '</div>' +
       '<div>' + adminControls(r) + '</div>' +
     '</div>' +
     '<h3>' + esc(r.t) + '</h3>' +
-    (quote ? '<blockquote class="pull-quote">「' + esc(quote) + '」</blockquote>' : '') +
     '<p class="txt-preview">' + esc(r.x) + '</p>' +
     photosHtml +
     '<div class="card-foot">' +
       renderShortTags(r.g) +
-      '<span class="read-more-cue">點擊閱讀全文 ›</span>' +
+      '<span class="read-more-cue">全文 ›</span>' +
     '</div>' +
   '</article>';
 }
@@ -575,17 +581,16 @@ function openReader(id){
   var r = DATA.find(function(x){ return String(x.id) === String(id); });
   if(!r) return;
 
-  var badges = '<span class="meta">' + esc(r.c) + '</span>';
-  if(r.sharer) badges += '<span class="meta">分享者：' + esc(r.sharer) + '</span>';
+  var badges = '<span class="meta">' + shortCat(r.c) + '</span>';
+  if(r.sharer) badges += '<span class="meta">' + esc(r.sharer) + '</span>';
   document.getElementById("rBadges").innerHTML = badges;
   document.getElementById("rAdminSlot").innerHTML = adminControls(r);
   document.getElementById("rTitle").textContent = r.t;
 
   var vidHtml = "";
   if(r.u){
-    var btnLabel = (r.vType === "IG") ? "▶ 前往 Instagram 觀看短影音" : "▶ 觀看完整影片";
     var bgStyle = (r.vType === "IG") ? "background:var(--ig-grad)" : "background:var(--yt-color)";
-    vidHtml = '<a class="vlink-btn" style="' + bgStyle + '" href="' + esc(r.u) + '" target="_blank" rel="noopener">' + btnLabel + '</a>';
+    vidHtml = '<a class="vlink-btn" style="' + bgStyle + '" href="' + esc(r.u) + '" target="_blank" rel="noopener">▶ 觀看影片</a>';
   }
   document.getElementById("rVideoAction").innerHTML = vidHtml;
 
@@ -596,7 +601,7 @@ function openReader(id){
     pBox.style.display = "grid";
     pBox.innerHTML = r.p.map(function(imgObj, i){
       return '<button class="ph" data-lb-story="' + r.id + '" data-lb-idx="' + i + '" aria-label="放大第' + (i+1) + '張照片">' +
-               '<img src="' + esc(imgObj.thumb) + '" referrerpolicy="no-referrer" alt="見證照片">' +
+               '<img src="' + esc(imgObj.thumb) + '" referrerpolicy="no-referrer" alt="照片">' +
              '</button>';
     }).join("");
   } else {
@@ -607,10 +612,10 @@ function openReader(id){
   document.getElementById("rTags").innerHTML = renderShortTags(r.g);
 
   var metaLines = [];
-  if(r.prod) metaLines.push('<div><b>使用產品／搭配：</b>' + esc(r.prod) + '</div>');
+  if(r.prod) metaLines.push('<div><b>產品：</b>' + esc(r.prod) + '</div>');
   if(r.s){
     var isLink = /^https?:\/\//i.test(r.s);
-    metaLines.push('<div><b>來源出處：</b>' + (isLink ? '<a class="inline-link" href="' + esc(r.s) + '" target="_blank" rel="noopener">' + esc(r.s) + '</a>' : esc(r.s)) + '</div>');
+    metaLines.push('<div><b>來源：</b>' + (isLink ? '<a class="inline-link" href="' + esc(r.s) + '" target="_blank" rel="noopener">' + esc(r.s) + '</a>' : esc(r.s)) + '</div>');
   }
   var mBox = document.getElementById("rMeta");
   if(metaLines.length){
@@ -666,18 +671,28 @@ lbStage.addEventListener("touchend", function(e){
 
 function buildDynamicHighlights(){
   if(!DATA.length){ RECENT_PICKS = []; return; }
-  var posts = DATA.filter(function(r){ return getSectionType(r) === "圖文見證"; });
-  var biz = DATA.filter(function(r){ return getSectionType(r) === "事業故事"; });
+  var pool = [];
+  var seenKey = {};
+  function addUnique(r){
+    if(!r || pool.length >= 4) return;
+    var key = String(r.t || "").trim() + "|" + String(r.x || "").trim().slice(0, 30);
+    if(seenKey[r.id] || seenKey[key]) return;
+    seenKey[r.id] = true;
+    seenKey[key] = true;
+    pool.push(r);
+  }
+
+  var posts = DATA.filter(function(r){ return getSectionType(r) === "圖文" && shortCat(r.c) === "健康"; });
+  var biz = DATA.filter(function(r){ return shortCat(r.c) === "事業"; });
   var vids = DATA.filter(function(r){ return r.k === "video"; });
 
-  var pool = [];
-  if(posts[0]) pool.push(posts[0]);
-  if(biz[0]) pool.push(biz[0]);
-  if(vids[0]) pool.push(vids[0]);
-  if(posts[1]) pool.push(posts[1]);
+  addUnique(posts[0]);
+  addUnique(biz[0]);
+  addUnique(vids[0]);
+  addUnique(posts[1]);
 
   for(var i = 0; i < DATA.length && pool.length < 4; i++){
-    if(pool.indexOf(DATA[i]) === -1) pool.push(DATA[i]);
+    addUnique(DATA[i]);
   }
   RECENT_PICKS = pool;
 }
@@ -697,13 +712,13 @@ function render(){
   if(!isFiltering && RECENT_PICKS.length){
     h += '<section class="stage-sec ' + stageThemes[stageIdx++ % 3] + '">' +
       '<div class="sec-head">' +
-        '<div class="sec-title-wrap"><span class="sec-badge">FEATURED</span><h2 class="sec-title">精選見證焦點</h2></div>' +
-        '<span class="sec-sub">左右滑動 · 點擊閱讀</span>' +
+        '<h2 class="sec-title">✨ 精選焦點</h2>' +
       '</div>' +
       '<div class="h-scroll">' + RECENT_PICKS.map(function(r){
-        var firstTag = r.g && r.g[0] ? (sname(r.g[0]) || gname(r.g[0])) : r.c;
+        var firstTag = r.g && r.g[0] ? (sname(r.g[0]) || gname(r.g[0])) : shortCat(r.c);
         return '<div class="rcard" data-open="' + r.id + '">' +
-          '<div><div class="rcard-top"><span class="badge-new">精選</span><span class="badge-fmt">' + esc(getSectionType(r)) + '</span></div>' +
+          '<div><div class="rcard-top"><span class="badge-fmt">' + esc(shortCat(r.c) + " · " + getSectionType(r)) + '</span>' +
+          (r.sharer ? '<span class="meta">' + esc(r.sharer) + '</span>' : '') + '</div>' +
           '<h4>' + esc(r.t) + '</h4>' +
           '<p>' + esc(r.x) + '</p></div>' +
           '<span class="meta" style="align-self:flex-start">#' + esc(firstTag) + '</span>' +
@@ -716,34 +731,32 @@ function render(){
     var rows = DATA.filter(function(r){ return getSectionType(r) === secName && match(r); });
     if(!rows.length) return;
 
-    var isHorizontal = (secName === "YouTube 影音" || secName === "IG Reels 短影音");
+    var isHorizontal = (secName === "影音" || secName === "短片");
     var defaultLim = isHorizontal ? 6 : LIM;
     var n = shown[secName] || defaultLim;
     var themeCls = stageThemes[stageIdx++ % 3];
 
     h += '<section class="stage-sec ' + themeCls + '">' +
       '<div class="sec-head">' +
-        '<div class="sec-title-wrap"><span class="sec-badge">' + (isHorizontal ? 'SWIPE ⇄' : 'STORIES') + '</span>' +
-        '<h2 class="sec-title">' + TABI[secName] + secName + ' <span class="sec-sub">（' + rows.length + ' 則）</span></h2></div>' +
-        (isHorizontal ? '<span class="sec-sub">← 左右滑動瀏覽 →</span>' : '') +
+        '<h2 class="sec-title">' + TABI[secName] + secName + ' <span class="sec-sub">（' + rows.length + '）</span></h2>' +
       '</div>';
 
-    if(secName === "YouTube 影音"){
+    if(secName === "影音"){
       h += '<div class="h-scroll">' + rows.slice(0, n).map(ytCard).join("") + '</div>';
-    } else if(secName === "IG Reels 短影音"){
+    } else if(secName === "短片"){
       h += '<div class="h-scroll">' + rows.slice(0, n).map(igCard).join("") + '</div>';
     } else {
       h += '<div class="post-grid">' + rows.slice(0, n).map(postCard).join("") + '</div>';
     }
 
     if(rows.length > n){
-      h += '<button class="more" data-more="' + esc(secName) + '">看更多' + esc(secName) + '（還有 ' + (rows.length - n) + ' 則）</button>';
+      h += '<button class="more" data-more="' + esc(secName) + '">展開更多（+' + (rows.length - n) + '）</button>';
     }
     h += '</section>';
   });
 
   if(!h){
-    h = '<div class="empty">目前的篩選條件沒有符合的內容。<br><br><button class="sb-reset" id="emptyReset">清除篩選，看全部內容</button></div>';
+    h = '<div class="empty">無符合內容<br><br><button class="sb-reset" id="emptyReset">看全部</button></div>';
   }
   document.getElementById("out").innerHTML = h;
 
@@ -773,7 +786,7 @@ function render(){
   });
 
   var sel = document.getElementById("grpSelect");
-  sel.innerHTML = '<option value="">📌 全部狀況主題（' + DATA.length + ' 則）</option>' +
+  sel.innerHTML = '<option value="">📌 全部主題（' + DATA.length + '）</option>' +
     gk.map(function(g){
       return '<option value="' + esc(g) + '"' + (g === grp ? ' selected' : '') + '>' + (EMO[g] || "📄") + ' ' + esc(g) + '（' + gs[g] + '）</option>';
     }).join("");
@@ -782,24 +795,39 @@ function render(){
   var subBox = document.getElementById("subs");
   subBox.style.display = sk.length ? "flex" : "none";
   subBox.innerHTML = sk.length
-    ? '<button class="pill" aria-pressed="' + (!sub) + '" data-s="">全部' + esc(grp) + '</button>' +
+    ? '<button class="pill" aria-pressed="' + (!sub) + '" data-s="">全部</button>' +
       sk.map(function(x){
         return '<button class="pill" aria-pressed="' + (x === sub) + '" data-s="' + esc(x) + '">' + esc(x) + ' · ' + sb[grp][x] + '</button>';
       }).join("")
     : "";
 
-  var ytCnt = DATA.filter(function(r){ return getSectionType(r) === "YouTube 影音"; }).length;
-  var igCnt = DATA.filter(function(r){ return getSectionType(r) === "IG Reels 短影音"; }).length;
-  var postCnt = DATA.filter(function(r){ return getSectionType(r) === "圖文見證"; }).length;
-  var bizCnt = DATA.filter(function(r){ return getSectionType(r) === "事業故事"; }).length;
+  var ytCnt = DATA.filter(function(r){ return getSectionType(r) === "影音"; }).length;
+  var igCnt = DATA.filter(function(r){ return getSectionType(r) === "短片"; }).length;
+  var postCnt = DATA.filter(function(r){ return getSectionType(r) === "圖文"; }).length;
 
   document.getElementById("stats").innerHTML = [
-    '<span class="stat-pill">📚 總收錄 ' + DATA.length + ' 則</span>',
+    '<span class="stat-pill">📚 總計 ' + DATA.length + '</span>',
     '<span class="stat-pill">💬 圖文 ' + postCnt + '</span>',
-    '<span class="stat-pill">🎬 YouTube ' + ytCnt + '</span>',
-    '<span class="stat-pill">📱 Reels ' + igCnt + '</span>',
-    (bizCnt ? '<span class="stat-pill">🚀 事業 ' + bizCnt + '</span>' : '')
+    '<span class="stat-pill">🎬 影音 ' + ytCnt + '</span>',
+    '<span class="stat-pill">📱 短片 ' + igCnt + '</span>'
   ].join("");
+
+  // 自動補齊 IG 短片預覽封面圖
+  document.querySelectorAll("img[data-ig-url]").forEach(function(img){
+    var igUrl = img.getAttribute("data-ig-url");
+    if(!igUrl || img.dataset.fetched) return;
+    img.dataset.fetched = "1";
+    fetch("https://api.microlink.io/?url=" + encodeURIComponent(igUrl))
+      .then(function(res){ return res.json(); })
+      .then(function(json){
+        var pic = json && json.data && json.data.image && json.data.image.url;
+        if(pic){
+          img.src = pic;
+          img.style.display = "block";
+        }
+      })
+      .catch(function(){});
+  });
 }
 
 document.addEventListener("click", function(e){
@@ -847,7 +875,7 @@ document.addEventListener("click", function(e){
   }
   if(b = e.target.closest("[data-more]")){
     var sec = b.dataset.more;
-    var step = (sec === "YouTube 影音" || sec === "IG Reels 短影音") ? 6 : LIM;
+    var step = (sec === "影音" || sec === "短片") ? 6 : LIM;
     shown[sec] = (shown[sec] || step) + step;
     render();
     return;
@@ -892,7 +920,11 @@ function openAdminEditor(rn){
   if(!item) return;
   editingRow = item;
   document.getElementById("mTitleInput").value = item.t || "";
+  document.getElementById("mSharerInput").value = item.sharer || "";
   document.getElementById("mRawBody").value = item.rawX || item.x || "";
+  document.getElementById("mProdInput").value = item.prod || "";
+  document.getElementById("mVideoInput").value = item.rawV || "";
+  document.getElementById("mSourceInput").value = item.s || "";
   document.getElementById("mSleep").checked = item.pub.indexOf("sleep") > -1;
 
   var curList = (item.g || []).filter(function(x){ return x !== "待分類"; });
@@ -920,7 +952,11 @@ document.getElementById("mSave").addEventListener("click", function(){
   var payload = {
     rowNum: editingRow.rowNum,
     title: document.getElementById("mTitleInput").value.trim(),
+    sharer: document.getElementById("mSharerInput").value.trim(),
     rawX: document.getElementById("mRawBody").value.trim(),
+    prod: document.getElementById("mProdInput").value.trim(),
+    videoUrl: document.getElementById("mVideoInput").value.trim(),
+    sourceUrl: document.getElementById("mSourceInput").value.trim(),
     pub: document.getElementById("mSleep").checked ? "sleep" : "",
     customTags: document.getElementById("mTags").value.trim(),
     compX: document.getElementById("mComp").value.trim()
@@ -932,14 +968,14 @@ document.getElementById("mSave").addEventListener("click", function(){
   })
   .then(function(r){ return r.json(); })
   .then(function(res){
-    btn.disabled = false; btn.textContent = "儲存至試算表";
+    btn.disabled = false; btn.textContent = "儲存";
     if(!res.ok) throw new Error(res.error || "儲存失敗");
     document.getElementById("modal").classList.remove("on");
     document.getElementById("readerModal").classList.remove("on");
     loadData();
   })
   .catch(function(err){
-    btn.disabled = false; btn.textContent = "儲存至試算表";
+    btn.disabled = false; btn.textContent = "儲存";
     alert("儲存失敗：" + err.message);
   });
 });
@@ -1014,8 +1050,8 @@ function loadData(){
       render();
     })
     .catch(function(err){
-      document.getElementById("out").innerHTML = '<div class="empty">資料載入失敗：' + esc(err.message) +
-        '<br><br><button class="sb-reset" onclick="loadData()">重新載入</button></div>';
+      document.getElementById("out").innerHTML = '<div class="empty">載入失敗：' + esc(err.message) +
+        '<br><br><button class="sb-reset" onclick="loadData()">重試</button></div>';
     });
 }
 loadData();
